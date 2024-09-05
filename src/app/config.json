@@ -32,6 +32,38 @@
           "href": "/about"
         }
       ]
+    },
+    "footer": {
+      "poweredBy": {
+        "text": "Powered by Next.js",
+        "href": "https://nextjs.org"
+      },
+      "links": [
+        {
+          "label": "home",
+          "href": "/"
+        },
+        {
+          "label": "instagram",
+          "href": "/instagram"
+        },
+        {
+          "label": "blog",
+          "href": "/blog"
+        },
+        {
+          "label": "shop",
+          "href": "/shop"
+        },
+        {
+          "label": "newsletter",
+          "href": "/newsletter"
+        },
+        {
+          "label": "about",
+          "href": "/about"
+        }
+      ]
     }
   }
 }

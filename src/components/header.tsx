@@ -1,12 +1,8 @@
 import config from "@/app/config.json";
+import { Link } from "@/components";
 
 const { header } = config.components;
 const home = header.links.find((link) => link.label === "home");
-
-type Link = {
-  label: string;
-  href: string;
-};
 
 const Title = () => {
   return (
@@ -18,25 +14,19 @@ const Title = () => {
   );
 };
 
-const Link = ({ href, label }: Link) => {
-  return (
-    <li>
-      <a href={href}>{label}</a>
-    </li>
-  );
-};
-
 const Links = () => {
   return (
     <ul className="flex w-[75%] justify-center items-center gap-8">
-      {header.links.map((link) => Link({ ...link }))}
+      {header.links.map((link) => (
+        <Link {...link} key={link.label} />
+      ))}
     </ul>
   );
 };
 
 const Container = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <div className="flex w-[100dvw] items-center justify-center p-4 h-fit bg-pink-500">
+    <div className="flex w-[100dvw] items-center justify-center p-4 h-fit bg-beige text-dark-brown">
       {children}
     </div>
   );

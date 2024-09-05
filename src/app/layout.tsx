@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import config from "@/app/config.json";
-import { Header } from "@/components/header";
+import { Header, Footer } from "@/components";
 
 const { title, description } = config.metadata;
 
 export const metadata: Metadata = {
   title,
   description,
+};
+
+const Main = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+  return <div className="grid grid-flow-row w-full h-full">{children}</div>;
 };
 
 export default function RootLayout({
@@ -19,7 +23,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Header />
-        <div className="grid grid-flow-row w-full h-full">{children}</div>
+        <Main>{children}</Main>
+        <Footer />
       </body>
     </html>
   );
