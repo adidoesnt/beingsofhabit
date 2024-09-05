@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import config from "./config.json";
+import "@/app/globals.css";
+import config from "@/app/config.json";
+import { Header } from "@/components/header";
 
 const { title, description } = config.metadata;
 
@@ -17,9 +18,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="grid grid-flow-row w-full h-full justify-center items-center">
-          {children}
-        </div>
+        <Header />
+        <div className="grid grid-flow-row w-full h-full">{children}</div>
       </body>
     </html>
   );

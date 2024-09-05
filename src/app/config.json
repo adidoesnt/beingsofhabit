@@ -2,5 +2,36 @@
   "metadata": {
     "title": "Beings of Habit",
     "description": "Beings of Habit"
+  },
+  "components": {
+    "header": {
+      "title": "beingsofhabit",
+      "links": [
+        {
+          "label": "home",
+          "href": "/"
+        },
+        {
+          "label": "instagram",
+          "href": "/instagram"
+        },
+        {
+          "label": "blog",
+          "href": "/blog"
+        },
+        {
+          "label": "shop",
+          "href": "/shop"
+        },
+        {
+          "label": "supplemented living",
+          "href": "/supplemented-living"
+        },
+        {
+          "label": "about",
+          "href": "/about"
+        }
+      ]
+    }
   }
 }
