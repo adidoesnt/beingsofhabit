@@ -3,6 +3,35 @@
     "title": "Beings of Habit",
     "description": "Beings of Habit"
   },
+  "pages": {
+    "home": {
+      "components": {
+        "coverImage": {
+          "src": "/assets/Serum.jpeg",
+          "alt": "Serum"
+        },
+        "instagram": {
+          "logo": {
+            "src": "/assets/Logo.png",
+            "alt": "Logo"
+          },
+          "coverImage": {
+            "src": "/assets/Matcha.jpeg",
+            "alt": "Matcha"
+          },
+          "content": [
+            "join me on my wellness journey, as i explore 3 central pillars in my own life: fitness, nutrition, and wellbeing! this account explores the latest in the health and wellness space, drawing inspiration from evidence-based podcasts, books, publications, Tik Toks, and more! i post varied types of content including my blogs posts, media spotlights, anatomy deep dives, and daily affirmations and i cover topics ranging from: the power of building routine to meal prep inspo and from the neurobiology of discipline to healing from trauma!",
+            "it would mean the world for you to join the community i want to build through this platform :)",
+            "@beingsofhabit"
+          ],
+          "visitPageButton": {
+            "text": "visit page!",
+            "href": "/instagram"
+          }
+        }
+      }
+    }
+  },
   "components": {
     "header": {
       "title": "beingsofhabit",
