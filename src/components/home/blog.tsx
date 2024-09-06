@@ -8,7 +8,7 @@ const { blog } = home.components;
 const ReadMoreButton = () => {
   return (
     <a href={blog.readMoreButton.href}>
-      <button className="px-4 py-2 font-bold border-[1px] border-dark-brown">
+      <button className="px-4 py-2 font-bold border-[1px] border-dull-gray">
         {blog.readMoreButton.text}
       </button>
     </a>
