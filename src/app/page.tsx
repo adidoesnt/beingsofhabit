@@ -1,4 +1,5 @@
 import {
+  ActiveWearAndAccessories,
   Blog,
   CoverImage,
   Instagram,
@@ -22,6 +23,7 @@ export default function Home() {
       <Blog />
       <Shop />
       <Supplements />
+      <ActiveWearAndAccessories />
     </Container>
   );
 }
