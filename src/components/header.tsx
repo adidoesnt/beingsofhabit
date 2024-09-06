@@ -8,7 +8,7 @@ const Title = () => {
   return (
     <div className="flex w-[25%] justify-center">
       <a href={home?.href}>
-        <h1>{header.title}</h1>
+        <h1 className="text-4xl">{header.title}</h1>
       </a>
     </div>
   );
