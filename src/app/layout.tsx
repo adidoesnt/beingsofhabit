@@ -11,7 +11,11 @@ export const metadata: Metadata = {
 };
 
 const Main = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-  return <div className="grid grid-flow-row w-full h-full">{children}</div>;
+  return (
+    <div className="flex w-full h-full justify-center items-center">
+      {children}
+    </div>
+  );
 };
 
 export default function RootLayout({

@@ -26,7 +26,7 @@ const Links = () => {
 
 const Container = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <div className="flex w-[100dvw] items-center justify-center p-4 h-fit bg-beige text-dark-brown">
+    <div className="flex w-[100dvw] items-center justify-center p-4 h-fit bg-beige text-dark-brown border-dark-brown border-b-[1px]">
       {children}
     </div>
   );

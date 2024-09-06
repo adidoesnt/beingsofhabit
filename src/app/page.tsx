@@ -1,7 +1,27 @@
+import {
+  Blog,
+  CoverImage,
+  Instagram,
+  Shop,
+  Supplements,
+} from "@/components/home";
+
+const Container = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+  return (
+    <div className="grid grid-flow-row w-full h-full overflow-x-auto scroll-smooth">
+      {children}
+    </div>
+  );
+};
+
 export default function Home() {
   return (
-    <div className="flex w-full h-full justify-center items-center">
-      Placeholder
-    </div>
+    <Container>
+      <CoverImage />
+      <Instagram />
+      <Blog />
+      <Shop />
+      <Supplements />
+    </Container>
   );
 }
