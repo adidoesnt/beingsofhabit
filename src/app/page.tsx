@@ -3,7 +3,7 @@ import {
   Blog,
   CoverImage,
   Instagram,
-  Shop,
+  Essentials,
   Supplements,
 } from "@/components/home";
 
@@ -21,7 +21,7 @@ export default function Home() {
       <CoverImage />
       <Instagram />
       <Blog />
-      <Shop />
+      <Essentials />
       <Supplements />
       <ActiveWearAndAccessories />
     </Container>

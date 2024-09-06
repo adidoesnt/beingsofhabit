@@ -44,6 +44,27 @@
             "src": "/assets/Book.jpeg",
             "alt": "Book"
           }
+        },
+        "shop": {
+          "title": "the essentials reimagined",
+          "shopNowButton": {
+            "text": "shop now",
+            "href": "/shop"
+          },
+          "images": [
+            {
+              "src": "/assets/HouseWithWheatField.jpg",
+              "alt": "House with wheat field"
+            },
+            {
+              "src": "/assets/HouseWithMountains.jpg",
+              "alt": "House with mountains"
+            },
+            {
+              "src": "/assets/Mountains.jpg",
+              "alt": "Mountains"
+            }
+          ]
         }
       }
     }
