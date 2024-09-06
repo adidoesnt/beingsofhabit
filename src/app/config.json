@@ -11,6 +11,7 @@
           "alt": "Serum"
         },
         "instagram": {
+          "title": "instagram!",
           "logo": {
             "src": "/assets/Logo.png",
             "alt": "Logo"
@@ -27,6 +28,21 @@
           "visitPageButton": {
             "text": "visit page!",
             "href": "/instagram"
+          }
+        },
+        "blog": {
+          "title": "live blog",
+          "content": [
+            "join me on my wellness journey, as i explore 3 central pillars in my own life: fitness, nutrition, and wellbeing! this written blog explores the latest in the health and wellness space, drawing inspiration from evidence-based podcasts, books, publications, Tik Toks, and more!",
+            "through these weekly blog posts, i hope to formalise some of the insight and mindset shifts i adopted, in terms of: my weightlifting journey (fundamental principles) but also more existential, life things! i explore the value of setting S.M.A.R.T. goals, creating boundaries, fostering awe for life, remaining resilient, finding chosen family, and discovering purpose! we all learn so much every day, seeing the world in different lights, and i want to document that dynamic path of discovery, forging self-identity, and practicing radical self-love!"
+          ],
+          "readMoreButton": {
+            "text": "read more!",
+            "href": "/blog"
+          },
+          "coverImage": {
+            "src": "/assets/Book.jpeg",
+            "alt": "Book"
           }
         }
       }
