@@ -16,7 +16,7 @@ const ShopNowButton = () => {
 
 const HaircareImage = () => {
   return (
-    <div className="flex w-full h-full p-16">
+    <div className="flex w-full h-full p-16 justify-end">
       <Image
         src={haircare.image.src}
         alt={haircare.image.alt}
