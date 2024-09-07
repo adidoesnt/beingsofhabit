@@ -5,6 +5,7 @@ import {
   Instagram,
   Essentials,
   Supplements,
+  HomeDecor,
 } from "@/components/home";
 
 const Container = ({ children }: Readonly<{ children: React.ReactNode }>) => {
@@ -24,6 +25,7 @@ export default function Home() {
       <Essentials />
       <Supplements />
       <ActiveWearAndAccessories />
+      <HomeDecor />
     </Container>
   );
 }

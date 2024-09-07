@@ -93,6 +93,23 @@
             "src": "/assets/Yoga.jpeg",
             "alt": "Yoga"
           }
+        },
+        "homeDecor": {
+          "caption": "make your house a home.",
+          "shopNowButton": {
+            "text": "shop home decor",
+            "href": "/shop"
+          },
+          "images": [
+            {
+              "src": "/assets/Candles.jpeg",
+              "alt": "Candles"
+            },
+            {
+              "src": "/assets/Diffuser.jpeg",
+              "alt": "Diffuser"
+            }
+          ]
         }
       }
     }
