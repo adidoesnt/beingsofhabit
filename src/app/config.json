@@ -116,6 +116,43 @@
           "image": {
             "src": "/assets/Kindle.jpeg",
             "alt": "Kindle"
+          },
+          "shopNowButton": {
+            "text": "shop technology",
+            "href": "/shop"
+          }
+        },
+        "journalsAndBooks": {
+          "content": ["grounded.", "introspective.", "grateful.", "thriving."],
+          "shopNowButton": {
+            "text": "shop journals and books",
+            "href": "/shop"
+          },
+          "image": {
+            "src": "/assets/BooksAndPencils.jpeg",
+            "alt": "Books and pencils"
+          }
+        },
+        "skincare": {
+          "caption": "skincare is self-care.",
+          "image": {
+            "src": "/assets/Hands.jpg",
+            "alt": "Hands"
+          },
+          "shopNowButton": {
+            "text": "shop skincare",
+            "href": "/shop"
+          }
+        },
+        "haircare": {
+          "caption": "hydrate and replenish.",
+          "image": {
+            "src": "/assets/Serum2.jpeg",
+            "alt": "Serum"
+          },
+          "shopNowButton": {
+            "text": "shop haircare",
+            "href": "/shop"
           }
         }
       }
