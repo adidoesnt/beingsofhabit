@@ -18,16 +18,16 @@ export const ShopNowButton = () => {
 
 const HomeDecorCaption = () => {
   return (
-    <div className="flex flex-col gap-4 w-1/2 p-16 pb-0 items-end text-right">
-      <hr className="border-dark-brown border-b-[1px] w-1/2" />
-      <p className="text-right text-4xl">{homeDecor.caption}</p>
+    <div className="flex flex-col gap-4 w-full p-16 pb-0">
+      <hr className="border-dark-brown border-b-[1px] w-1/4" />
+      <p className="text-left text-4xl">{homeDecor.caption}</p>
     </div>
   );
 };
 
 const Images = () => {
   return (
-    <>
+    <div className="flex w-full h-full justify-center items-center gap-4 p-8">
       {homeDecor.images.map((image) => (
         <Image
           key={image.src}
@@ -38,24 +38,16 @@ const Images = () => {
           className="overflow-hidden"
         />
       ))}
-    </>
-  );
-};
-
-const RightPanel = () => {
-  return (
-    <div className="flex flex-col w-full justify-center items-end gap-8">
-      <HomeDecorCaption />
-      <ShopNowButton />
     </div>
   );
 };
 
 export const HomeDecor = () => {
   return (
-    <div className="flex w-[100dvw] h-fit justify-center items-center bg-beige text-black p-8 gap-2">
+    <div className="flex flex-col w-[100dvw] h-fit justify-center items-center bg-beige text-black p-8 gap-2">
+      <HomeDecorCaption />
+      <ShopNowButton />
       <Images />
-      <RightPanel />
     </div>
   );
 };

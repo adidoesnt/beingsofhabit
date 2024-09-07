@@ -16,7 +16,7 @@ const ShopNowButton = () => {
 
 const TechImage = () => {
   return (
-    <div className="flex w-full h-full p-16">
+    <div className="flex w-full h-full">
       <Image
         src={tech.image.src}
         alt={tech.image.alt}
