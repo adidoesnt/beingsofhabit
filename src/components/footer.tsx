@@ -1,5 +1,6 @@
 import config from "@/app/config.json";
 import { Link } from "@/components";
+import { Logo } from "./logo";
 
 const { footer } = config.components;
 
@@ -16,9 +17,12 @@ export const Container = ({
 const PoweredBy = () => {
   const { text, href } = footer.poweredBy;
   return (
-    <a href={href} target="_blank">
-      <p className="text-center text-sm">{text}</p>
-    </a>
+    <div className="flex flex-col gap-2 items-center p-16">
+      <Logo />
+      <a href={href} target="_blank">
+        <p className="text-center text-sm">{text}</p>
+      </a>
+    </div>
   );
 };
 
