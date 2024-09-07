@@ -6,6 +6,10 @@ import {
   Essentials,
   Supplements,
   HomeDecor,
+  Tech,
+  JournalsAndBooks,
+  Haircare,
+  Skincare,
 } from "@/components/home";
 
 const Container = ({ children }: Readonly<{ children: React.ReactNode }>) => {
@@ -26,6 +30,10 @@ export default function Home() {
       <Supplements />
       <ActiveWearAndAccessories />
       <HomeDecor />
+      <Tech />
+      <JournalsAndBooks />
+      <Skincare />
+      <Haircare />
     </Container>
   );
 }

@@ -110,6 +110,13 @@
               "alt": "Diffuser"
             }
           ]
+        },
+        "tech": {
+          "caption": "tech out!",
+          "image": {
+            "src": "/assets/Kindle.jpeg",
+            "alt": "Kindle"
+          }
         }
       }
     }
