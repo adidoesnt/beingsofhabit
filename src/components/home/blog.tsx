@@ -28,13 +28,21 @@ const LeftPanel = () => {
   );
 };
 
+const Content = () => {
+  return (
+    <>
+      <p className="text-center text-xl">{blog.content[0]}</p>
+      <p className="text-center text-xl">{blog.content[1]}</p>
+      <p className="text-center font-bold text-xl">{blog.content[2]}</p>
+    </>
+  );
+};
+
 const RightPanel = () => {
   return (
     <div className="flex flex-col gap-4 items-center justify-center p-12">
       <Logo />
-      <p className="text-center text-xl">{blog.content[0]}</p>
-      <p className="text-center text-xl">{blog.content[1]}</p>
-      <p className="text-center font-bold text-xl">{blog.content[2]}</p>
+      <Content />
       <ReadMoreButton />
     </div>
   );

@@ -15,13 +15,21 @@ const VisitPageButton = () => {
   );
 };
 
+const Content = () => {
+  return (
+    <>
+      <p className="text-center text-xl">{instagram.content[0]}</p>
+      <p className="text-center text-xl">{instagram.content[1]}</p>
+      <p className="text-center font-bold text-xl">{instagram.content[2]}</p>
+    </>
+  );
+};
+
 const LeftPanel = () => {
   return (
     <div className="flex flex-col gap-4 items-center justify-center p-12">
       <Logo />
-      <p className="text-center text-xl">{instagram.content[0]}</p>
-      <p className="text-center text-xl">{instagram.content[1]}</p>
-      <p className="text-center font-bold text-xl">{instagram.content[2]}</p>
+      <Content />
       <VisitPageButton />
     </div>
   );
