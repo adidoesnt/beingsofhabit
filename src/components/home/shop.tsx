@@ -4,22 +4,6 @@ import Image from "next/image";
 const { home } = config.pages;
 const { shop } = home.components;
 
-export const Supplements = () => {
-  return (
-    <div className="flex w-[100dvw] h-[100dvh] justify-center items-center bg-dull-gray text-dark-brown">
-      Placeholder
-    </div>
-  );
-};
-
-export const ActiveWearAndAccessories = () => {
-  return (
-    <div className="flex w-[100dvw] h-[100dvh] justify-center items-center bg-olive text-dull-gray">
-      Placeholder
-    </div>
-  );
-};
-
 const ShopNowButton = () => {
   return (
     <a href={shop.shopNowButton.href}>

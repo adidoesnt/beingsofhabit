@@ -65,6 +65,23 @@
               "alt": "Mountains"
             }
           ]
+        },
+        "supplements": {
+          "caption": "reparative, nourishing, and potent supplements to support gut and hormone health.",
+          "shopNowButton": {
+            "text": "shop supplements and blends",
+            "href": "/supplemented-living"
+          },
+          "images": [
+            {
+              "src": "/assets/Supplements.jpeg",
+              "alt": "Supplements"
+            },
+            {
+              "src": "/assets/Person.jpg",
+              "alt": "Person"
+            }
+          ]
         }
       }
     }
