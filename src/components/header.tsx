@@ -1,5 +1,9 @@
+"use client";
+
 import config from "@/app/config.json";
 import { Link } from "@/components";
+import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 
 const { header } = config.components;
 const home = header.links.find((link) => link.label === "home");
@@ -15,10 +19,24 @@ const Title = () => {
 };
 
 const Links = () => {
+  const currentPath = usePathname();
+  const currentSubpath = useMemo(() => {
+    const path = currentPath
+      .split("/")
+      .filter(Boolean)
+      .join(" ")
+      .replace(/-/g, " ");
+    return path.trim() === "" ? "home" : path;
+  }, [currentPath]);
+
   return (
     <ul className="flex w-[75%] justify-center items-center gap-8">
       {header.links.map((link) => (
-        <Link {...link} key={link.label} />
+        <Link
+          {...link}
+          key={link.label}
+          active={currentSubpath === link.label}
+        />
       ))}
     </ul>
   );
