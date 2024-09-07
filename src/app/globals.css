@@ -3,22 +3,22 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'OldStandard';
-  src: url('/fonts/OldStandardTT-Regular.ttf') format('truetype');
+  font-family: "OldStandard";
+  src: url("/fonts/OldStandardTT-Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'OldStandard';
-  src: url('/fonts/OldStandardTT-Bold.ttf') format('truetype');
+  font-family: "OldStandard";
+  src: url("/fonts/OldStandardTT-Bold.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'OldStandard';
-  src: url('/fonts/OldStandardTT-Italic.ttf') format('truetype');
+  font-family: "OldStandard";
+  src: url("/fonts/OldStandardTT-Italic.ttf") format("truetype");
   font-weight: normal;
   font-style: italic;
 }
