@@ -70,7 +70,7 @@
           "caption": "reparative, nourishing, and potent supplements to support gut and hormone health.",
           "shopNowButton": {
             "text": "shop supplements and blends",
-            "href": "/supplemented-living"
+            "href": "/shop"
           },
           "images": [
             {
@@ -82,6 +82,17 @@
               "alt": "Person"
             }
           ]
+        },
+        "activeWearAndAccessories": {
+          "caption": "restore your relationship with joy and movement.",
+          "shopNowButton": {
+            "text": "shop activewear and accessories",
+            "href": "/shop"
+          },
+          "image": {
+            "src": "/assets/Yoga.jpeg",
+            "alt": "Yoga"
+          }
         }
       }
     }
