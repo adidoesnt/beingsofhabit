@@ -2,10 +2,7 @@ import Image from "next/image";
 import { Logo } from "../logo";
 import config from "@/app/config.json";
 import { Blog as MobileBlog } from "@/components/home/mobile";
-
-export type BlogProps = {
-  isMobile: boolean;
-};
+import { useIsMobile } from "@/utils/mobile";
 
 const { home } = config.pages;
 const { blog } = home.components;
@@ -53,7 +50,9 @@ export const BlogContent = () => {
   );
 };
 
-export const Blog = ({ isMobile }: Readonly<BlogProps>) => {
+export const Blog = async () => {
+  const isMobile = await useIsMobile();
+
   if (isMobile) return <MobileBlog backgroundImageSrc={blog.coverImage.src} />;
 
   return (

@@ -12,7 +12,7 @@ export const Blog = ({ backgroundImageSrc }: Readonly<MobileBlogProps>) => {
         backgroundImage: `url(${backgroundImageSrc})`,
       }}
     >
-      <div className="flex justify-center items-start bg-olive text-beige bg-opacity-60 max-h-[500px] overflow-y-auto">
+      <div className="flex justify-center items-start bg-olive text-beige bg-opacity-75 max-h-[500px] overflow-y-auto">
         <BlogContent />
       </div>
     </div>

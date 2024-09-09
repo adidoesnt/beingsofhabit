@@ -11,7 +11,6 @@ import {
   Haircare,
   Skincare,
 } from "@/components/home";
-import { useIsMobile } from "@/utils/mobile";
 
 const Container = async ({
   children,
@@ -24,13 +23,11 @@ const Container = async ({
 };
 
 export default async function Home() {
-  const isMobile = await useIsMobile();
-
   return (
     <Container>
       <CoverImage />
       <Instagram />
-      <Blog isMobile={isMobile} />
+      <Blog />
       <Essentials />
       <Supplements />
       <ActiveWearAndAccessories />

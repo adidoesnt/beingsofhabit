@@ -1,9 +1,15 @@
 import Image from "next/image";
 import { Logo } from "../logo";
 import config from "@/app/config.json";
+import { Instagram as MobileInstagram } from "./mobile";
+import { useIsMobile } from "@/utils/mobile";
 
 const { home } = config.pages;
 const { instagram } = home.components;
+
+export type InstagramProps = {
+  isMobile: boolean;
+};
 
 const VisitPageButton = () => {
   return (
@@ -25,7 +31,7 @@ const Content = () => {
   );
 };
 
-const LeftPanel = () => {
+export const InstagramContent = () => {
   return (
     <div className="flex flex-col gap-4 items-center justify-center p-12">
       <Logo />
@@ -48,10 +54,15 @@ const RightPanel = () => {
   );
 };
 
-export const Instagram = () => {
+export const Instagram = async () => {
+  const isMobile = await useIsMobile();
+
+  if (isMobile)
+    return <MobileInstagram backgroundImageSrc={instagram.coverImage.src} />;
+
   return (
     <div className="grid grid-cols-2 w-[100dvw] h-fit bg-dull-gray text-dark-brown">
-      <LeftPanel />
+      <InstagramContent />
       <RightPanel />
     </div>
   );
