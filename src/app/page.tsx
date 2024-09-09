@@ -11,8 +11,9 @@ import {
   Haircare,
   Skincare,
 } from "@/components/home";
+// import { useIsMobile } from "@/utils/props";
 
-const Container = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+const Container = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <div className="grid grid-flow-row w-full h-full overflow-x-auto scroll-smooth">
       {children}
