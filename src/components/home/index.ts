@@ -1,4 +1,4 @@
-export { Blog } from "./blog";
+export { Blog, BlogContent } from "./blog";
 export { CoverImage } from "./coverImage";
 export { Instagram } from "./instagram";
 export { ActiveWearAndAccessories } from "./activeWearAndAccessories";

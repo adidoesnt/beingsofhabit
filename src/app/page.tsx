@@ -11,9 +11,11 @@ import {
   Haircare,
   Skincare,
 } from "@/components/home";
-// import { useIsMobile } from "@/utils/props";
+import { useIsMobile } from "@/utils/mobile";
 
-const Container = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
+const Container = async ({
+  children,
+}: Readonly<{ children: React.ReactNode }>) => {
   return (
     <div className="grid grid-flow-row w-full h-full overflow-x-auto scroll-smooth">
       {children}
@@ -21,12 +23,14 @@ const Container = async ({ children }: Readonly<{ children: React.ReactNode }>) 
   );
 };
 
-export default function Home() {
+export default async function Home() {
+  const isMobile = await useIsMobile();
+
   return (
     <Container>
       <CoverImage />
       <Instagram />
-      <Blog />
+      <Blog isMobile={isMobile} />
       <Essentials />
       <Supplements />
       <ActiveWearAndAccessories />

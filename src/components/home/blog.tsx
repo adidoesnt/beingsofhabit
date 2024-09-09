@@ -1,6 +1,11 @@
 import Image from "next/image";
 import { Logo } from "../logo";
 import config from "@/app/config.json";
+import { Blog as MobileBlog } from "@/components/home/mobile";
+
+export type BlogProps = {
+  isMobile: boolean;
+};
 
 const { home } = config.pages;
 const { blog } = home.components;
@@ -38,7 +43,7 @@ const Content = () => {
   );
 };
 
-const RightPanel = () => {
+export const BlogContent = () => {
   return (
     <div className="flex flex-col gap-4 items-center justify-center p-12">
       <Logo />
@@ -48,11 +53,13 @@ const RightPanel = () => {
   );
 };
 
-export const Blog = () => {
+export const Blog = ({ isMobile }: Readonly<BlogProps>) => {
+  if (isMobile) return <MobileBlog backgroundImageSrc={blog.coverImage.src} />;
+
   return (
     <div className="grid grid-cols-2 w-[100dvw] h-fit bg-olive text-dull-gray">
       <LeftPanel />
-      <RightPanel />
+      <BlogContent />
     </div>
   );
 };
