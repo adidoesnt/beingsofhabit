@@ -1,10 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import config from "@/app/config.json";
+import { useIsMobile } from "@/utils/mobile";
+import { Essentials as MobileEssentials } from "./mobile";
 
 const { home } = config.pages;
 const { shop } = home.components;
 
-const ShopNowButton = () => {
+export const ShopNowButton = () => {
   return (
     <a href={shop.shopNowButton.href}>
       <button className="px-4 py-2 border-[1px] border-dark-brown">
@@ -26,23 +28,25 @@ const EssentialsCaption = () => {
   );
 };
 
-const EssentialsImages = () => {
+export const EssentialsImages = () => {
   return (
     <>
       {shop.images.map((image) => (
         <img
           key={image.src}
           src={image.src}
-          alt={image.alt}
-          width={300}
-          height={300}
+          className="w-auto h-[300px]"
         />
       ))}
     </>
   );
 };
 
-export const Essentials = () => {
+export const Essentials = async () => {
+  const isMobile = await useIsMobile();
+
+  if (isMobile) return <MobileEssentials />;
+
   return (
     <div className="flex w-[100dvw] h-fit justify-center items-center bg-beige text-black overflow-clip">
       <div className="flex gap-4 overflow-x-auto p-16">
