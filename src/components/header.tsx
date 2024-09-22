@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import config from "@/app/config.json";
 import { Link } from "@/components";
@@ -18,7 +18,7 @@ const Title = () => {
   );
 };
 
-const Links = () => {
+const Links = async () => {
   const currentPath = usePathname();
   const currentSubpath = useMemo(() => {
     const path = currentPath

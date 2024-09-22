@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 import config from "@/app/config.json";
 import { Header, Footer } from "@/components";
+import { useIsMobile } from "@/utils/mobile";
 
 const { title, description } = config.metadata;
 
@@ -18,15 +19,17 @@ const Main = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   );
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isMobile = await useIsMobile();
   return (
     <html lang="en">
       <body>
-        <Header />
+        {!isMobile && <Header />}
+        {/* {isMobile && <MobileHeader />} */}
         <Main>{children}</Main>
         <Footer />
       </body>
