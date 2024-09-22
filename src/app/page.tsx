@@ -8,8 +8,6 @@ import {
   HomeDecor,
   Tech,
   JournalsAndBooks,
-  Haircare,
-  Skincare,
 } from "@/components/home";
 
 const Container = async ({
@@ -34,8 +32,6 @@ export default async function Home() {
       <HomeDecor />
       <Tech />
       <JournalsAndBooks />
-      <Skincare />
-      <Haircare />
     </Container>
   );
 }

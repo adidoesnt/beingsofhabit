@@ -7,5 +7,3 @@ export { Supplements } from "./supplements";
 export { HomeDecor } from "./homeDecor";
 export { Tech } from "./tech";
 export { JournalsAndBooks } from "./journalsAndBooks";
-export { Skincare } from "./skincare";
-export { Haircare } from "./haircare";

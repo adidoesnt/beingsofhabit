@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import { Logo } from "../logo";
 import config from "@/app/config.json";
 import { Blog as MobileBlog } from "@/components/home/mobile";
@@ -20,11 +20,10 @@ const ReadMoreButton = () => {
 const LeftPanel = () => {
   return (
     <div className="flex w-full h-full">
-      <Image
+      <img
         src={blog.coverImage.src}
         alt={blog.coverImage.alt}
-        width={1000}
-        height={1000}
+        className="w-full h-full object-cover"
       />
     </div>
   );

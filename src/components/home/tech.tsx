@@ -1,5 +1,7 @@
 import config from "@/app/config.json";
+import { useIsMobile } from "@/utils/mobile";
 import Image from "next/image";
+import { Tech as MobileTech } from "./mobile";
 
 const { home } = config.pages;
 const { tech } = home.components;
@@ -36,7 +38,14 @@ export const RightPanel = () => {
   );
 };
 
-export const Tech = () => {
+export const Tech = async () => {
+  const isMobile = await useIsMobile();
+
+  if (isMobile)
+    return (
+      <MobileTech backgroundImageSrc={tech.image.src} />
+    );
+
   return (
     <div className="grid grid-cols-2 w-[100dvw] h-fit justify-center items-center bg-dull-gray text-dark-brown">
       <TechImage />

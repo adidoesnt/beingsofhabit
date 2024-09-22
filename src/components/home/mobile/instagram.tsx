@@ -14,7 +14,7 @@ export const Instagram = ({
         backgroundImage: `url(${backgroundImageSrc})`,
       }}
     >
-      <div className="flex justify-center items-start bg-beige text-olive bg-opacity-75 max-h-[500px] overflow-y-auto">
+      <div className="flex justify-center items-start bg-beige text-olive bg-opacity-75">
         <InstagramContent />
       </div>
     </div>

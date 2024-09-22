@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import config from "@/app/config.json";
-import Image from "next/image";
 
 const { home } = config.pages;
 const { shop } = home.components;
@@ -16,7 +16,7 @@ const ShopNowButton = () => {
 
 const EssentialsCaption = () => {
   return (
-    <div className="flex flex-col min-h-fit justify-between items-center">
+    <div className="flex flex-col justify-between items-center">
       <div className="flex flex-col w-full">
         <hr className="border-dark-brown border-b-[1px] w-full" />
         <h1 className="text-center text-xl p-4">{shop.title}</h1>
@@ -30,7 +30,7 @@ const EssentialsImages = () => {
   return (
     <>
       {shop.images.map((image) => (
-        <Image
+        <img
           key={image.src}
           src={image.src}
           alt={image.alt}
@@ -44,8 +44,8 @@ const EssentialsImages = () => {
 
 export const Essentials = () => {
   return (
-    <div className="flex w-[100dvw] h-fit justify-center items-center bg-beige text-black">
-      <div className="flex gap-4 p-16">
+    <div className="flex w-[100dvw] h-fit justify-center items-center bg-beige text-black overflow-clip">
+      <div className="flex gap-4 overflow-x-auto p-16">
         <EssentialsCaption />
         <EssentialsImages />
       </div>

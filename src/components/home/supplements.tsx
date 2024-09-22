@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import config from "@/app/config.json";
-import Image from "next/image";
 
 const { home } = config.pages;
 const { supplements } = home.components;
@@ -29,7 +29,7 @@ const Images = () => {
   return (
     <div className="flex w-full h-full justify-center items-center gap-4 p-8">
       {supplements.images.map((image) => (
-        <Image
+        <img
           key={image.src}
           src={image.src}
           alt={image.alt}

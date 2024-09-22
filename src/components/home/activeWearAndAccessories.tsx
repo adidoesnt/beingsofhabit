@@ -1,5 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import config from "@/app/config.json";
-import Image from "next/image";
+import { useIsMobile } from "@/utils/mobile";
+import { ActiveWearAndAccessories as MobileActiveWearAndAccessories } from "./mobile";
 
 const { home } = config.pages;
 const { activeWearAndAccessories } = home.components;
@@ -14,10 +16,16 @@ const ShopNowButton = () => {
   );
 };
 
-const LeftPanel = () => {
+export const LeftPanel = async () => {
+  const isMobile = await useIsMobile();
+
+  const styles = isMobile
+    ? 'text-center text-4xl'
+    : 'text-left text-4xl';
+
   return (
     <div className="flex flex-col p-16 gap-8">
-      <p className="text-left text-4xl">{activeWearAndAccessories.caption}</p>
+      <p className={styles}>{activeWearAndAccessories.caption}</p>
       <ShopNowButton />
     </div>
   );
@@ -26,7 +34,7 @@ const LeftPanel = () => {
 const RightPanel = () => {
   return (
     <div className="flex w-full h-full">
-      <Image
+      <img
         src={activeWearAndAccessories.image.src}
         alt={activeWearAndAccessories.image.alt}
         width={1000}
@@ -36,7 +44,16 @@ const RightPanel = () => {
   );
 };
 
-export const ActiveWearAndAccessories = () => {
+export const ActiveWearAndAccessories = async () => {
+  const isMobile = await useIsMobile();
+
+  if (isMobile)
+    return (
+      <MobileActiveWearAndAccessories
+        backgroundImageSrc={activeWearAndAccessories.image.src}
+      />
+    );
+
   return (
     <div className="grid grid-cols-2 w-[100dvw] h-fit bg-olive text-dull-gray">
       <LeftPanel />
