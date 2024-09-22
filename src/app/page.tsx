@@ -1,3 +1,4 @@
+import { Footer } from "@/components";
 import {
   ActiveWearAndAccessories,
   Blog,
@@ -9,6 +10,8 @@ import {
   Tech,
   JournalsAndBooks,
 } from "@/components/home";
+import { MobileHeader } from "@/components/home/mobile";
+import { useIsMobile } from "@/utils/mobile";
 
 const Container = async ({
   children,
@@ -21,8 +24,11 @@ const Container = async ({
 };
 
 export default async function Home() {
+  const isMobile = await useIsMobile();
+
   return (
     <Container>
+      {isMobile && <MobileHeader />}
       <CoverImage />
       <Instagram />
       <Blog />
@@ -32,6 +38,7 @@ export default async function Home() {
       <HomeDecor />
       <Tech />
       <JournalsAndBooks />
+      {isMobile && <Footer />}
     </Container>
   );
 }

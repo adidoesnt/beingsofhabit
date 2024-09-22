@@ -3,6 +3,7 @@ import "@/app/globals.css";
 import config from "@/app/config.json";
 import { Header, Footer } from "@/components";
 import { useIsMobile } from "@/utils/mobile";
+import { MobileHeader } from "@/components/home/mobile";
 
 const { title, description } = config.metadata;
 
@@ -29,9 +30,8 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         {!isMobile && <Header />}
-        {/* {isMobile && <MobileHeader />} */}
         <Main>{children}</Main>
-        <Footer />
+        {!isMobile && <Footer />}
       </body>
     </html>
   );

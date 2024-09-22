@@ -8,7 +8,7 @@ import { useMemo } from "react";
 const { header } = config.components;
 const home = header.links.find((link) => link.label === "home");
 
-const Title = () => {
+export const Title = () => {
   return (
     <div className="flex w-[25%] justify-center">
       <a href={home?.href}>
