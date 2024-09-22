@@ -18,7 +18,7 @@ export const ShopNowButton = async () => {
           {homeDecor.shopNowButton.text}
         </button>
       </a>
-      <hr className="border-dark-brown border-b-[1px] w-1/4" />
+      {isMobile && <hr className="border-dark-brown border-b-[1px] w-1/4" />}
     </div>
   );
 };
@@ -34,7 +34,7 @@ const HomeDecorCaption = async () => {
     <div className={containerStyles}>
       <hr className="border-dark-brown border-b-[1px] w-1/4" />
       <p className="text-left text-4xl">{homeDecor.caption}</p>
-      <hr className="border-dark-brown border-b-[1px] w-full" />
+      {isMobile && <hr className="border-dark-brown border-b-[1px] w-full" />}
     </div>
   );
 };
@@ -46,6 +46,10 @@ export const Images = async () => {
     ? "flex w-full h-full justify-start items-center self-start gap-4 p-8 overflow-x-auto"
     : "flex w-full h-full justify-center items-center gap-4 p-8";
 
+  const imageStyles = isMobile
+    ? "w-auto object-scale-down"
+    : 'h-[300px] w-auto object-scale-down';
+
   return (
     <div className={containerStyles}>
       {homeDecor.images.map((image) => (
@@ -53,7 +57,7 @@ export const Images = async () => {
           key={image.src}
           src={image.src}
           alt={image.alt}
-          className="w-auto object-scale-down"  
+          className={imageStyles}  
         />
       ))}
     </div>
@@ -65,7 +69,7 @@ export const HomeDecor = async () => {
 
   const containerStyles = isMobile
     ? "flex flex-col h-[100dvh] bg-beige text-black p-8 gap-2"
-    : "flex flex-col w-[100dvw] h-fit justify-center items-center bg-beige text-black p-8 gap-2";
+    : "flex flex-col w-[100dvw] h-fit justify-center items-start bg-beige text-black p-8 gap-2";
 
   return (
     <div className={containerStyles}>
