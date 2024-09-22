@@ -1,14 +1,26 @@
 /* eslint-disable @next/next/no-img-element */
 import config from "@/app/config.json";
+import { useIsMobile } from "@/utils/mobile";
+import { Supplements as MobileSupplements } from "./mobile";
 
 const { home } = config.pages;
 const { supplements } = home.components;
 
-export const ShopNowButton = () => {
-  return (
-    <div className="flex w-1/2 justify-end items-center self-end p-16 pt-0">
+export const ShopNowButton = async () => {
+  const isMobile = await useIsMobile();
+
+  const containerStyles = isMobile
+    ? "flex justify-end items-center self-end p-16 pt-0"
+    : "flex flex-col items-center justify-start p-16 h-full";
+
+  const buttonStyles = isMobile
+    ? "px-4 py-2 border-[1px] border-beige"
+    : "px-4 py-2 border-[1px] border-dark-brown"
+
+    return (
+    <div className={containerStyles}>
       <a href={supplements.shopNowButton.href}>
-        <button className="px-4 py-2 border-[1px] border-dark-brown">
+        <button className={buttonStyles}>
           {supplements.shopNowButton.text}
         </button>
       </a>
@@ -16,11 +28,19 @@ export const ShopNowButton = () => {
   );
 };
 
-const SupplementsCaption = () => {
+export const SupplementsCaption = async () => {
+  const isMobile = await useIsMobile();
+
+  const containerStyles = isMobile
+    ? "flex flex-col gap-4 p-4 pb-0"
+    : "flex flex-col gap-4 w-1/2 p-16 pb-0";
+
+  const textStyles = isMobile ? "text-center text-4xl" : "text-left text-4xl";
+
   return (
-    <div className="flex flex-col gap-4 w-1/2 p-16 pb-0">
-      <hr className="border-dark-brown border-b-[1px] w-1/2" />
-      <p className="text-left text-4xl">{supplements.caption}</p>
+    <div className={containerStyles}>
+      {!isMobile && <hr className="border-dark-brown border-b-[1px] w-1/2" />}
+      <p className={textStyles}>{supplements.caption}</p>
     </div>
   );
 };
@@ -42,7 +62,12 @@ const Images = () => {
   );
 };
 
-export const Supplements = () => {
+export const Supplements = async () => {
+  const isMobile = await useIsMobile();
+
+  if (isMobile)
+    return <MobileSupplements backgroundImageSrc={supplements.images[1].src} />;
+
   return (
     <div className="flex flex-col w-[100dvw] h-fit justify-center items-start bg-dull-gray text-dark-brown">
       <SupplementsCaption />
