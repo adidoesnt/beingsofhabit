@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "dev:website": "nx run website:dev",
-    "dev:blog": "nx run blog:dev"
+    "dev:blog-portal": "nx run blog-portal:dev"
   },
   "devDependencies": {
     "@nx/eslint": "20.0.3",
