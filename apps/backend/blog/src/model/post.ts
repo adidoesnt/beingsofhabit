@@ -2,9 +2,9 @@ import { t } from "elysia";
 import { getModelForClass, prop } from "@typegoose/typegoose";
 
 export enum Category {
-  FITNESS = "fitness",
-  NUTRITION = "nutrition",
-  WELLBEING = "wellbeing & self-care",
+  STRENGTHENING = "strengthening",
+  FUELLING = "fuelling",
+  HEALING = "healing",
   LEARNING = "learning",
 }
 
