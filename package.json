@@ -1,0 +1,9 @@
+{
+  "name": "beingsofhabit",
+  "private": true,
+  "workspaces": [
+    "frontend/apps/*",
+    "backend/apps/*"
+  ],
+  "scripts": {}
+}

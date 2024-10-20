@@ -1,0 +1,269 @@
+{
+  "metadata": {
+    "title": "Beings of Habit",
+    "description": "Beings of Habit"
+  },
+  "pages": {
+    "home": {
+      "components": {
+        "coverImage": {
+          "src": "/assets/Serum.jpeg",
+          "alt": "Serum"
+        },
+        "instagram": {
+          "title": "instagram!",
+          "logo": {
+            "src": "/assets/Logo.png",
+            "alt": "Logo"
+          },
+          "coverImage": {
+            "src": "/assets/Matcha.jpeg",
+            "alt": "Matcha"
+          },
+          "content": [
+            "join me on my wellness journey, as i explore 3 central pillars in my own life: fitness, nutrition, and wellbeing! this account explores the latest in the health and wellness space, drawing inspiration from evidence-based podcasts, books, publications, Tik Toks, and more! i post varied types of content including my blogs posts, media spotlights, anatomy deep dives, and daily affirmations and i cover topics ranging from: the power of building routine to meal prep inspo and from the neurobiology of discipline to healing from trauma!",
+            "it would mean the world for you to join the community i want to build through this platform :)",
+            "@beingsofhabit"
+          ],
+          "visitPageButton": {
+            "text": "visit page!",
+            "href": "/instagram"
+          }
+        },
+        "blog": {
+          "title": "live blog",
+          "content": [
+            "join me on my wellness journey, as i explore 3 central pillars in my own life: fitness, nutrition, and wellbeing! this written blog explores the latest in the health and wellness space, drawing inspiration from evidence-based podcasts, books, publications, Tik Toks, and more!",
+            "through these weekly blog posts, i hope to formalise some of the insight and mindset shifts i adopted, in terms of: my weightlifting journey (fundamental principles) but also more existential, life things! i explore the value of setting S.M.A.R.T. goals, creating boundaries, fostering awe for life, remaining resilient, finding chosen family, and discovering purpose! we all learn so much every day, seeing the world in different lights, and i want to document that dynamic path of discovery, forging self-identity, and practicing radical self-love!"
+          ],
+          "readMoreButton": {
+            "text": "read more!",
+            "href": "/blog"
+          },
+          "coverImage": {
+            "src": "/assets/Book.jpeg",
+            "alt": "Book"
+          }
+        },
+        "shop": {
+          "title": "the essentials reimagined",
+          "shopNowButton": {
+            "text": "shop now",
+            "href": "/shop"
+          },
+          "images": [
+            {
+              "src": "/assets/HouseWithWheatField.jpg",
+              "alt": "House with wheat field"
+            },
+            {
+              "src": "/assets/HouseWithMountains.jpg",
+              "alt": "House with mountains"
+            },
+            {
+              "src": "/assets/Mountains.jpg",
+              "alt": "Mountains"
+            }
+          ]
+        },
+        "supplements": {
+          "caption": "reparative, nourishing, and potent supplements to support gut and hormone health.",
+          "shopNowButton": {
+            "text": "shop supplements and blends",
+            "href": "/shop"
+          },
+          "images": [
+            {
+              "src": "/assets/Supplements.jpeg",
+              "alt": "Supplements"
+            },
+            {
+              "src": "/assets/Person.jpg",
+              "alt": "Person"
+            }
+          ]
+        },
+        "activeWearAndAccessories": {
+          "caption": "restore your relationship with joy and movement.",
+          "shopNowButton": {
+            "text": "shop activewear and accessories",
+            "href": "/shop"
+          },
+          "image": {
+            "src": "/assets/Yoga.jpeg",
+            "alt": "Yoga"
+          }
+        },
+        "homeDecor": {
+          "caption": "make your house a home.",
+          "shopNowButton": {
+            "text": "shop home decor",
+            "href": "/shop"
+          },
+          "images": [
+            {
+              "src": "/assets/Candles.jpeg",
+              "alt": "Candles"
+            },
+            {
+              "src": "/assets/Diffuser.jpeg",
+              "alt": "Diffuser"
+            }
+          ]
+        },
+        "tech": {
+          "caption": "tech out!",
+          "image": {
+            "src": "/assets/Kindle.jpeg",
+            "alt": "Kindle"
+          },
+          "shopNowButton": {
+            "text": "shop technology",
+            "href": "/shop"
+          }
+        },
+        "journalsAndBooks": {
+          "content": ["grounded.", "introspective.", "grateful.", "thriving."],
+          "shopNowButton": {
+            "text": "shop journals and books",
+            "href": "/shop"
+          },
+          "image": {
+            "src": "/assets/BooksAndPencils.jpeg",
+            "alt": "Books and pencils"
+          }
+        },
+        "skincare": {
+          "caption": "skincare is self-care.",
+          "image": {
+            "src": "/assets/Hands.jpg",
+            "alt": "Hands"
+          },
+          "shopNowButton": {
+            "text": "shop skincare",
+            "href": "/shop"
+          }
+        },
+        "haircare": {
+          "caption": "hydrate and replenish.",
+          "image": {
+            "src": "/assets/Serum2.jpeg",
+            "alt": "Serum"
+          },
+          "shopNowButton": {
+            "text": "shop haircare",
+            "href": "/shop"
+          }
+        }
+      }
+    },
+    "instagram": {},
+    "shop": {
+      "components": {
+        "banner": {
+          "text": "amazon links included!",
+          "delimiter": "•",
+          "repeatCount": 10
+        },
+        "image": {
+          "src": "/assets/Matcha2.jpeg",
+          "alt": "Matcha and Jade roller"
+        }
+      }
+    }
+  },
+  "components": {
+    "header": {
+      "title": "beingsofhabit",
+      "links": [
+        {
+          "label": "home",
+          "href": "/",
+          "subpaths": null
+        },
+        {
+          "label": "instagram",
+          "href": "/instagram",
+          "subpaths": null
+        },
+        {
+          "label": "blog",
+          "href": "/blog",
+          "subpaths": null
+        },
+        {
+          "label": "shop",
+          "href": "/shop",
+          "subpaths": [
+            {
+              "label": "shop all",
+              "href": "/shop"
+            },
+            {
+              "label": "supplements and blends",
+              "href": "/shop/filter/supplements-and-blends"
+            },
+            {
+              "label": "activewear and accessories",
+              "href": "/shop/filter/activewear-and-accessories"
+            },
+            {
+              "label": "home decor",
+              "href": "/shop/filter/home-decor"
+            },
+            {
+              "label": "tech",
+              "href": "/shop/filter/tech"
+            },
+            {
+              "label": "journals and books",
+              "href": "/shop/filter/journals-and-books"
+            }
+          ]
+        },
+        {
+          "label": "supplemented living",
+          "href": "/supplemented-living",
+          "subpaths": null
+        },
+        {
+          "label": "about",
+          "href": "/about",
+          "subpaths": null
+        }
+      ]
+    },
+    "footer": {
+      "poweredBy": {
+        "text": "Powered by Next.js",
+        "href": "https://nextjs.org"
+      },
+      "links": [
+        {
+          "label": "home",
+          "href": "/"
+        },
+        {
+          "label": "instagram",
+          "href": "/instagram"
+        },
+        {
+          "label": "blog",
+          "href": "/blog"
+        },
+        {
+          "label": "shop",
+          "href": "/shop"
+        },
+        {
+          "label": "newsletter",
+          "href": "/newsletter"
+        },
+        {
+          "label": "about",
+          "href": "/about"
+        }
+      ]
+    }
+  }
+}
