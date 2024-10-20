@@ -1,5 +1,6 @@
 import { Elysia } from "elysia";
 import { healthPlugin, corsPlugin } from "./plugins";
+import { UserModel } from "./model";
 
 try {
   const { PORT = 3004, NODE_ENV = "PROD" } = process.env;
