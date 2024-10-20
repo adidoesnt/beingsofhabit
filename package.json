@@ -2,8 +2,12 @@
   "name": "beingsofhabit",
   "private": true,
   "workspaces": [
-    "frontend/apps/*",
-    "backend/apps/*"
+    "apps/frontend/*",
+    "apps/backend/*",
+    "packages/*"
   ],
-  "scripts": {}
+  "scripts": {},
+  "devDependencies": {
+    "nx": "20.0.3"
+  }
 }
