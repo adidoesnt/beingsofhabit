@@ -1,9 +1,10 @@
 import { Elysia } from "elysia";
+import { healthPlugin, corsPlugin } from "./plugins";
 
 try {
   const { PORT = 3004, NODE_ENV = "PROD" } = process.env;
 
-  const app = new Elysia().get("/", () => "Hello Elysia").listen(PORT);
+  const app = new Elysia().use(healthPlugin).use(corsPlugin).listen(PORT);
   const { hostname, port } = app.server ?? {};
 
   if (!hostname || !port) {
