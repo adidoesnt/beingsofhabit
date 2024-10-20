@@ -1,9 +1,11 @@
 import { Elysia } from "elysia";
 import { healthPlugin, corsPlugin } from "./plugins";
-import { UserModel } from "./model";
+import { database } from "./utils";
 
 try {
   const { PORT = 3004, NODE_ENV = "PROD" } = process.env;
+
+  await database.connect();
 
   const app = new Elysia().use(healthPlugin()).use(corsPlugin()).listen(PORT);
   const { hostname, port } = app.server ?? {};
