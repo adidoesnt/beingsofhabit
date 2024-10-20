@@ -1,1 +1,1 @@
-export * as PostService from "./post";
+export * as postService from "./post";

@@ -1,1 +1,1 @@
-export * as PostRepository from "./post";
+export * as postRepository from "./post";

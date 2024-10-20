@@ -1,5 +1,5 @@
 import { Category, Post } from "../model";
-import { PostRepository } from "../repository";
+import { postRepository } from "../repository";
 
 export const getPosts = async (releaseDate: Date, category?: Category) => {
   const options: Record<string, unknown> = {
@@ -7,13 +7,13 @@ export const getPosts = async (releaseDate: Date, category?: Category) => {
   };
   if (category) options.category = category;
 
-  const posts = await PostRepository.findMany(options);
+  const posts = await postRepository.findMany(options);
 
   return posts;
 };
 
 export const createPost = async (post: Post) => {
-  const createdPost = await PostRepository.createOne(post);
+  const createdPost = await postRepository.createOne(post);
 
   return createdPost;
 };
