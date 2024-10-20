@@ -7,7 +7,9 @@
   },
   "dependencies": {
     "@elysiajs/cors": "^1.1.1",
-    "elysia": "latest"
+    "@typegoose/typegoose": "^12.8.0",
+    "elysia": "latest",
+    "mongoose": "^8.7.2"
   },
   "devDependencies": {
     "bun-types": "latest"
