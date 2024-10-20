@@ -13,6 +13,7 @@
     "mongoose": "^8.7.2"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
     "bun-types": "latest"
   },
   "module": "src/index.js"
