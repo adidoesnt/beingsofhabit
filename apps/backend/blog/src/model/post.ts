@@ -1,13 +1,13 @@
 import { getModelForClass, prop } from "@typegoose/typegoose";
 
-enum Category {
+export enum Category {
   FITNESS = "fitness",
   NUTRITION = "nutrition",
   WELLBEING = "wellbeing & self-care",
   LEARNING = "learning",
 }
 
-class Post {
+export class Post {
   @prop({ required: true, type: String })
   declare title: string;
 
