@@ -1,3 +1,4 @@
+import { t } from "elysia";
 import { getModelForClass, prop } from "@typegoose/typegoose";
 
 export enum Category {
@@ -6,6 +7,21 @@ export enum Category {
   WELLBEING = "wellbeing & self-care",
   LEARNING = "learning",
 }
+
+export const GetPostQueryType = t.Object({
+  releaseDate: t.Date(),
+  category: t.Optional(t.Enum(Category)),
+});
+
+export const CreatePostBodyType = t.Object({
+  title: t.String(),
+  blurb: t.String(),
+  content: t.String(),
+  category: t.Enum(Category),
+  headerImageURL: t.String(),
+  author: t.String(),
+  releaseDate: t.Date(),
+});
 
 export class Post {
   @prop({ required: true, type: String })

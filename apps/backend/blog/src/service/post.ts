@@ -1,22 +1,13 @@
 import { Category, Post } from "../model";
 import { PostRepository } from "../repository";
 
-export const getPostsAfterReleaseDate = async (releaseDate: Date) => {
-  const posts = await PostRepository.findMany({
+export const getPosts = async (releaseDate: Date, category?: Category) => {
+  const options: Record<string, unknown> = {
     releaseDate: { $gte: releaseDate },
-  });
+  };
+  if (category) options.category = category;
 
-  return posts;
-};
-
-export const getPostsByCategoryAndAfterReleaseDate = async (
-  category: Category,
-  releaseDate: Date
-) => {
-  const posts = await PostRepository.findMany({
-    category,
-    releaseDate: { $gte: releaseDate },
-  });
+  const posts = await PostRepository.findMany(options);
 
   return posts;
 };

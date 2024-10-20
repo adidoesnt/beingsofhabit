@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { healthPlugin, corsPlugin } from "./plugins";
+import { healthPlugin, corsPlugin, postPlugin } from "./plugins";
 import { database } from "./utils";
 
 try {
@@ -7,7 +7,11 @@ try {
 
   await database.connect();
 
-  const app = new Elysia().use(healthPlugin()).use(corsPlugin()).listen(PORT);
+  const app = new Elysia()
+    .use(healthPlugin())
+    .use(corsPlugin())
+    .use(postPlugin())
+    .listen(PORT);
   const { hostname, port } = app.server ?? {};
 
   if (!hostname || !port) {
