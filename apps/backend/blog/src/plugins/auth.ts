@@ -1,20 +1,33 @@
-import { Elysia } from "elysia";
-import { verifyToken } from "../utils/jwt";
 import { Status } from "../constants";
+import { verifyToken } from "../utils/jwt";
 
-export const authPlugin = () => {
-  console.log("Setting up auth plugin");
+export type AuthPluginProps = {
+  request: Request;
+  set: {
+    status: number;
+  };
+};
 
-  return new Elysia().onBeforeHandle(({ request, set }) => {
-    const token = request.headers.get("Authorization");
-    if (!token) return;
+export const authPlugin = async ({ request, set }: AuthPluginProps) => {
+  const token = request.headers.get("Authorization");
+  console.log("Token:", token);
 
-    try {
-      const isValid = verifyToken(token);
-      if (!isValid) throw new Error("Invalid token");
-    } catch (error) {
-      set.status = Status.UNAUTHORIZED;
-      return;
-    }
-  });
+  if (!token) {
+    set.status = Status.UNAUTHORIZED;
+
+    const errMessage = "No token provided";
+    console.error(errMessage);
+
+    return errMessage;
+  }
+
+  const isValid = await verifyToken(token);
+  if (!isValid) {
+    set.status = Status.FORBIDDEN;
+
+    const errMessage = "Invalid token";
+    console.error(errMessage);
+
+    return errMessage;
+  }
 };

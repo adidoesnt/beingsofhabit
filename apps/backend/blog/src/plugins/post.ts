@@ -2,7 +2,7 @@ import { Elysia } from "elysia";
 import { CreatePostBodyType, GetPostQueryType } from "../model";
 import { postService } from "../service";
 import { Status } from "../constants";
-import { authPlugin } from "./auth";
+import { authPlugin, AuthPluginProps } from "./auth";
 
 export const postPlugin = () => {
   console.log("Setting up post plugin");
@@ -35,7 +35,9 @@ export const postPlugin = () => {
         query: GetPostQueryType,
       }
     )
-    .use(authPlugin())
+    .onBeforeHandle(({ request, set }) =>
+      authPlugin({ request, set: set as AuthPluginProps["set"] })
+    )
     .post(
       "/",
       ({ body, set }) => {
