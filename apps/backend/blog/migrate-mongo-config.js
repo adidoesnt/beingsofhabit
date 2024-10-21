@@ -1,8 +1,11 @@
-const {
-  MONGODB_URI = "mongodb://localhost:27017",
-  MONGODB_DB_NAME = "blog",
-  NODE_ENV = "DEV",
-} = process.env;
+const dotenv = require("dotenv");
+dotenv.config();
+
+const { MONGODB_URI, MONGODB_DB_NAME, NODE_ENV = "DEV" } = process.env;
+
+if (!MONGODB_URI || !MONGODB_DB_NAME) {
+  throw new Error("💀 Missing environment variables");
+}
 
 let migrationsDir = "migrations/";
 if (NODE_ENV === "DEV") {

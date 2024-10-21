@@ -11,6 +11,8 @@
   "dependencies": {
     "@elysiajs/cors": "^1.1.1",
     "@typegoose/typegoose": "^12.8.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
     "elysia": "latest",
     "jsonwebtoken": "^9.0.2",
     "migrate-mongo": "^11.0.0",
