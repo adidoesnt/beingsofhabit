@@ -7,8 +7,9 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:website": "nx run website:dev",
-    "dev:blog-portal": "nx run blog-portal:dev"
+    "dev:backend": "nx run-many --target=dev --projects=apps/backend/* --parallel=10",
+    "dev:frontend": "nx run-many --target=dev --projects=apps/frontend/* --parallel=10",
+    "dev": "nx run-many --target=dev --all --parallel=10"
   },
   "devDependencies": {
     "@nx/eslint": "20.0.3",
