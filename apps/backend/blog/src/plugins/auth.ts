@@ -1,15 +1,16 @@
+import { Cookie } from "elysia";
 import { Status } from "../constants";
 import { verifyToken } from "../utils/jwt";
 
 export type AuthPluginProps = {
-  request: Request;
+  cookie: Record<string, Cookie<string | undefined>>;
   set: {
     status: number;
   };
 };
 
-export const authPlugin = async ({ request, set }: AuthPluginProps) => {
-  const token = request.headers.get("Authorization");
+export const authPlugin = async ({ cookie, set }: AuthPluginProps) => {
+  const token = cookie.token.value;
   console.log("Token:", token);
 
   if (!token) {

@@ -19,6 +19,7 @@
     "mongoose": "^8.7.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.7",
     "bun-types": "latest"
   },

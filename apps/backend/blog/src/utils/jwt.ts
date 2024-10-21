@@ -1,9 +1,11 @@
 import { verify } from "jsonwebtoken";
 import { User } from "../model";
 import { userService } from "../service";
+import jwt from "jsonwebtoken";
+
+const { JWT_SECRET = "DUMMY-SECRET", JWT_EXPIRY = "3600" } = process.env;
 
 export const verifyToken = async (token: string | null) => {
-  const { JWT_SECRET = "DUMMY-SECRET" } = process.env;
   try {
     if (!token) throw new Error("No token provided");
     const { username } = (verify(token, JWT_SECRET) ?? {}) as User;
@@ -16,4 +18,13 @@ export const verifyToken = async (token: string | null) => {
     console.error("Failed to verify token:", error.message);
     return false;
   }
+};
+
+export const generateToken = (user: User) => {
+  const { username } = user;
+  const payload = { username };
+
+  return jwt.sign(payload, JWT_SECRET, {
+    expiresIn: Number(JWT_EXPIRY),
+  });
 };

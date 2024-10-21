@@ -35,8 +35,8 @@ export const postPlugin = () => {
         query: GetPostQueryType,
       }
     )
-    .onBeforeHandle(({ request, set }) =>
-      authPlugin({ request, set: set as AuthPluginProps["set"] })
+    .onBeforeHandle(({ cookie, set }) =>
+      authPlugin({ cookie, set: set as AuthPluginProps["set"] }),
     )
     .post(
       "/",

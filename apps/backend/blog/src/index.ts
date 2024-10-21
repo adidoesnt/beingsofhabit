@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { healthPlugin, corsPlugin, postPlugin } from "./plugins";
+import { healthPlugin, corsPlugin, postPlugin, userPlugin } from "./plugins";
 import { database } from "./utils";
 
 try {
@@ -11,6 +11,7 @@ try {
     .use(healthPlugin())
     .use(corsPlugin())
     .use(postPlugin())
+    .use(userPlugin())
     .listen(PORT);
   const { hostname, port } = app.server ?? {};
 
