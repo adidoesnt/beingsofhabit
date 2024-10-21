@@ -3,7 +3,10 @@
   "version": "1.0.50",
   "scripts": {
     "start": "bun run src/index.ts",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "create-migration": "migrate-mongo create",
+    "migrate": "migrate-mongo up",
+    "rollback": "migrate-mongo down"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.1.1",

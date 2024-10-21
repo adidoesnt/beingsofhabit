@@ -1,17 +1,22 @@
-const { MONGODB_URI = "DUMMY-URL", MONGODB_DB_NAME = "DUMMY-DB-NAME" } =
-  process.env;
+const {
+  MONGODB_URI = "mongodb://localhost:27017",
+  MONGODB_DB_NAME = "blog",
+  NODE_ENV = "DEV",
+} = process.env;
+
+let migrationsDir = "migrations/";
+if (NODE_ENV === "DEV") {
+  migrationsDir += "dev";
+} else {
+  migrationsDir += "prod";
+}
 
 const config = {
   mongodb: {
     url: MONGODB_URI,
     databaseName: MONGODB_DB_NAME,
-
-    options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    },
   },
-  migrationsDir: "migrations",
+  migrationsDir,
   changelogCollectionName: "changelog",
   migrationFileExtension: ".js",
   useFileHash: false,
