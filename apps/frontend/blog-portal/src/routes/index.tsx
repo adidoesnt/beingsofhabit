@@ -1,17 +1,15 @@
-import { LoginCard } from '@/components/login/LoginCard'
-import { LoginForm } from '@/components/login/LoginForm'
-import { createFileRoute } from '@tanstack/react-router'
+import { LoginCard } from "@/components/login/LoginCard";
+import { LoginForm } from "@/components/login/LoginForm";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: LoginPage,
-})
+});
 
 function LoginPage() {
   return (
-    <div className="p-2">
-      <LoginCard>
-        <LoginForm />
-      </LoginCard>
-    </div>
-  )
+    <LoginCard imgSrc="/Logo.png">
+      <LoginForm />
+    </LoginCard>
+  );
 }
