@@ -26,3 +26,9 @@ body {
   min-height: 100vh;
 }
 
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
