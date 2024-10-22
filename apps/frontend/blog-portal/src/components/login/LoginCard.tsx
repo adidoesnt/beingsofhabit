@@ -15,10 +15,12 @@ export const LoginCard = ({ children }: Readonly<LoginCardProps>) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Log In</CardTitle>
+        <CardTitle>
+          <h1 className="text-2xl font-bold">Log In</h1>
+        </CardTitle>
         <CardDescription>
           Please enter you credentials below to enter the Beings of Habit blog
-          portal
+          portal.
         </CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
