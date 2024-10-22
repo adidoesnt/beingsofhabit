@@ -12,6 +12,12 @@ export const getPosts = async (releaseDate: Date, category?: Category) => {
   return posts;
 };
 
+export const findById = async (postId: string) => {
+  const post = await postRepository.findOne({ _id: postId });
+
+  return post;
+};
+
 export const createPost = async (post: Post) => {
   const createdPost = await postRepository.createOne(post);
 

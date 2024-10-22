@@ -38,6 +38,23 @@ export const postPlugin = () => {
     .onBeforeHandle(({ cookie, set }) =>
       authPlugin({ cookie, set: set as AuthPluginProps["set"] }),
     )
+    .get("/:postId", async ({ params, set }) => {
+      try {
+        const post = await postService.findById(params.postId);
+        if (!post) throw new Error("No post returned");
+
+        set.status = Status.OK;
+
+        return post.toJSON();
+      } catch (error) {
+        set.status = Status.INTERNAL_SERVER_ERROR;
+
+        const errMessage = "💀 Failed to get post:";
+        console.error(errMessage, error);
+
+        return errMessage;
+      }
+    })
     .post(
       "/",
       async ({ body, set }) => {

@@ -1,4 +1,4 @@
-import { columns } from "@/components/postList/columns";
+import { columns } from "@/components/postList/Columns";
 import { DataTable } from "@/components/postList/DataTable";
 import { apiClient } from "@/utils";
 import { useQuery } from "@tanstack/react-query";

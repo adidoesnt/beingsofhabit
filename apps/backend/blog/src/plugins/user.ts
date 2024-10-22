@@ -44,7 +44,7 @@ export const userPlugin = () => {
       }),
       cookie: t.Optional(
         t.Object({
-          token: t.String(),
+          token: t.Optional(t.String()),
         })
       ),
     }

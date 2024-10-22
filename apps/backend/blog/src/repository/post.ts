@@ -9,6 +9,17 @@ export const createOne = async (post: Post) => {
   }
 };
 
+export const findOne = async (findOptions?: RootFilterQuery<Post>) => {
+  try {
+    if (findOptions) {
+      return await PostModel.findOne(findOptions);
+    }
+    return await PostModel.findOne();
+  } catch (error) {
+    console.error("Failed to find post", error);
+  }
+};
+
 export const findMany = async (findOptions?: RootFilterQuery<Post>) => {
   try {
     if (findOptions) {
