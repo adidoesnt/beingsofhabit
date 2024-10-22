@@ -5,6 +5,7 @@ import {
   createRouter,
 } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
+import { AuthProvider, useAuth } from "./context/auth";
 
 // Set up a Router instance
 const router = createRouter({
@@ -20,9 +21,18 @@ declare module "@tanstack/react-router" {
   }
 }
 
+const App = () => {
+  const auth = useAuth();
+  return <RouterProvider router={router} context={{ auth }} />;
+};
+
 const rootElement = document.getElementById("app")!;
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
-  root.render(<RouterProvider router={router} />);
+  root.render(
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
 }
