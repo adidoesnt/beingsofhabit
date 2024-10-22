@@ -1,5 +1,8 @@
-import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
+import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+
+const { VITE_NODE_ENV: NODE_ENV = "PROD" } = import.meta.env;
+const isDevEnv = NODE_ENV === "DEV";
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -8,28 +11,8 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <>
-      <div className="p-2 flex gap-2 text-lg">
-        <Link
-          to="/"
-          activeProps={{
-            className: 'font-bold',
-          }}
-          activeOptions={{ exact: true }}
-        >
-          Home
-        </Link>{' '}
-        <Link
-          to="/about"
-          activeProps={{
-            className: 'font-bold',
-          }}
-        >
-          About
-        </Link>
-      </div>
-      <hr />
       <Outlet />
-      <TanStackRouterDevtools position="bottom-right" />
+      {isDevEnv &&<TanStackRouterDevtools position="bottom-right" />}
     </>
   )
 }
