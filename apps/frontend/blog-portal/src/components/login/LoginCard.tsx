@@ -20,9 +20,7 @@ export const LoginCard = ({ children, imgSrc }: Readonly<LoginCardProps>) => {
           <img src={imgSrc} alt="Logo" className="w-32 h-32" />
         </div>
         <div className="flex flex-col gap-2">
-          <CardTitle>
-            <h1 className="text-2xl font-bold">Log In</h1>
-          </CardTitle>
+          <CardTitle className="text-xl font-bold">Log In</CardTitle>
           <CardDescription>
             Please enter you credentials below to enter the Beings of Habit blog
             portal.
