@@ -5,7 +5,7 @@ import { apiClient } from "@/utils";
 import { useAuth } from "@/context/auth";
 import { useNavigate } from "@tanstack/react-router";
 
-const defaultPost: Omit<Post, "id" | "author"> = {
+const defaultPost: Omit<Post, "_id" | "author"> = {
   title: "My New Post!",
   blurb: "This is my new post.",
   content: "This is my new post.",

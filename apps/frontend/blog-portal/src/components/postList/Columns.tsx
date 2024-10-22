@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 // TODO: move types to packages
 export type Post = {
-  id: string;
+  _id: string;
   title: string;
   blurb: string;
   content: string;
@@ -12,6 +12,7 @@ export type Post = {
   releaseDate: Date;
 };
 
+// TODO: format releaseDate to make it human readable
 export const columns: ColumnDef<Post>[] = [
   {
     accessorKey: "title",
