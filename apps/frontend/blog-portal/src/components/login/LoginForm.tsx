@@ -1,6 +1,6 @@
 import { formSchema } from "./formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LoginFormField } from "./LoginFormField";
@@ -29,7 +29,7 @@ const fields = [
 ];
 
 export const LoginForm = () => {
-  const { setUser } = useAuth();
+  const { setUser, isAuthenticated } = useAuth();
   const { redirect } = useSearch({ strict: false }) as { redirect?: string };
   const search = useMemo(() => {
     return redirect?.replace(VITE_FRONTEND_URL, "") ?? "/posts";
@@ -45,6 +45,7 @@ export const LoginForm = () => {
   });
 
   const handleRedirect = useCallback(() => {
+    console.log("Redirecting to", search);
     navigate({
       to: search,
     });
@@ -56,14 +57,18 @@ export const LoginForm = () => {
         const { data: user } = await apiClient.post("/users/login", formData);
         if (!user) throw new Error("No user data returned");
         setUser(user);
-        handleRedirect();
       } catch (error) {
         console.error("Failed to log in", error);
         // TODO: set error
       }
     },
-    [setUser, handleRedirect]
+    [setUser]
   );
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    handleRedirect();
+  }, [isAuthenticated]);
 
   return (
     <Form {...form}>
