@@ -1,12 +1,16 @@
 import { formSchema } from "./formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LoginFormField } from "./LoginFormField";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { apiClient } from "@/utils";
+import { useAuth } from "@/context/auth";
+import { useNavigate, useSearch } from "@tanstack/react-router";
+
+const { VITE_FRONTEND_URL = "DUMMY-URL" } = import.meta.env;
 
 const fields = [
   {
@@ -25,6 +29,13 @@ const fields = [
 ];
 
 export const LoginForm = () => {
+  const { setIsAuthenticated } = useAuth();
+  const { redirect } = useSearch({ strict: false }) as { redirect?: string };
+  const search = useMemo(() => {
+    return redirect?.replace(VITE_FRONTEND_URL, "") ?? "/";
+  }, [redirect]);
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,18 +44,26 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = useCallback(async (formData: z.infer<typeof formSchema>) => {
-    try {
-      const { data } = await apiClient.post("/users/login", formData);
+  const handleRedirect = useCallback(() => {
+    navigate({
+      to: search,
+    });
+  }, [search, navigate]);
 
-      // TODO: set context
-      console.log(data);
-    } catch (error) {
-      console.error("Failed to log in", error);
-
-      // TODO: set error
-    }
-  }, []);
+  const onSubmit = useCallback(
+    async (formData: z.infer<typeof formSchema>) => {
+      try {
+        const { data: user } = await apiClient.post("/users/login", formData);
+        if (!user) throw new Error("No user data returned");
+        setIsAuthenticated(true);
+        handleRedirect();
+      } catch (error) {
+        console.error("Failed to log in", error);
+        // TODO: set error
+      }
+    },
+    [setIsAuthenticated, handleRedirect]
+  );
 
   return (
     <Form {...form}>

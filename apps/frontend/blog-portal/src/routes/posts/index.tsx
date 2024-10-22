@@ -1,17 +1,14 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-// TODO: get authenticated state from context
-const isAuthenticated = () => true;
-
 export const Route = createFileRoute("/posts/")({
   component: PostListPage,
-  beforeLoad: () => {
-    if (!isAuthenticated()) {
+  beforeLoad: ({ context }: any) => {
+    if (!context.auth.isAuthenticated) {
       throw redirect({
         to: "/",
-        // search: {
-        //   redirect: location.href,
-        // },
+        search: {
+          redirect: location.href,
+        },
       });
     }
   },
