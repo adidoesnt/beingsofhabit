@@ -40,13 +40,14 @@ export const postPlugin = () => {
     )
     .post(
       "/",
-      ({ body, set }) => {
+      async ({ body, set }) => {
         try {
-          const post = postService.createPost(body);
+          const post = await postService.createPost(body);
+          if (!post) throw new Error("No post returned");
 
           set.status = Status.CREATED;
 
-          return post;
+          return post.toJSON();
         } catch (error) {
           set.status = Status.INTERNAL_SERVER_ERROR;
 

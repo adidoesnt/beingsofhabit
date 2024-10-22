@@ -29,10 +29,10 @@ const fields = [
 ];
 
 export const LoginForm = () => {
-  const { setIsAuthenticated } = useAuth();
+  const { setUser } = useAuth();
   const { redirect } = useSearch({ strict: false }) as { redirect?: string };
   const search = useMemo(() => {
-    return redirect?.replace(VITE_FRONTEND_URL, "") ?? "/";
+    return redirect?.replace(VITE_FRONTEND_URL, "") ?? "/posts";
   }, [redirect]);
   const navigate = useNavigate();
 
@@ -55,14 +55,14 @@ export const LoginForm = () => {
       try {
         const { data: user } = await apiClient.post("/users/login", formData);
         if (!user) throw new Error("No user data returned");
-        setIsAuthenticated(true);
+        setUser(user);
         handleRedirect();
       } catch (error) {
         console.error("Failed to log in", error);
         // TODO: set error
       }
     },
-    [setIsAuthenticated, handleRedirect]
+    [setUser, handleRedirect]
   );
 
   return (

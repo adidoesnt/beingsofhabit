@@ -35,7 +35,7 @@ export const userPlugin = () => {
       cookie.token.secure = NODE_ENV !== "DEV";
       cookie.token.maxAge = Number(JWT_EXPIRY);
 
-      return user;
+      return user.toJSON();
     },
     {
       body: t.Object({

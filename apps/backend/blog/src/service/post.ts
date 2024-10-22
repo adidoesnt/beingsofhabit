@@ -3,7 +3,7 @@ import { postRepository } from "../repository";
 
 export const getPosts = async (releaseDate: Date, category?: Category) => {
   const options: Record<string, unknown> = {
-    releaseDate: { $gte: releaseDate },
+    releaseDate: { $lte: releaseDate },
   };
   if (category) options.category = category;
 
