@@ -12,6 +12,7 @@ import { Input } from "../ui/input";
 type LoginFormFieldProps = {
   form: UseFormReturn<any, any, undefined>;
   label: string;
+  name: string;
   placeholder: string;
   prompt: string;
   password?: boolean;
@@ -21,13 +22,14 @@ export const LoginFormField = ({
   form,
   label,
   placeholder,
+  name,
   prompt,
   password,
 }: Readonly<LoginFormFieldProps>) => {
   return (
     <FormField
       control={form.control}
-      name="username"
+      name={name}
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>

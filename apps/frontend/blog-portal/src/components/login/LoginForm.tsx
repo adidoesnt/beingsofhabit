@@ -4,9 +4,9 @@ import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LoginFormField } from "./LoginFormField";
-
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { apiClient } from "@/utils";
 
 const fields = [
   {
@@ -33,9 +33,17 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = useCallback((data: z.infer<typeof formSchema>) => {
-    // TODO: send data to backend, set context
-    console.log(data);
+  const onSubmit = useCallback(async (formData: z.infer<typeof formSchema>) => {
+    try {
+      const { data } = await apiClient.post("/users/login", formData);
+
+      // TODO: set context
+      console.log(data);
+    } catch (error) {
+      console.error("Failed to log in", error);
+
+      // TODO: set error
+    }
   }, []);
 
   return (
@@ -44,6 +52,7 @@ export const LoginForm = () => {
         {fields.map((field) => (
           <LoginFormField
             key={field.name}
+            name={field.name}
             form={form}
             label={field.label}
             placeholder={field.placeholder}
