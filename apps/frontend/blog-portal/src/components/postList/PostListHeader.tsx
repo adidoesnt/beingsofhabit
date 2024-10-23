@@ -1,9 +1,10 @@
 import { useCallback, useMemo } from "react";
 import { Button } from "../ui/button";
-import { Post } from "./columns";
+import { Post } from "./Columns";
 import { apiClient } from "@/utils";
 import { useAuth } from "@/context/auth";
 import { useNavigate } from "@tanstack/react-router";
+import { queryClient } from "@/routes/__root";
 
 const defaultPost: Omit<Post, "_id" | "author"> = {
   title: "My New Post!",
@@ -27,6 +28,9 @@ export const PostListHeader = () => {
         author,
       });
       if (!post) throw new Error("No post returned");
+      await queryClient.invalidateQueries({
+        queryKey: ["posts"],
+      });
       navigate({
         to: `/posts/${post._id}`,
       });

@@ -11,6 +11,8 @@ import { Form } from "../ui/form";
 import { EditorFormTextField } from "./EditorFormTextField";
 import { EditorFormTextAreaField } from "./EditorFormTextareaField";
 import { useNavigate } from "@tanstack/react-router";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/routes/__root";
 
 const { VITE_AUTOSAVE_INTERVAL = "60000" } = import.meta.env;
 const autosaveInterval = Number(VITE_AUTOSAVE_INTERVAL);
@@ -90,6 +92,9 @@ export const Editor = ({ post }: { post: Post }) => {
                 console.error("Failed to update post", error);
             }
             setIsSaving(false);
+            await queryClient.invalidateQueries({
+                queryKey: ["post", post._id],
+            });
         },
         [post, setIsSaving]
     );

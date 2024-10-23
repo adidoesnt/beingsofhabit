@@ -8,7 +8,7 @@ import {
 const { VITE_NODE_ENV: NODE_ENV = "PROD" } = import.meta.env;
 const isDevEnv = NODE_ENV === "DEV";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 export const Route = createRootRoute({
   component: RootComponent,
