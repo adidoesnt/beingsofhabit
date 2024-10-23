@@ -8,11 +8,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Link } from "@tanstack/react-router";
-import { Button } from "./ui/button";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { apiClient } from "@/utils";
-import { User } from "@/packages/types/user";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useAuth } from "@/context/auth";
 
 enum SidebarItemType {
@@ -67,7 +65,8 @@ const ActionItems = ({
 };
 
 export function AppSidebar() {
-  const { setUser } = useAuth();
+  const { setUser, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const sidebarItems: Array<SidebarItem> = useMemo(
     () => [
@@ -94,6 +93,13 @@ export function AppSidebar() {
     ],
     []
   );
+
+  useEffect(() => {
+    if (isAuthenticated) return;
+    navigate({
+      to: "/",
+    });
+  }, [isAuthenticated, navigate]);
 
   return (
     <Sidebar className="dark">
