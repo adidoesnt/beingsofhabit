@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { Button } from "../ui/button";
-import { Post } from "./Columns";
+import { Category, Post } from "@/lib/types/post";
 import { apiClient } from "@/utils";
 import { useAuth } from "@/context/auth";
 import { useNavigate } from "@tanstack/react-router";
@@ -10,7 +10,7 @@ const defaultPost: Omit<Post, "_id" | "author"> = {
   title: "My New Post!",
   blurb: "This is my new post.",
   content: "This is my new post.",
-  category: "learning",
+  category: Category.MISC,
   headerImageURL: "https://picsum.photos/300/200",
   releaseDate: new Date(),
 };
