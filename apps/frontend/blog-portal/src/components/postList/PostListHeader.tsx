@@ -16,28 +16,9 @@ const defaultPost: Omit<Post, "_id" | "author"> = {
 };
 
 export const PostListHeader = () => {
-  const { user, setUser, isAuthenticated } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const author = useMemo(() => user?.username, [user]);
-
-  // TODO: Move to navigation accordion/navigation bar
-  const handleLogout = useCallback(async () => {
-    try {
-      const { data } = await apiClient.post("/users/logout");
-      if (!data) throw new Error("No data returned");
-      setUser(null);
-    } catch (error) {
-      console.error("Failed to logout", error);
-    }
-  }, []);
-
-  // TODO: Move to navigation accordion/navigation bar
-  useEffect(() => {
-    if (isAuthenticated) return;
-    navigate({
-      to: "/",
-    });
-  }, [isAuthenticated, navigate]);
 
   const handleCreatePost = useCallback(async () => {
     try {
@@ -60,7 +41,6 @@ export const PostListHeader = () => {
 
   return (
     <div className="flex w-full justify-between p-4">
-      <Button className="text-black bg-gray-300" onClick={handleLogout}>Logout</Button>
       <h1 className="text-center text-2xl font-bold">Blog Posts</h1>
       <Button onClick={handleCreatePost}>Create New</Button>
     </div>
