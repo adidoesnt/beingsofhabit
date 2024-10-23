@@ -48,5 +48,30 @@ export const userPlugin = () => {
         })
       ),
     }
-  );
+  )
+  .post("/logout", async ({ cookie, set }) => {
+    try {
+      cookie.token.value = "";
+      cookie.token.httpOnly = true;
+      cookie.token.secure = NODE_ENV !== "DEV";
+      cookie.token.maxAge = 0;
+
+      set.status = Status.OK;
+
+      return "Logged out";
+    } catch (error) {
+      set.status = Status.INTERNAL_SERVER_ERROR;
+
+      const errMessage = "💀 Failed to logout:";
+      console.error(errMessage, error);
+
+      return errMessage;
+    }
+  }, {
+    cookie: t.Optional(
+      t.Object({
+        token: t.Optional(t.String()),
+      })
+    ),
+  });
 };
