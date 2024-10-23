@@ -6,6 +6,8 @@ import {
 } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { AuthProvider, useAuth } from "./context/auth";
+import { useEffect } from "react";
+import { apiClient } from "./utils";
 
 // Set up a Router instance
 const router = createRouter({
@@ -23,6 +25,19 @@ declare module "@tanstack/react-router" {
 
 const App = () => {
   const auth = useAuth();
+  const { setUser } = auth;
+
+  useEffect(() => {
+    try {
+      apiClient.get("/users/me").then(({ data }) => {
+        if (!data) throw new Error("No user returned");
+        setUser(data);
+      });
+    } catch (error) {
+      console.warn("Failed to set user on initial load", error);
+    }
+  }, []);
+
   return <RouterProvider router={router} context={{ auth }} />;
 };
 

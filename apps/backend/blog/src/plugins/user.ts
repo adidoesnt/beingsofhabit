@@ -9,7 +9,33 @@ export const userPlugin = () => {
 
   return new Elysia({
     prefix: "/users",
-  }).post(
+  })
+  .get("/me", async ({ cookie, set }) => {
+    try {
+      const token = cookie.token.value;
+
+      // TODO: handle token expiry
+      if (!token) {
+        set.status = Status.UNAUTHORIZED;
+        return "No token provided";
+      }
+
+      const user = await userService.findByToken(token);
+      if (!user) throw new Error("No user returned");
+
+      set.status = Status.OK;
+
+      return user.toJSON();
+    } catch (error) {
+      set.status = Status.INTERNAL_SERVER_ERROR;
+
+      const errMessage = "💀 Failed to get user:";
+      console.error(errMessage, error);
+
+      return errMessage;
+    }
+  })
+  .post(
     "/login",
     async ({ body, set, cookie }) => {
       const { username, password } = body;

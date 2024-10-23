@@ -122,7 +122,7 @@ export const Editor = ({ post }: { post: Post }) => {
     }, [savePost, post]);
 
     return (
-        <div className="grid grid-cols-2 bg-gray-500 rounded-md p-4 max-h-[100dvh] overflow-y-auto">
+        <div className="grid grid-cols-2 bg-gray-500 rounded-md p-4 max-h-[80dvh] overflow-y-auto m-4">
             <div className="flex flex-col gap-4 rounded-md border p-4 bg-white text-black m-4 min-w-[40dvw] max-w-[40dvw]">
                 <Button
                     onClick={handleBack}
