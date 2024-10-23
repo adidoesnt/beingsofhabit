@@ -56,8 +56,7 @@ const fields = [
   },
 ];
 
-// TODO: add date picker for release date
-// TODO: refactor component
+// TODO: add combobox field for the category
 export const Editor = ({ post }: { post: Post }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState(new Date());
