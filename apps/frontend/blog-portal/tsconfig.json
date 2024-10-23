@@ -11,6 +11,7 @@
             "@/packages/types/*": ["../../../packages/types/lib/*"],
             "@/packages/utils/*": ["../../../packages/utils/lib/*"],
             "@/*": ["./src/*"]
-        }
+        },
+        "experimentalDecorators": true
     }
 }
