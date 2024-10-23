@@ -8,8 +8,8 @@
         "moduleResolution": "Bundler",
         "baseUrl": ".",
         "paths": {
-            "@/lib/types/*": ["../../../packages/types/lib/*"],
-            "@/lib/utils/*": ["../../../packages/utils/lib/*"],
+            "@/packages/types/*": ["../../../packages/types/lib/*"],
+            "@/packages/utils/*": ["../../../packages/utils/lib/*"],
             "@/*": ["./src/*"]
         }
     }

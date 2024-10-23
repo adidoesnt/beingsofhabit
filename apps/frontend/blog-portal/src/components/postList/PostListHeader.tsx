@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { Button } from "../ui/button";
-import { Category, Post } from "@/lib/types/post";
+import { Category, Post } from "@/packages/types/post";
 import { apiClient } from "@/utils";
 import { useAuth } from "@/context/auth";
 import { useNavigate } from "@tanstack/react-router";

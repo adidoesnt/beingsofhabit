@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
-import { Post } from "@/lib/types/post";
+import { Post } from "@/packages/types/post";
 
 // TODO: format releaseDate to make it human readable
 export const columns: ColumnDef<Post>[] = [

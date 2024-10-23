@@ -1,6 +1,6 @@
 import { t } from "elysia";
 import { getModelForClass } from "@typegoose/typegoose";
-import { Category, Post } from "@/lib/types/post";
+import { Category, Post } from "@/packages/types/post";
 
 export const GetPostQueryType = t.Object({
   releaseDate: t.Date(),

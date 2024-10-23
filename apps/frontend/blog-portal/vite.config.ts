@@ -8,7 +8,10 @@ export default defineConfig({
   plugins: [TanStackRouterVite({}), react()],
   resolve: {
     alias: {
+      "@/packages/types": path.resolve(__dirname, "../../../packages/types/lib"),
+      "@/packages/utils": path.resolve(__dirname, "../../../packages/utils/lib"),
       "@": path.resolve(__dirname, "./src"),
     },
+    preserveSymlinks: true,
   },
 })

@@ -30,8 +30,8 @@
     "moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */
     "baseUrl": ".",
       "paths": {
-        "@/lib/types/*": ["../../../packages/types/lib/*"],
-        "@/lib/utils/*": ["../../../packages/utils/lib/*"],
+        "@/packages/types/*": ["../../../packages/types/lib/*"],
+        "@/packages/utils/*": ["../../../packages/utils/lib/*"],
     },                                   /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
