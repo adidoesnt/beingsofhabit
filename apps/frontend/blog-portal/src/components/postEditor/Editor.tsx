@@ -1,60 +1,176 @@
-import { useCallback, useEffect, useState } from "react";
-import { Textarea } from "../ui/textarea";
-import { Input } from "../ui/input";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "../ui/button";
 import ReactMarkdown from "react-markdown";
 import { reactMarkdownComponents } from "./markdownComponents";
 import { Post } from "../postList/Columns";
+import { formSchema } from "./formSchema";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { apiClient } from "@/utils";
+import { Form } from "../ui/form";
+import { EditorFormTextField } from "./EditorFormTextField";
+import { EditorFormTextAreaField } from "./EditorFormTextareaField";
+import { useNavigate } from "@tanstack/react-router";
 
+const { VITE_AUTOSAVE_INTERVAL = "60000" } = import.meta.env;
+const autosaveInterval = Number(VITE_AUTOSAVE_INTERVAL);
+
+enum FieldType {
+    TEXT = "text",
+    TEXT_AREA = "textarea",
+    DATE = "date",
+}
+
+const fields = [
+    {
+        name: "headerImageURL",
+        label: "Header Image URL",
+        placeholder: "https://picsum.photos/300/200",
+        prompt: "Please enter the URL of the header image.",
+        type: FieldType.TEXT,
+    },
+    {
+        name: "title",
+        label: "Title",
+        placeholder: "My New Post!",
+        prompt: "Please enter the title of your post.",
+        type: FieldType.TEXT,
+    },
+    {
+        name: "blurb",
+        label: "Blurb",
+        placeholder: "This is my new post.",
+        prompt: "Please enter a short blurb for your post.",
+        type: FieldType.TEXT_AREA,
+        className: "min-h-[20dvh] max-h-[20dvh]",
+    },
+    {
+        name: "content",
+        label: "Content",
+        placeholder: "This is my new post.",
+        prompt: "Please enter your post content.",
+        type: FieldType.TEXT_AREA,
+        className: "min-h-[40dvh] max-h-[40dvh]",
+    },
+];
+
+// TODO: add date picker for release date
+// TODO: refactor component
 export const Editor = ({ post }: { post: Post }) => {
-    const [headerImageURL, setHeaderImageURL] = useState("");
-    const [content, setContent] = useState("");
-    const [blurb, setBlurb] = useState("");
-    const [title, setTitle] = useState("");
-    // TODO: convert to form
-    // TODO: add date picker for release date
+    const [isSaving, setIsSaving] = useState(false);
+    const [lastSaved, setLastSaved] = useState(new Date());
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        setHeaderImageURL(post.headerImageURL);
-        setTitle(post.title);
-        setBlurb(post.blurb);
-        setContent(post.content);
-    }, [post]);
-
-    const handleChange = useCallback(
-        (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-            setContent(event.target.value);
+    const form = useForm<z.infer<typeof formSchema>>({
+        defaultValues: {
+            headerImageURL: post.headerImageURL,
+            title: post.title,
+            blurb: post.blurb,
+            content: post.content,
         },
-        [setContent]
+    });
+
+    const handleBack = useCallback(() => {
+        navigate({
+            to: "/posts",
+        });
+    }, []);
+
+    const savePost = useCallback(
+        async (formData: z.infer<typeof formSchema>) => {
+            setIsSaving(true);
+            try {
+                const { data } = await apiClient.put(
+                    `/posts/${post._id}`,
+                    formData
+                );
+                if (!data) throw new Error("No post returned");
+                setLastSaved(new Date());
+            } catch (error) {
+                console.error("Failed to update post", error);
+            }
+            setIsSaving(false);
+        },
+        [post, setIsSaving]
     );
 
+    const textFields = useMemo(
+        () => fields.filter((field) => field.type === FieldType.TEXT),
+        []
+    );
+    const textAreaFields = useMemo(
+        () => fields.filter((field) => field.type === FieldType.TEXT_AREA),
+        []
+    );
+
+    const formValues = form.watch();
+    const { headerImageURL, title, blurb, content } = formValues;
+
+    useEffect(() => {
+        if (!post) return;
+        const interval = setInterval(
+            savePost.bind(null, formValues),
+            autosaveInterval
+        );
+
+        return () => clearInterval(interval);
+    }, [savePost, post]);
+
     return (
-        <div className="grid grid-cols-2 bg-gray-500 rounded-md">
-            <div className="flex flex-col gap-4 rounded-md border p-4 bg-white text-black text-center m-4 max-w-[45dvw]">
-                <h1 className="text-center text-2xl font-bold">Edit Post</h1>
-                <Input
-                    placeholder="Header Image URL"
-                    className="text-md"
-                    value={headerImageURL}
-                />
-                <Input placeholder="Title" className="text-md" value={title} />
-                <Input placeholder="Blurb" className="text-md" value={blurb} />
-                <Textarea
-                    placeholder="Write your post here..."
-                    value={content}
-                    onChange={handleChange}
-                    className="min-w-[40dvw] max-w-[40dvw] min-h-[40dvh] max-h-[40dvh] text-md"
-                />
-                <Button className="w-fit">Save</Button>
+        <div className="grid grid-cols-2 bg-gray-500 rounded-md p-4 max-h-[100dvh] overflow-y-auto">
+            <div className="flex flex-col gap-4 rounded-md border p-4 bg-white text-black m-4 min-w-[40dvw] max-w-[40dvw]">
+                <Button
+                    onClick={handleBack}
+                    className="w-fit bg-gray-300 text-black"
+                >
+                    Back
+                </Button>
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(savePost)}
+                        className="space-y-8"
+                    >
+                        {textFields.map((field) => (
+                            <EditorFormTextField
+                                key={field.name}
+                                form={form}
+                                label={field.label}
+                                placeholder={field.placeholder}
+                                prompt={field.prompt}
+                                name={field.name}
+                            />
+                        ))}
+                        {textAreaFields.map((field) => (
+                            <EditorFormTextAreaField
+                                key={field.name}
+                                form={form}
+                                label={field.label}
+                                placeholder={field.placeholder}
+                                prompt={field.prompt}
+                                name={field.name}
+                                className={field.className}
+                            />
+                        ))}
+                        <div className="flex items-center gap-4">
+                            <Button type="submit">Save</Button>
+                            <p className="text-xs text-gray-500">
+                                {isSaving
+                                    ? "Saving..."
+                                    : `Last saved at ${lastSaved.toLocaleTimeString()}`}
+                            </p>
+                        </div>
+                    </form>
+                </Form>
             </div>
-            <div className="flex flex-col gap-4 rounded-md border p-4 bg-white text-black text-left m-4 max-w-[45dvw]">
-                <img src={headerImageURL} alt="Header Image" />
+            <div className="flex flex-col gap-4 rounded-md border p-4 bg-white text-black m-4 min-w-[40dvw] max-w-[40dvw]">
+                <img
+                    src={headerImageURL}
+                    alt="Header Image"
+                    className="aspect-video object-cover"
+                />
                 <h1 className="text-left text-2xl font-bold">{title}</h1>
                 <p className="text-left text-md italic">{blurb}</p>
-                <ReactMarkdown
-                    components={reactMarkdownComponents}
-                    className="min-w-[40dvw] max-w-[40dvw]"
-                >
+                <ReactMarkdown components={reactMarkdownComponents}>
                     {content}
                 </ReactMarkdown>
             </div>

@@ -23,3 +23,9 @@ export const createPost = async (post: Post) => {
 
   return createdPost;
 };
+
+export const updatePost = async (postId: string, post: Partial<Post>) => {
+  const updatedPost = await postRepository.updateOneById(postId, post);
+
+  return updatedPost;
+};

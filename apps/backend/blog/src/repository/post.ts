@@ -30,3 +30,13 @@ export const findMany = async (findOptions?: RootFilterQuery<Post>) => {
     console.error("Failed to find posts", error);
   }
 };
+
+export const updateOneById = async (id: string, post: Partial<Post>) => {
+  try {
+    const updateResult = await PostModel.updateOne({ _id: id }, post);
+    if (updateResult.modifiedCount < 1) throw new Error("No post updated");
+    return await findOne({ _id: id });
+  } catch (error) {
+    console.error("Failed to update post", error);
+  }
+};

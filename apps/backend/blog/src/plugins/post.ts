@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { CreatePostBodyType, GetPostQueryType } from "../model";
+import { CreatePostBodyType, GetPostQueryType, UpdatePostBodyType } from "../model";
 import { postService } from "../service";
 import { Status } from "../constants";
 import { authPlugin, AuthPluginProps } from "./auth";
@@ -54,6 +54,25 @@ export const postPlugin = () => {
 
         return errMessage;
       }
+    })
+    .put("/:postId", async ({ params, body, set }) => {
+      try {
+        const post = await postService.updatePost(params.postId, body);
+        if (!post) throw new Error("No post returned");
+
+        set.status = Status.OK;
+
+        return post.toJSON();
+      } catch (error) {
+        set.status = Status.INTERNAL_SERVER_ERROR;
+
+        const errMessage = "💀 Failed to update post:";
+        console.error(errMessage, error);
+
+        return errMessage;
+      }
+    }, {
+      body: UpdatePostBodyType,
     })
     .post(
       "/",

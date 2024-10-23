@@ -23,6 +23,15 @@ export const CreatePostBodyType = t.Object({
   releaseDate: t.Date(),
 });
 
+export const UpdatePostBodyType = t.Object({
+  title: t.Optional(t.String()),
+  blurb: t.Optional(t.String()),
+  content: t.Optional(t.String()),
+  // category: t.Enum(Category),
+  headerImageURL: t.Optional(t.String()),
+  // releaseDate: t.Optional(t.Date()),
+});
+
 export class Post {
   @prop({ required: true, type: String })
   declare title: string;
