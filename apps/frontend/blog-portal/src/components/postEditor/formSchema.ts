@@ -5,4 +5,5 @@ export const formSchema = z.object({
     title: z.string().min(3),
     blurb: z.string().min(10),
     content: z.string().min(50),
+    releaseDate: z.date().min(new Date()),
 });

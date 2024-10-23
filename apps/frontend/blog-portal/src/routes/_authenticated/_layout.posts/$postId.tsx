@@ -16,7 +16,7 @@ function EditPostPage() {
     try {
       const { data: post } = await apiClient.get(`/posts/${postId}`);
       if (!post) throw new Error("No post returned");
-      return post;
+      return { ...post, releaseDate: new Date(post.releaseDate) };
     } catch (error) {
       console.error("Failed to fetch post", error);
     }

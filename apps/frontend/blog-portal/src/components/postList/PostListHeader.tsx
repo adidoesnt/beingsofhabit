@@ -6,13 +6,21 @@ import { useAuth } from "@/context/auth";
 import { useNavigate } from "@tanstack/react-router";
 import { queryClient } from "@/routes/__root";
 
+const getDefaultReleaseDate = () => {
+  const now = new Date();
+  now.setDate(now.getDate() + 1);
+  now.setHours(0, 0, 0, 0);
+  const defaultReleaseDate = new Date(now);
+  return defaultReleaseDate;
+};
+
 const defaultPost: Omit<Post, "_id" | "author"> = {
   title: "My New Post!",
   blurb: "This is my new post.",
   content: "This is my new post.",
   category: Category.MISC,
   headerImageURL: "https://picsum.photos/300/200",
-  releaseDate: new Date(),
+  releaseDate: getDefaultReleaseDate(),
 };
 
 export const PostListHeader = () => {

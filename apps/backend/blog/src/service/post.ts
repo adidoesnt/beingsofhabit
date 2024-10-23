@@ -1,10 +1,10 @@
-import { Category, Post } from "../model";
+import { Category, Post } from "@/packages/types/post";
 import { postRepository } from "../repository";
 
-export const getPosts = async (releaseDate: Date, category?: Category) => {
-  const options: Record<string, unknown> = {
+export const getPosts = async (releaseDate?: Date, category?: Category) => {
+  const options: Record<string, unknown> = releaseDate ? {
     releaseDate: { $lte: releaseDate },
-  };
+  } : {};
   if (category) options.category = category;
 
   const posts = await postRepository.findMany(options);

@@ -3,7 +3,7 @@ import { getModelForClass } from "@typegoose/typegoose";
 import { Category, Post } from "@/packages/types/post";
 
 export const GetPostQueryType = t.Object({
-  releaseDate: t.Date(),
+  releaseDate: t.Optional(t.Date()),
   category: t.Optional(t.Enum(Category)),
 });
 
@@ -23,7 +23,7 @@ export const UpdatePostBodyType = t.Object({
   content: t.Optional(t.String()),
   // category: t.Enum(Category),
   headerImageURL: t.Optional(t.String()),
-  // releaseDate: t.Optional(t.Date()),
+  releaseDate: t.Optional(t.Date()),
 });
 
 export const PostModel = getModelForClass(Post, {

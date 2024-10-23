@@ -12,6 +12,7 @@ import { EditorFormTextField } from "./EditorFormTextField";
 import { EditorFormTextAreaField } from "./EditorFormTextareaField";
 import { useNavigate } from "@tanstack/react-router";
 import { queryClient } from "@/routes/__root";
+import { EditorFormCalendarField } from "./EditorFormCalendarField";
 
 const { VITE_AUTOSAVE_INTERVAL = "60000" } = import.meta.env;
 const autosaveInterval = Number(VITE_AUTOSAVE_INTERVAL);
@@ -68,6 +69,7 @@ export const Editor = ({ post }: { post: Post }) => {
       title: post.title,
       blurb: post.blurb,
       content: post.content,
+      releaseDate: post.releaseDate,
     },
   });
 
@@ -105,7 +107,7 @@ export const Editor = ({ post }: { post: Post }) => {
   );
 
   const formValues = form.watch();
-  const { headerImageURL, title, blurb, content } = formValues;
+  const { headerImageURL, title, blurb, content, releaseDate } = formValues;
 
   useEffect(() => {
     if (!post) return;
@@ -115,59 +117,72 @@ export const Editor = ({ post }: { post: Post }) => {
     );
 
     return () => clearInterval(interval);
-  }, [savePost, post]);
+  }, [savePost, post, formValues]);
 
   return (
-    <div className="grid grid-cols-2 bg-gray-500 rounded-md p-4 max-h-[80dvh] overflow-y-auto m-4">
-      <div className="flex flex-col gap-4 rounded-md border p-4 bg-white text-black m-4 min-w-1/2 max-w-[1/2]">
-        <Button onClick={handleBack} className="w-fit bg-gray-300 text-black">
-          Back
-        </Button>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(savePost)} className="space-y-8">
-            {textFields.map((field) => (
-              <EditorFormTextField
-                key={field.name}
+    <div className="grid place-items-center rounded-md bg-gray-500 p-2 max-h-[80dvh] w-full overflow-y-clip m-4">
+      <div className="grid md:grid-cols-2 bg-gray-500 rounded-md max-h-[70dvh] w-full overflow-y-auto m-2">
+        <div className="flex flex-col gap-4 rounded-md border p-4 bg-white text-black m-4 min-w-1/2 max-w-1/2">
+          <Button onClick={handleBack} className="w-fit bg-gray-300 text-black">
+            Back
+          </Button>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(savePost)} className="space-y-8">
+              {textFields.map((field) => (
+                <EditorFormTextField
+                  key={field.name}
+                  form={form}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                  prompt={field.prompt}
+                  name={field.name}
+                />
+              ))}
+              {textAreaFields.map((field) => (
+                <EditorFormTextAreaField
+                  key={field.name}
+                  form={form}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                  prompt={field.prompt}
+                  name={field.name}
+                  className={field.className}
+                />
+              ))}
+              <EditorFormCalendarField
+                key={"releaseDate"}
                 form={form}
-                label={field.label}
-                placeholder={field.placeholder}
-                prompt={field.prompt}
-                name={field.name}
+                label="Release Date"
+                name="releaseDate"
+                prompt="Choose the date of release"
+                initialValue={releaseDate}
               />
-            ))}
-            {textAreaFields.map((field) => (
-              <EditorFormTextAreaField
-                key={field.name}
-                form={form}
-                label={field.label}
-                placeholder={field.placeholder}
-                prompt={field.prompt}
-                name={field.name}
-                className={field.className}
-              />
-            ))}
-            <div className="flex items-center gap-4">
-              <Button type="submit">Save</Button>
-              <p className="text-xs text-gray-500">
-                {isSaving
-                  ? "Saving..."
-                  : `Last saved at ${lastSaved.toLocaleTimeString()}`}
-              </p>
-            </div>
-          </form>
-        </Form>
-      </div>
-      <div className="flex flex-col gap-4 rounded-md border p-4 bg-white text-black m-4 min-w-1/2 max-w-[1/2]">
-        <img
-          src={headerImageURL}
-          alt="Header Image"
-          className="aspect-video object-cover"
-        />
-        <h1 className="text-left text-2xl font-bold">{title}</h1>
-        <p className="text-left text-md italic">{blurb}</p>
-        <ReactMarkdown components={reactMarkdownComponents}>
-          {content}
-        </ReactMarkdown>
+              <div className="flex items-center gap-4">
+                <Button type="submit">Save</Button>
+                <p className="text-xs text-gray-500">
+                  {isSaving
+                    ? "Saving..."
+                    : `Last saved at ${lastSaved.toLocaleTimeString()}`}
+                </p>
+              </div>
+            </form>
+          </Form>
+        </div>
+        <div className="hidden md:flex flex-col gap-4 rounded-md border p-4 bg-white text-black m-4 min-w-1/2 max-w-[1/2]">
+          <img
+            src={headerImageURL}
+            alt="Header Image"
+            className="aspect-video object-cover"
+          />
+          <h1 className="text-left text-2xl font-bold">{title}</h1>
+          <p className="text-left text-md italic">
+            {releaseDate.toLocaleDateString()}
+          </p>
+          <p className="text-left text-md italic">{blurb}</p>
+          <ReactMarkdown components={reactMarkdownComponents}>
+            {content}
+          </ReactMarkdown>
+        </div>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ function PostListPage() {
   const fetchPosts = useCallback(async () => {
     try {
       const now = new Date().toISOString()
-      const { data: posts } = await apiClient.get(`/posts?releaseDate=${now}`)
+      const { data: posts } = await apiClient.get(`/posts`)
       if (!posts) throw new Error('No posts returned')
       return posts
     } catch (error) {
