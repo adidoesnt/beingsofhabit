@@ -1,17 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
-
-// TODO: move types to packages
-export type Post = {
-    _id: string;
-    title: string;
-    blurb: string;
-    content: string;
-    category: string;
-    headerImageURL: string;
-    author: string;
-    releaseDate: Date;
-};
+import { Post } from "@/lib/types/post";
 
 // TODO: format releaseDate to make it human readable
 export const columns: ColumnDef<Post>[] = [

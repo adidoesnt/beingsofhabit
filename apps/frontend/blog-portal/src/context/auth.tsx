@@ -1,9 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react";
-
-// TODO: move types to packages
-export type User = {
-  username: string;
-};
+import { User } from "@/lib/types/user";
 
 export type AuthContextType = {
   user: User | null;
