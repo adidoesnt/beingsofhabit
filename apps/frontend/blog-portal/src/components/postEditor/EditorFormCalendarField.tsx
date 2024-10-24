@@ -36,7 +36,6 @@ export const EditorFormCalendarField = ({
               selected={field.value}
               disabled={(date: Date) => date < new Date()}
               onSelect={field.onChange}
-              initialFocus
             />
           </FormControl>
           <FormMessage />
