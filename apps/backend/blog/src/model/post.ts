@@ -21,7 +21,7 @@ export const UpdatePostBodyType = t.Object({
   title: t.Optional(t.String()),
   blurb: t.Optional(t.String()),
   content: t.Optional(t.String()),
-  // category: t.Enum(Category),
+  category: t.Enum(Category),
   headerImageURL: t.Optional(t.String()),
   releaseDate: t.Optional(t.Date()),
 });

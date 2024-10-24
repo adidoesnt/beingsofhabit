@@ -1,3 +1,4 @@
+import { Category } from "@/packages/types/post";
 import { z } from "zod";
 
 export const formSchema = z.object({
@@ -6,4 +7,5 @@ export const formSchema = z.object({
     blurb: z.string().min(10),
     content: z.string().min(50),
     releaseDate: z.date().min(new Date()),
+    category: z.nativeEnum(Category),
 });
