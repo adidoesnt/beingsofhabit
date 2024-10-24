@@ -1,3 +1,4 @@
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { columns } from '@/components/postList/Columns'
 import { DataTable } from '@/components/postList/DataTable'
 import { apiClient } from '@/utils'
@@ -27,7 +28,12 @@ function PostListPage() {
   })
 
   if (isPending) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
+  if (error)
+    return (
+        <ErrorBoundary
+            errorMessage={"Unable to fetch posts."}
+        />
+    );
 
   return (
     <div className="p-2">
