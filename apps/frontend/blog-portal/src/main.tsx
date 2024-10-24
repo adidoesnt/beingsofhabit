@@ -8,6 +8,8 @@ import { routeTree } from "./routeTree.gen";
 import { AuthProvider, useAuth } from "./context/auth";
 import { useEffect } from "react";
 import { apiClient } from "./utils";
+import { ErrorBoundary as ErrorHandler } from "react-error-boundary";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 // Set up a Router instance
 const router = createRouter({
@@ -46,8 +48,12 @@ const rootElement = document.getElementById("app")!;
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <ErrorHandler fallback={
+      <ErrorBoundary errorMessage="An error occurred." />
+    }>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ErrorHandler>
   );
 }
