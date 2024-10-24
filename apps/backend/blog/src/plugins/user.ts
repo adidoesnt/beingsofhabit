@@ -1,103 +1,121 @@
 import { Elysia, t } from "elysia";
 import { userService } from "../service";
-import { Status } from "../constants";
+import {
+    BlogPortalAuthError,
+    BlogPortalAuthErrorMessage,
+} from "@/packages/types/error";
+import { Status } from "@/packages/types/response";
 
 const { JWT_EXPIRY = "3600", NODE_ENV = "PROD" } = process.env;
 
 export const userPlugin = () => {
-  console.log("Setting up user plugin");
+    console.log("Setting up user plugin");
 
-  return new Elysia({
-    prefix: "/users",
-  })
-  .get("/me", async ({ cookie, set }) => {
-    try {
-      const token = cookie.token.value;
+    return new Elysia({
+        prefix: "/users",
+    })
+        .get("/me", async ({ cookie, set }) => {
+            try {
+                const token = cookie.token.value;
 
-      // TODO: handle token expiry
-      if (!token) {
-        set.status = Status.UNAUTHORIZED;
-        return "No token provided";
-      }
+                // TODO: handle token expiry
+                if (!token) {
+                    set.status = Status.UNAUTHORIZED;
+                    return "No token provided";
+                }
 
-      const user = await userService.findByToken(token);
-      if (!user) throw new Error("No user returned");
+                const user = await userService.findByToken(token);
+                if (!user) throw new Error("No user returned");
 
-      set.status = Status.OK;
+                set.status = Status.OK;
 
-      return user.toJSON();
-    } catch (error) {
-      set.status = Status.INTERNAL_SERVER_ERROR;
+                return user.toJSON();
+            } catch (error) {
+                set.status = Status.INTERNAL_SERVER_ERROR;
 
-      const errMessage = "💀 Failed to get user:";
-      console.error(errMessage, error);
+                const errMessage = "💀 Failed to get user:";
+                console.error(errMessage, error);
 
-      return errMessage;
-    }
-  })
-  .post(
-    "/login",
-    async ({ body, set, cookie }) => {
-      const { username, password } = body;
-      const { user, token, errMessage } = await userService.login(
-        username,
-        password
-      );
-
-      if (!user) {
-        set.status = Status.NOT_FOUND;
-        return errMessage;
-      }
-
-      if (!token) {
-        set.status = Status.FORBIDDEN;
-        return errMessage;
-      }
-
-      set.status = Status.OK;
-
-      cookie.token.value = token;
-      cookie.token.httpOnly = true;
-      cookie.token.secure = NODE_ENV !== "DEV";
-      cookie.token.maxAge = Number(JWT_EXPIRY);
-
-      return user.toJSON();
-    },
-    {
-      body: t.Object({
-        username: t.String(),
-        password: t.String(),
-      }),
-      cookie: t.Optional(
-        t.Object({
-          token: t.Optional(t.String()),
+                return errMessage;
+            }
         })
-      ),
-    }
-  )
-  .post("/logout", async ({ cookie, set }) => {
-    try {
-      cookie.token.value = "";
-      cookie.token.httpOnly = true;
-      cookie.token.secure = NODE_ENV !== "DEV";
-      cookie.token.maxAge = 0;
+        .post(
+            "/login",
+            async ({ body, set, cookie }) => {
+                try {
+                    const { username, password } = body;
+                    const { user, token, errMessage } = await userService.login(
+                        username,
+                        password
+                    );
 
-      set.status = Status.OK;
+                    if (!user) {
+                        throw new BlogPortalAuthError(
+                            BlogPortalAuthErrorMessage.USER_NOT_FOUND,
+                            Status.NOT_FOUND
+                        );
+                    }
 
-      return "Logged out";
-    } catch (error) {
-      set.status = Status.INTERNAL_SERVER_ERROR;
+                    if (!token) {
+                        throw new BlogPortalAuthError(
+                            BlogPortalAuthErrorMessage.INCORRECT_PASSWORD,
+                            Status.FORBIDDEN
+                        );
+                    }
 
-      const errMessage = "💀 Failed to logout:";
-      console.error(errMessage, error);
+                    set.status = Status.OK;
 
-      return errMessage;
-    }
-  }, {
-    cookie: t.Optional(
-      t.Object({
-        token: t.Optional(t.String()),
-      })
-    ),
-  });
+                    cookie.token.value = token;
+                    cookie.token.httpOnly = true;
+                    cookie.token.secure = NODE_ENV !== "DEV";
+                    cookie.token.maxAge = Number(JWT_EXPIRY);
+
+                    return user.toJSON();
+                } catch (e) {
+                    const error = e as BlogPortalAuthError;
+                    set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
+                    return error.message;
+                }
+            },
+            {
+                body: t.Object({
+                    username: t.String(),
+                    password: t.String(),
+                }),
+                cookie: t.Optional(
+                    t.Object({
+                        token: t.Optional(t.String()),
+                    })
+                ),
+            }
+        )
+        .post(
+            "/logout",
+            async ({ cookie, set }) => {
+                try {
+                    cookie.token.value = "";
+                    cookie.token.httpOnly = true;
+                    cookie.token.secure = NODE_ENV !== "DEV";
+                    cookie.token.maxAge = 0;
+
+                    set.status = Status.OK;
+
+                    return "Logged out";
+                } catch (error) {
+                    set.status = Status.INTERNAL_SERVER_ERROR;
+
+                    const errMessage = "💀 Failed to logout:";
+                    console.error(errMessage, error);
+
+                    return errMessage;
+                }
+            },
+            {
+                cookie: t.Optional(
+                    t.Object({
+                        token: t.Optional(t.String()),
+                    })
+                ),
+            }
+        );
 };

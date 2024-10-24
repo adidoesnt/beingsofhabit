@@ -1,5 +1,5 @@
 import { Cookie } from "elysia";
-import { Status } from "../constants";
+import { Status } from "@/packages/types/response";
 import { verifyToken } from "../utils/jwt";
 
 export type AuthPluginProps = {

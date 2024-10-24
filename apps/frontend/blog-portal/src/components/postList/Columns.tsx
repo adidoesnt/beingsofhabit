@@ -55,7 +55,7 @@ export const columns: ColumnDef<Post>[] = [
     },
   },
   {
-    accessorKey: "releaseDate",
+    accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
       const date = new Date(row.original.releaseDate);

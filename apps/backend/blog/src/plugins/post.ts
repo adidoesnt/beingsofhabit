@@ -1,8 +1,9 @@
 import { Elysia } from "elysia";
 import { CreatePostBodyType, GetPostQueryType, UpdatePostBodyType } from "../model";
 import { postService } from "../service";
-import { Status } from "../constants";
 import { authPlugin, AuthPluginProps } from "./auth";
+import { BlogPortalPostError, BlogPortalPostErrorMessage } from "@/packages/types/error";
+import { Status } from "@/packages/types/response";
 
 export const postPlugin = () => {
   console.log("Setting up post plugin");
@@ -41,24 +42,25 @@ export const postPlugin = () => {
     .get("/:postId", async ({ params, set }) => {
       try {
         const post = await postService.findById(params.postId);
-        if (!post) throw new Error("No post returned");
+        if (!post) throw new BlogPortalPostError(BlogPortalPostErrorMessage.POST_NOT_FOUND, Status.NOT_FOUND);
 
         set.status = Status.OK;
 
         return post.toJSON();
-      } catch (error) {
-        set.status = Status.INTERNAL_SERVER_ERROR;
+      } catch (e) {
+        const error = e as BlogPortalPostError;
+        set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
 
         const errMessage = "💀 Failed to get post:";
-        console.error(errMessage, error);
+        console.error(errMessage, error.message);
 
-        return errMessage;
+        return error.message;
       }
     })
     .put("/:postId", async ({ params, body, set }) => {
       try {
         const post = await postService.updatePost(params.postId, body);
-        if (!post) throw new Error("No post returned");
+        if (!post) throw new BlogPortalPostError(BlogPortalPostErrorMessage.UPDATE_FAILED, Status.INTERNAL_SERVER_ERROR);
 
         set.status = Status.OK;
 
@@ -79,18 +81,19 @@ export const postPlugin = () => {
       async ({ body, set }) => {
         try {
           const post = await postService.createPost(body);
-          if (!post) throw new Error("No post returned");
+          if (!post) throw new BlogPortalPostError(BlogPortalPostErrorMessage.CREATE_FAILED, Status.INTERNAL_SERVER_ERROR);
 
           set.status = Status.CREATED;
 
           return post.toJSON();
-        } catch (error) {
-          set.status = Status.INTERNAL_SERVER_ERROR;
+        } catch (e) {
+          const error = e as BlogPortalPostError;
+          set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
 
           const errMessage = "💀 Failed to create post:";
-          console.error(errMessage, error);
+          console.error(errMessage, error.message);
 
-          return errMessage;
+          return error.message;
         }
       },
       {
