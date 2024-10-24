@@ -1,31 +1,44 @@
 import { Category, Post } from "@/packages/types/post";
 import { postRepository } from "../repository";
 
-export const getPosts = async (releaseDate?: Date, category?: Category) => {
-  const options: Record<string, unknown> = releaseDate ? {
-    releaseDate: { $lte: releaseDate },
-  } : {};
-  if (category) options.category = category;
+export const getPosts = async (
+    releaseDate?: Date,
+    category?: Category,
+    includeDeleted?: boolean
+) => {
+    const options: Record<string, unknown> = releaseDate
+        ? {
+              releaseDate: { $lte: releaseDate },
+          }
+        : {};
+    if (category) options.category = category;
+    // if (!includeDeleted) options.isDeleted = { $ne: true };
 
-  const posts = await postRepository.findMany(options);
+    const posts = await postRepository.findMany(options);
 
-  return posts;
+    return posts;
 };
 
 export const findById = async (postId: string) => {
-  const post = await postRepository.findOne({ _id: postId });
+    const post = await postRepository.findOne({ _id: postId });
 
-  return post;
+    return post;
 };
 
 export const createPost = async (post: Post) => {
-  const createdPost = await postRepository.createOne(post);
+    const createdPost = await postRepository.createOne(post);
 
-  return createdPost;
+    return createdPost;
 };
 
 export const updatePost = async (postId: string, post: Partial<Post>) => {
-  const updatedPost = await postRepository.updateOneById(postId, post);
+    const updatedPost = await postRepository.updateOneById(postId, post);
 
-  return updatedPost;
+    return updatedPost;
+};
+
+export const deletePost = async (postId: string) => {
+    const deletedPost = await postRepository.deleteOneById(postId);
+
+    return deletedPost;
 };

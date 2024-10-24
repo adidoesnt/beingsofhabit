@@ -7,6 +7,7 @@ import { toFirstLetterUppercase } from "@/packages/utils/string";
 enum ReleaseStatus {
   DRAFT = "draft",
   RELEASED = "released",
+  DELETED = "deleted",
 }
 
 const CategoryBadgeColourMap: Record<Category, string> = {
@@ -58,6 +59,14 @@ export const columns: ColumnDef<Post>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
+      const isDeleted = row.original.isDeleted;
+      if (isDeleted)
+        return (
+          <Badge className="bg-red-600">
+            {toFirstLetterUppercase(ReleaseStatus.DELETED)}
+          </Badge>
+        );
+
       const date = new Date(row.original.releaseDate);
       if (date > new Date())
         return (
@@ -65,6 +74,7 @@ export const columns: ColumnDef<Post>[] = [
             {toFirstLetterUppercase(ReleaseStatus.DRAFT)}
           </Badge>
         );
+        
       return (
         <Badge className="bg-green-800">
           {toFirstLetterUppercase(ReleaseStatus.RELEASED)}

@@ -14,6 +14,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { queryClient } from "@/routes/__root";
 import { EditorFormDropdownField } from "./EditorFormDropdownField";
 import { EditorFormCalendarField } from "./EditorFormCalendarField";
+import { DeletePostButton } from "./DeletePostButton";
 
 const { VITE_AUTOSAVE_INTERVAL = "60000" } = import.meta.env;
 const autosaveInterval = Number(VITE_AUTOSAVE_INTERVAL);
@@ -175,6 +176,7 @@ export const Editor = ({ post }: { post: Post }) => {
                                 initialValue={releaseDate}
                             />
                             <div className="flex items-center gap-4">
+                                <DeletePostButton postId={post._id!} />
                                 <Button type="submit">Save</Button>
                                 <p className="text-xs text-gray-500">
                                     {isSaving

@@ -17,7 +17,8 @@ export const postPlugin = () => {
         try {
           const posts = await postService.getPosts(
             query.releaseDate,
-            query.category
+            query.category,
+            query.includeDeleted
           );
 
           set.status = Status.OK;
@@ -75,6 +76,26 @@ export const postPlugin = () => {
       }
     }, {
       body: UpdatePostBodyType,
+    })
+    .delete("/:postId", async ({ params, set }) => {
+      try {
+        const post = await postService.findById(params.postId);
+        if (!post) throw new BlogPortalPostError(BlogPortalPostErrorMessage.POST_NOT_FOUND, Status.NOT_FOUND);
+
+        await postService.deletePost(post._id);
+
+        set.status = Status.OK;
+
+        return "Post deleted";
+      } catch (e) {
+        const error = e as BlogPortalPostError;
+        set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
+
+        const errMessage = "💀 Failed to delete post:";
+        console.error(errMessage, error.message);
+
+        return error.message;
+      }
     })
     .post(
       "/",

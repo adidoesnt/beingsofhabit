@@ -7,5 +7,9 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "mongoose-soft-deleted": "^1.0.1",
+    "remove": "^0.1.5"
   }
 }

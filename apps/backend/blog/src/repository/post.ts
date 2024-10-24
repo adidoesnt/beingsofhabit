@@ -1,5 +1,6 @@
 import { RootFilterQuery } from "mongoose";
-import { PostModel, Post } from "../model";
+import { PostModel } from "../model";
+import { Post } from "@/packages/types/post";
 
 export const createOne = async (post: Post) => {
   try {
@@ -38,5 +39,16 @@ export const updateOneById = async (id: string, post: Partial<Post>) => {
     return await findOne({ _id: id });
   } catch (error) {
     console.error("Failed to update post", error);
+  }
+};
+
+export const deleteOneById = async (id: string) => {
+  try {
+    const deleteResult = await PostModel.updateOne({ _id: id }, { isDeleted: true });
+    if (deleteResult.modifiedCount < 1) throw new Error("No post deleted");
+    const deletedPost = await findOne({ _id: id });
+    if (deletedPost) throw new Error("Post not deleted");
+  } catch (error) {
+    console.error("Failed to delete post", error);
   }
 };

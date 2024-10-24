@@ -5,6 +5,7 @@ import { Category, Post } from "@/packages/types/post";
 export const GetPostQueryType = t.Object({
   releaseDate: t.Optional(t.Date()),
   category: t.Optional(t.Enum(Category)),
+  includeDeleted: t.Optional(t.Boolean()),
 });
 
 export const CreatePostBodyType = t.Object({

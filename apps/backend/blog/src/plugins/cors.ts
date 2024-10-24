@@ -13,7 +13,7 @@ const originConfig =
 
 export const corsPlugin = () => {
   const config = {
-    methods: ["GET", "POST", "PUT", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "OPTIONS", "DELETE"],
     origin: originConfig,
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,

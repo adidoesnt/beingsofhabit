@@ -31,4 +31,7 @@ export class Post {
 
     @prop({ required: true, type: Date })
     declare releaseDate: Date;
+
+    @prop({ required: false, type: Boolean, default: false })
+    declare isDeleted?: boolean;
 }
