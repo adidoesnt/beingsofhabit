@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { healthPlugin, corsPlugin, postPlugin, userPlugin } from "./plugins";
+import { healthPlugin, corsPlugin, postPlugin, userPlugin, loggerPlugin } from "./plugins";
 import { database, logger } from "./utils";
 
 try {
@@ -8,10 +8,7 @@ try {
   await database.connect();
 
   const app = new Elysia()
-    .onBeforeHandle(({ request, path }) => {
-      const method = request.method.toUpperCase();
-      logger.info(`${method} ${path}`);
-    })
+    .onBeforeHandle(loggerPlugin())
     .use(healthPlugin())
     .use(corsPlugin())
     .use(postPlugin())
