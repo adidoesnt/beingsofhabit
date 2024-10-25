@@ -5,11 +5,12 @@ import {
     BlogPortalAuthErrorMessage,
 } from "@/packages/types/error";
 import { Status } from "@/packages/types/response";
+import { logger } from "src/utils";
 
 const { JWT_EXPIRY = "3600", NODE_ENV = "PROD" } = process.env;
 
 export const userPlugin = () => {
-    console.log("Setting up user plugin");
+    logger.info("Setting up user plugin");
 
     return new Elysia({
         prefix: "/users",
@@ -34,7 +35,7 @@ export const userPlugin = () => {
                 set.status = Status.INTERNAL_SERVER_ERROR;
 
                 const errMessage = "💀 Failed to get user:";
-                console.error(errMessage, error);
+                logger.error(errMessage, error as Error);
 
                 return errMessage;
             }
@@ -105,7 +106,7 @@ export const userPlugin = () => {
                     set.status = Status.INTERNAL_SERVER_ERROR;
 
                     const errMessage = "💀 Failed to logout:";
-                    console.error(errMessage, error);
+                    logger.error(errMessage, error as Error);
 
                     return errMessage;
                 }

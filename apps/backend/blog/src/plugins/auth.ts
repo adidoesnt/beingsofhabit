@@ -1,6 +1,7 @@
 import { Cookie } from "elysia";
 import { Status } from "@/packages/types/response";
 import { verifyToken } from "../utils/jwt";
+import { logger } from "src/utils";
 
 export type AuthPluginProps = {
   cookie: Record<string, Cookie<string | undefined>>;
@@ -11,13 +12,12 @@ export type AuthPluginProps = {
 
 export const authPlugin = async ({ cookie, set }: AuthPluginProps) => {
   const token = cookie.token.value;
-  console.log("Token:", token);
 
   if (!token) {
     set.status = Status.UNAUTHORIZED;
 
     const errMessage = "No token provided";
-    console.error(errMessage);
+    logger.error('Auth error', new Error(errMessage));
 
     return errMessage;
   }
@@ -27,7 +27,7 @@ export const authPlugin = async ({ cookie, set }: AuthPluginProps) => {
     set.status = Status.FORBIDDEN;
 
     const errMessage = "Invalid token";
-    console.error(errMessage);
+    logger.error('Auth error', new Error(errMessage));
 
     return errMessage;
   }

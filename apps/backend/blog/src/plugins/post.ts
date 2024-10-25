@@ -4,9 +4,10 @@ import { postService } from "../service";
 import { authPlugin, AuthPluginProps } from "./auth";
 import { BlogPortalPostError, BlogPortalPostErrorMessage } from "@/packages/types/error";
 import { Status } from "@/packages/types/response";
+import { logger } from "src/utils";
 
 export const postPlugin = () => {
-  console.log("Setting up post plugin");
+  logger.info("Setting up post plugin");
 
   return new Elysia({
     prefix: "/posts",
@@ -28,7 +29,7 @@ export const postPlugin = () => {
           set.status = Status.INTERNAL_SERVER_ERROR;
 
           const errMessage = "💀 Failed to get posts:";
-          console.error(errMessage, error);
+          logger.error(errMessage, error as Error);
 
           return errMessage;
         }
@@ -53,7 +54,7 @@ export const postPlugin = () => {
         set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
 
         const errMessage = "💀 Failed to get post:";
-        console.error(errMessage, error.message);
+        logger.error(errMessage, error);
 
         return error.message;
       }
@@ -70,7 +71,7 @@ export const postPlugin = () => {
         set.status = Status.INTERNAL_SERVER_ERROR;
 
         const errMessage = "💀 Failed to update post:";
-        console.error(errMessage, error);
+        logger.error(errMessage, error as Error);
 
         return errMessage;
       }
@@ -92,7 +93,7 @@ export const postPlugin = () => {
         set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
 
         const errMessage = "💀 Failed to delete post:";
-        console.error(errMessage, error.message);
+        logger.error(errMessage, error);
 
         return error.message;
       }
@@ -112,7 +113,7 @@ export const postPlugin = () => {
           set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
 
           const errMessage = "💀 Failed to create post:";
-          console.error(errMessage, error.message);
+          logger.error(errMessage, error);
 
           return error.message;
         }

@@ -1,5 +1,6 @@
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
+import { logger } from "src/utils";
 
 const {
   NODE_ENV = "PROD",
@@ -19,7 +20,7 @@ export const corsPlugin = () => {
     credentials: true,
   };
 
-  console.log("Setting up CORS plugin with config:", config);
+  logger.debug("Setting up CORS plugin with config:", config);
 
   return new Elysia().use(cors(config));
 };

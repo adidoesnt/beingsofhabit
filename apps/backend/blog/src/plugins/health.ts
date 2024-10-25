@@ -1,7 +1,8 @@
 import { Elysia } from "elysia";
+import { logger } from "src/utils";
 
 export const healthPlugin = () => {
-  console.log("Setting up health plugin");
+  logger.info("Setting up health plugin");
 
   return new Elysia()
     .decorate("health", "Blog service is healthy!")

@@ -2,6 +2,7 @@ import { verify } from "jsonwebtoken";
 import { User } from "../model";
 import { userService } from "../service";
 import jwt from "jsonwebtoken";
+import { logger } from "./logger";
 
 const { JWT_SECRET = "DUMMY-SECRET", JWT_EXPIRY = "3600" } = process.env;
 
@@ -21,7 +22,7 @@ export const verifyToken = async (token: string | null) => {
     return true;
   } catch (e) {
     const error = e as Error;
-    console.error("Failed to verify token:", error.message);
+    logger.error("Failed to verify token:", error);
     return false;
   }
 };

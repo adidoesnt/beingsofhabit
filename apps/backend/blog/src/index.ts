@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { healthPlugin, corsPlugin, postPlugin, userPlugin } from "./plugins";
-import { database } from "./utils";
+import { database, logger } from "./utils";
 
 try {
   const { PORT = 3004, NODE_ENV = "PROD" } = process.env;
@@ -8,6 +8,10 @@ try {
   await database.connect();
 
   const app = new Elysia()
+    .onBeforeHandle(({ request, path }) => {
+      const method = request.method.toUpperCase();
+      logger.info(`${method} ${path}`);
+    })
     .use(healthPlugin())
     .use(corsPlugin())
     .use(postPlugin())
@@ -20,8 +24,8 @@ try {
   }
 
   const prefix = NODE_ENV === "DEV" ? "http://" : "https://";
-  console.log(`🦊 Blog service is running at ${prefix}${hostname}:${port}`);
+  logger.info(`🦊 Blog service is running at ${prefix}${hostname}:${port}`);
 } catch (error) {
-  console.error(error);
+  logger.error('Error starting blog service', error as Error);
   process.exit(1);
 }

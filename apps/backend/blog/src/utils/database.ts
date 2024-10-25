@@ -1,16 +1,17 @@
 import { connect } from "mongoose";
+import { logger } from "./logger";
 
 const connectToDatabase = async () => {
   const { MONGODB_URI = "DUMMY-URL", MONGODB_DB_NAME = "DUMMY-DB-NAME" } =
     process.env;
 
-  console.log("Connecting to database...");
+  logger.info("Connecting to database...");
 
   try {
     await connect(`${MONGODB_URI}/${MONGODB_DB_NAME}`);
-    console.log("🌱 Connected to database");
+    logger.info("🌱 Connected to database");
   } catch (error) {
-    console.error("💀 Failed to connect to database:", error);
+    logger.error("💀 Failed to connect to database:", error as Error);
     throw error;
   }
 };
