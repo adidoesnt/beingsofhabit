@@ -2,17 +2,17 @@ import { Category, Post } from "@/packages/types/post";
 import { postRepository } from "../repository";
 
 export const getPosts = async (
-    releaseDate?: Date,
+    releaseDate?: string,
     category?: Category,
-    includeDeleted?: boolean
+    includeDeleted?: string
 ) => {
     const options: Record<string, unknown> = releaseDate
         ? {
-              releaseDate: { $lte: releaseDate },
+              releaseDate: { $lte: new Date(releaseDate) }, // NOTE: workaround due to broken ElysiaJS Query Param Validation
           }
         : {};
     if (category) options.category = category;
-    // if (!includeDeleted) options.isDeleted = { $ne: true };
+    if (includeDeleted !== "true") options.isDeleted = { $ne: true }; // NOTE: workaround due to broken ElysiaJS Query Param Validation
 
     const posts = await postRepository.findMany(options);
 

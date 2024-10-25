@@ -13,7 +13,7 @@ export const Route = createFileRoute('/_authenticated/_layout/posts/')({
 function PostListPage() {
   const fetchPosts = useCallback(async () => {
     try {
-      const { data: posts } = await apiClient.get(`/posts`) // TODO: add ?includeDeleted=true
+      const { data: posts } = await apiClient.get('/posts?includeDeleted=true')
       if (!posts) throw new Error('No posts returned')
       return posts
     } catch (error) {
