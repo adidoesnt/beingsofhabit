@@ -25,6 +25,7 @@ export const UpdatePostBodyType = t.Object({
   category: t.Optional(t.Enum(Category)),
   headerImageURL: t.Optional(t.String()),
   releaseDate: t.Optional(t.Date()),
+  isDeleted: t.Optional(t.Boolean()),
 });
 
 export const PostModel = getModelForClass(Post, {

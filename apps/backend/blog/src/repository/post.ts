@@ -47,7 +47,7 @@ export const deleteOneById = async (id: string) => {
     const deleteResult = await PostModel.updateOne({ _id: id }, { isDeleted: true });
     if (deleteResult.modifiedCount < 1) throw new Error("No post deleted");
     const deletedPost = await findOne({ _id: id });
-    if (deletedPost) throw new Error("Post not deleted");
+    if (!deletedPost?.isDeleted) throw new Error("Post not deleted");
   } catch (error) {
     console.error("Failed to delete post", error);
   }

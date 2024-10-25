@@ -176,7 +176,7 @@ export const Editor = ({ post }: { post: Post }) => {
                                 initialValue={releaseDate}
                             />
                             <div className="flex items-center gap-4">
-                                <DeletePostButton postId={post._id!} />
+                                <DeletePostButton postId={post._id!} isDeleted={post.isDeleted} />
                                 <Button type="submit">Save</Button>
                                 <p className="text-xs text-gray-500">
                                     {isSaving
