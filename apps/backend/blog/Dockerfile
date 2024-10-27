@@ -2,13 +2,16 @@ FROM oven/bun:latest
 
 WORKDIR /beingsofhabit
 
-COPY . .
+RUN mkdir -p ./apps/backend/blog ./packages
 
-RUN cd apps/backend/blog
-RUN bun install --frozen-lockfile
-
-EXPOSE $PORT
+COPY package.json bun.lockb ./
+COPY ./apps/backend/blog/ ./apps/backend/blog/
+COPY ./packages/ ./packages/
 
 WORKDIR /beingsofhabit/apps/backend/blog
+
+RUN bun install
+
+EXPOSE $PORT
 
 CMD ["bun", "run", "start"]
