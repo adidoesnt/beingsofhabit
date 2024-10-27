@@ -1,5 +1,11 @@
 import { Elysia } from "elysia";
-import { healthPlugin, corsPlugin, postPlugin, userPlugin, loggerPlugin } from "./plugins";
+import {
+  healthPlugin,
+  corsPlugin,
+  postPlugin,
+  userPlugin,
+  loggerPlugin,
+} from "./plugins";
 import { database, logger } from "./utils";
 
 try {
@@ -23,6 +29,6 @@ try {
   const prefix = NODE_ENV === "DEV" ? "http://" : "https://";
   logger.info(`🦊 Blog service is running at ${prefix}${hostname}:${port}`);
 } catch (error) {
-  logger.error('Error starting blog service', error as Error);
+  logger.error("Error starting blog service", error as Error);
   process.exit(1);
 }

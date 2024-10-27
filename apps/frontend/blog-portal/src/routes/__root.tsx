@@ -1,9 +1,6 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import {
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const { VITE_NODE_ENV: NODE_ENV = "PROD" } = import.meta.env;
 const isDevEnv = NODE_ENV === "DEV";

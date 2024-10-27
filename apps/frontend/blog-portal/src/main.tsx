@@ -48,12 +48,12 @@ const rootElement = document.getElementById("app")!;
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <ErrorHandler fallback={
-      <ErrorBoundary errorMessage="An error occurred." />
-    }>
+    <ErrorHandler
+      fallback={<ErrorBoundary errorMessage="An error occurred." />}
+    >
       <AuthProvider>
         <App />
       </AuthProvider>
-    </ErrorHandler>
+    </ErrorHandler>,
   );
 }

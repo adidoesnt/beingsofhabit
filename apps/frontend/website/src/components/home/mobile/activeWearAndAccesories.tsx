@@ -4,7 +4,9 @@ export type MobileActiveWearAndAccessoriesProps = {
   backgroundImageSrc: string;
 };
 
-export const ActiveWearAndAccessories = ({ backgroundImageSrc }: Readonly<MobileActiveWearAndAccessoriesProps>) => {
+export const ActiveWearAndAccessories = ({
+  backgroundImageSrc,
+}: Readonly<MobileActiveWearAndAccessoriesProps>) => {
   return (
     <div
       className="flex w-[100dvw] h-[100dvh] bg-cover bg-center"

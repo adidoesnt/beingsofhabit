@@ -1,10 +1,15 @@
-import { SupplementsCaption, ShopNowButton as SupplementsShopNowButton } from "../supplements";
+import {
+  SupplementsCaption,
+  ShopNowButton as SupplementsShopNowButton,
+} from "../supplements";
 
 export type MobileSupplementsProps = {
   backgroundImageSrc: string;
 };
 
-export const Supplements = ({ backgroundImageSrc }: Readonly<MobileSupplementsProps>) => {
+export const Supplements = ({
+  backgroundImageSrc,
+}: Readonly<MobileSupplementsProps>) => {
   return (
     <div
       className="flex w-[100dvw] h-[100dvh] bg-cover bg-center"

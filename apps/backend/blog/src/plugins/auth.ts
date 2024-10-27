@@ -17,7 +17,7 @@ export const authPlugin = async ({ cookie, set }: AuthPluginProps) => {
     set.status = Status.UNAUTHORIZED;
 
     const errMessage = "No token provided";
-    logger.error('Auth error', new Error(errMessage));
+    logger.error("Auth error", new Error(errMessage));
 
     return errMessage;
   }
@@ -27,7 +27,7 @@ export const authPlugin = async ({ cookie, set }: AuthPluginProps) => {
     set.status = Status.FORBIDDEN;
 
     const errMessage = "Invalid token";
-    logger.error('Auth error', new Error(errMessage));
+    logger.error("Auth error", new Error(errMessage));
 
     return errMessage;
   }
