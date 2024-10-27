@@ -1,7 +1,6 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { userRepository } from "../repository";
 import { generateToken, getUserFromToken } from "../utils/jwt";
-import jwt from "jsonwebtoken";
 import { logger } from "src/utils";
 
 export const findByUsername = async (username: string) => {

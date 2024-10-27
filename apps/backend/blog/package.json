@@ -11,15 +11,17 @@
   "dependencies": {
     "@elysiajs/cors": "^1.1.1",
     "@typegoose/typegoose": "^12.8.0",
-    "bcrypt": "^5.1.1",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "elysia": "latest",
     "jsonwebtoken": "^9.0.2",
     "migrate-mongo": "^11.0.0",
-    "mongoose": "^8.7.2"
+    "mongoose": "^8.7.2",
+    "types": "workspace:types",
+    "utils": "workspace:utils"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.7",
     "bun-types": "latest"
   },
