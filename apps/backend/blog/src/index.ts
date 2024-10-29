@@ -3,7 +3,7 @@ import { healthPlugin, corsPlugin, postPlugin, userPlugin, loggerPlugin } from "
 import { database, logger } from "./utils";
 
 try {
-  const { PORT = 3004, NODE_ENV = "PROD" } = process.env;
+  const { PORT = 3004 } = process.env;
 
   await database.connect();
 
@@ -20,8 +20,7 @@ try {
     throw new Error("💀 Failed to start Elysia server");
   }
 
-  const prefix = NODE_ENV === "DEV" ? "http://" : "https://";
-  logger.info(`🦊 Blog service is running at ${prefix}${hostname}:${port}`);
+  logger.info(`🦊 Blog service is running at ${hostname}:${port}`);
 } catch (error) {
   logger.error('Error starting blog service', error as Error);
   process.exit(1);
