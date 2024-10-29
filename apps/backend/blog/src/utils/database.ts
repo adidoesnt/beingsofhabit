@@ -20,6 +20,8 @@ const getGlobalBundleFilePath = () => {
     throw new Error("Global bundle file not found");
   }
 
+  logger.debug("🔑 Global bundle file loaded", { globalBundleFilePath });
+
   return globalBundleFilePath;
 }
 
