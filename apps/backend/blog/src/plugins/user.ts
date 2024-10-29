@@ -52,14 +52,14 @@ export const userPlugin = () => {
 
                     if (!user) {
                         throw new BlogPortalAuthError(
-                            BlogPortalAuthErrorMessage.USER_NOT_FOUND,
+                            errMessage ?? BlogPortalAuthErrorMessage.USER_NOT_FOUND,
                             Status.NOT_FOUND
                         );
                     }
 
                     if (!token) {
                         throw new BlogPortalAuthError(
-                            BlogPortalAuthErrorMessage.INCORRECT_PASSWORD,
+                            errMessage ?? BlogPortalAuthErrorMessage.INCORRECT_PASSWORD,
                             Status.FORBIDDEN
                         );
                     }

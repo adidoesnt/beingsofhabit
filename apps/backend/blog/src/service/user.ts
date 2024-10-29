@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { userRepository } from "../repository";
 import { generateToken, getUserFromToken } from "../utils/jwt";
 import { logger } from "src/utils";
+import { BlogPortalAuthErrorMessage } from "@/packages/types/error";
 
 export const findByUsername = async (username: string) => {
   logger.debug("User service::Find user by username", username);
@@ -34,7 +35,7 @@ export const login = async (username: string, password: string) => {
     return {
       user: null,
       token: null,
-      errMessage: "User not found",
+      errMessage: BlogPortalAuthErrorMessage.USER_NOT_FOUND,
     };
   }
 
@@ -45,7 +46,7 @@ export const login = async (username: string, password: string) => {
     return {
       user,
       token: null,
-      errMessage: "Incorrect password",
+      errMessage: BlogPortalAuthErrorMessage.INCORRECT_PASSWORD,
     };
   }
 
