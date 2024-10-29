@@ -12,7 +12,7 @@ COPY ./packages/ ./packages/
 
 WORKDIR /beingsofhabit/apps/backend/blog
 
-RUN curl -o global-bundle.pem https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
+RUN curl -o global-bundle.pem https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
 
 RUN bun install
 
