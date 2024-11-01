@@ -1,0 +1,33 @@
+# Environment variables
+.envrc
+
+# Terraform directory
+.terraform/
+
+# Terraform lock file
+.terraform.lock.hcl
+
+# Local Terraform state files
+terraform.tfstate
+terraform.tfstate.backup
+
+# State files
+*.tfstate.*
+*.tfvars
+
+# Override files and personal configuration files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Sensitive variable files
+*.auto.tfvars
+*.auto.tfvars.json
+secrets.tfvars
+
+# Temporary files created by Terraform
+crash.log
+*.log
+*.tfplan
+*.tfplan.*
