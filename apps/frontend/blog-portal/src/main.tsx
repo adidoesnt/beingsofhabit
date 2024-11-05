@@ -31,15 +31,13 @@ const App = () => {
   const { setUser } = auth;
 
   useEffect(() => {
-    try {
       apiClient.get("/users/me").then(({ data }) => {
         if (!data) throw new Error("No user returned");
         setUser(data);
+      }).catch((error) => {
+        console.warn("Failed to set user on initial load", error);
       });
-    } catch (error) {
-      console.warn("Failed to set user on initial load", error);
-    }
-  }, []);
+  }, [setUser]);
 
   return <RouterProvider router={router} context={{ auth }} />;
 };

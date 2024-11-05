@@ -34,7 +34,6 @@ export const AuthProvider = ({
   const setSessionExpiryWithMaxAge = useCallback((maxAge: number) => {
     const maxAgeInMs = maxAge * 1000;
     const expiry =  maxAgeInMs - gracePeriod;
-    console.log({ expiry });
     setShowSessionExpiryPopup(false);
     setTimeout(() => setShowSessionExpiryPopup(true), expiry);
   }, [setShowSessionExpiryPopup, gracePeriod]);
