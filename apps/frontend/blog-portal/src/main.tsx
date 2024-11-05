@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { apiClient } from "./utils";
 import { ErrorBoundary as ErrorHandler } from "react-error-boundary";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { SessionExpiryAlert } from "./components/sessionExpiry/SessionExpiryAlert";
 
 // Set up a Router instance
 const router = createRouter({
@@ -52,6 +53,7 @@ if (!rootElement.innerHTML) {
       <ErrorBoundary errorMessage="An error occurred." />
     }>
       <AuthProvider>
+        <SessionExpiryAlert />
         <App />
       </AuthProvider>
     </ErrorHandler>

@@ -34,7 +34,7 @@ const fields = [
 ];
 
 export const LoginForm = () => {
-    const { setUser, isAuthenticated } = useAuth();
+    const { setUser, isAuthenticated, setSessionExpiryWithMaxAge } = useAuth();
     const { redirect } = useSearch({ strict: false }) as { redirect?: string };
     const search = useMemo(() => {
         return redirect?.replace(VITE_FRONTEND_URL, "") ?? "/posts";
@@ -89,13 +89,14 @@ export const LoginForm = () => {
                     formData
                 );
                 if (!user) throw new Error("No user data returned");
+                setSessionExpiryWithMaxAge(user.maxAge);
                 setUser(user);
             } catch (e) {
                 const error = e as BlogPortalAuthErrorResponse;
                 handleError(error);
             }
         },
-        [setUser, handleError]
+        [setUser, handleError, setSessionExpiryWithMaxAge]
     );
 
     useEffect(() => {

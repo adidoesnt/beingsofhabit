@@ -145,18 +145,7 @@ export const userPlugin = () => {
                 try {
                     const token = cookie.token.value;
 
-                    if (!token) {
-                        set.status = Status.UNAUTHORIZED;
-                        return "No token provided";
-                    }
-
-                    const isValid = await verifyToken(token);
-                    if (!isValid) {
-                        set.status = Status.FORBIDDEN;
-                        return "Invalid token";
-                    }
-
-                    await tokenService.markTokenAsUsed(token);
+                    if (token) await tokenService.markTokenAsUsed(token);
 
                     cookie.token.value = "";
                     cookie.token.httpOnly = true;
