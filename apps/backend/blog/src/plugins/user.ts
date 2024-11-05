@@ -70,9 +70,11 @@ export const userPlugin = () => {
                 cookie.token.value = newToken;
                 cookie.token.httpOnly = true;
                 cookie.token.secure = NODE_ENV !== "DEV";
-                cookie.token.maxAge = Number(JWT_EXPIRY);
 
-                return 'Refreshed token';
+                const maxAge = Number(JWT_EXPIRY);
+                cookie.token.maxAge = maxAge;
+
+                return { maxAge };
             } catch (error) {
                 set.status = Status.INTERNAL_SERVER_ERROR;
 
@@ -111,9 +113,14 @@ export const userPlugin = () => {
                     cookie.token.value = token;
                     cookie.token.httpOnly = true;
                     cookie.token.secure = NODE_ENV !== "DEV";
-                    cookie.token.maxAge = Number(JWT_EXPIRY);
 
-                    return user.toJSON();
+                    const maxAge = Number(JWT_EXPIRY);
+                    cookie.token.maxAge = maxAge;
+
+                    return {
+                        ...user.toJSON(), 
+                        maxAge
+                    };
                 } catch (e) {
                     const error = e as BlogPortalAuthError;
                     set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
