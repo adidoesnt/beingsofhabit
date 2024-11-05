@@ -2,7 +2,8 @@ import bcrypt from "bcryptjs";
 import { userRepository } from "../repository";
 import { generateToken, getUserFromToken } from "../utils/jwt";
 import { logger } from "src/utils";
-import { BlogPortalAuthErrorMessage } from "@/packages/types/error";
+import { BlogPortalAuthError, BlogPortalAuthErrorMessage } from "@/packages/types/error";
+import { Status } from "@/packages/types/response";
 
 export const findByUsername = async (username: string) => {
   logger.debug("User service::Find user by username", username);
@@ -56,4 +57,26 @@ export const login = async (username: string, password: string) => {
     user,
     token,
   };
+};
+
+export const refreshToken = async (token: string) => {
+  logger.debug("User service::Refresh token", token);
+
+  const user = getUserFromToken(token);
+  const { username } = user;
+
+  logger.debug("User service::Refresh token - User found", username);
+
+  const userFromDb = await findByUsername(username);
+
+  if (!userFromDb) {
+    throw new BlogPortalAuthError(
+      BlogPortalAuthErrorMessage.USER_NOT_FOUND,
+      Status.NOT_FOUND
+    );
+  }
+
+  const newToken = generateToken(userFromDb);
+
+  return newToken;
 };
