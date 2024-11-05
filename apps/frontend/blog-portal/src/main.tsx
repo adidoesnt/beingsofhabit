@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { apiClient } from "./utils";
 import { ErrorBoundary as ErrorHandler } from "react-error-boundary";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { SessionExpiryAlert } from "./components/sessionExpiry/SessionExpiryAlert";
 
 // Set up a Router instance
 const router = createRouter({
@@ -30,15 +31,13 @@ const App = () => {
   const { setUser } = auth;
 
   useEffect(() => {
-    try {
       apiClient.get("/users/me").then(({ data }) => {
         if (!data) throw new Error("No user returned");
         setUser(data);
+      }).catch((error) => {
+        console.warn("Failed to set user on initial load", error);
       });
-    } catch (error) {
-      console.warn("Failed to set user on initial load", error);
-    }
-  }, []);
+  }, [setUser]);
 
   return <RouterProvider router={router} context={{ auth }} />;
 };
@@ -52,6 +51,7 @@ if (!rootElement.innerHTML) {
       <ErrorBoundary errorMessage="An error occurred." />
     }>
       <AuthProvider>
+        <SessionExpiryAlert />
         <App />
       </AuthProvider>
     </ErrorHandler>

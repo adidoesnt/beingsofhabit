@@ -1,11 +1,12 @@
 import { Elysia, t } from "elysia";
-import { userService } from "../service";
+import { tokenService, userService } from "../service";
 import {
     BlogPortalAuthError,
     BlogPortalAuthErrorMessage,
 } from "@/packages/types/error";
 import { Status } from "@/packages/types/response";
 import { logger } from "src/utils";
+import { verifyToken } from "src/utils/jwt";
 
 const { JWT_EXPIRY = "3600", NODE_ENV = "PROD" } = process.env;
 
@@ -19,10 +20,15 @@ export const userPlugin = () => {
             try {
                 const token = cookie.token.value;
 
-                // TODO: handle token expiry
                 if (!token) {
                     set.status = Status.UNAUTHORIZED;
                     return "No token provided";
+                }
+
+                const isValid = await verifyToken(token);
+                if (!isValid) {
+                    set.status = Status.FORBIDDEN;
+                    return "Invalid token";
                 }
 
                 const user = await userService.findByToken(token);
@@ -31,6 +37,44 @@ export const userPlugin = () => {
                 set.status = Status.OK;
 
                 return user.toJSON();
+            } catch (error) {
+                set.status = Status.INTERNAL_SERVER_ERROR;
+
+                const errMessage = "💀 Failed to get user:";
+                logger.error(errMessage, error as Error);
+
+                return errMessage;
+            }
+        })
+        .get("/refresh", async ({ cookie, set }) => {
+            try {
+                const token = cookie.token.value;
+
+                if (!token) {
+                    set.status = Status.UNAUTHORIZED;
+                    return "No token provided";
+                }
+
+                const isValid = await verifyToken(token);
+                if (!isValid) {
+                    set.status = Status.FORBIDDEN;
+                    return "Invalid token";
+                }
+
+                const newToken = await userService.refreshToken(token);
+                if (!newToken) throw new Error("No new token returned");
+                await tokenService.markTokenAsUsed(token);
+
+                set.status = Status.OK;
+
+                cookie.token.value = newToken;
+                cookie.token.httpOnly = true;
+                cookie.token.secure = NODE_ENV !== "DEV";
+
+                const maxAge = Number(JWT_EXPIRY);
+                cookie.token.maxAge = maxAge;
+
+                return { maxAge };
             } catch (error) {
                 set.status = Status.INTERNAL_SERVER_ERROR;
 
@@ -69,9 +113,14 @@ export const userPlugin = () => {
                     cookie.token.value = token;
                     cookie.token.httpOnly = true;
                     cookie.token.secure = NODE_ENV !== "DEV";
-                    cookie.token.maxAge = Number(JWT_EXPIRY);
 
-                    return user.toJSON();
+                    const maxAge = Number(JWT_EXPIRY);
+                    cookie.token.maxAge = maxAge;
+
+                    return {
+                        ...user.toJSON(), 
+                        maxAge
+                    };
                 } catch (e) {
                     const error = e as BlogPortalAuthError;
                     set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
@@ -94,6 +143,10 @@ export const userPlugin = () => {
             "/logout",
             async ({ cookie, set }) => {
                 try {
+                    const token = cookie.token.value;
+
+                    if (token) await tokenService.markTokenAsUsed(token);
+
                     cookie.token.value = "";
                     cookie.token.httpOnly = true;
                     cookie.token.secure = NODE_ENV !== "DEV";
