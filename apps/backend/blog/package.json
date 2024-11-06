@@ -9,6 +9,8 @@
     "rollback": "migrate-mongo down"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.685.0",
+    "@aws-sdk/s3-request-presigner": "^3.685.0",
     "@elysiajs/cors": "^1.1.1",
     "@typegoose/typegoose": "^12.8.0",
     "@types/bcryptjs": "^2.4.6",

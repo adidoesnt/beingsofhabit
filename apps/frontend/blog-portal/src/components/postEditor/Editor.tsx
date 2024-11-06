@@ -15,6 +15,7 @@ import { queryClient } from "@/routes/__root";
 import { EditorFormDropdownField } from "./EditorFormDropdownField";
 import { EditorFormCalendarField } from "./EditorFormCalendarField";
 import { DeletePostButton } from "./DeletePostButton";
+import { EditorFormImageField } from "./EditorFormImageField";
 
 const { VITE_AUTOSAVE_INTERVAL = "60000" } = import.meta.env;
 const autosaveInterval = Number(VITE_AUTOSAVE_INTERVAL);
@@ -26,13 +27,6 @@ enum FieldType {
 }
 
 const fields = [
-    {
-        name: "headerImageURL",
-        label: "Header Image URL",
-        placeholder: "https://picsum.photos/300/200",
-        prompt: "Please enter the URL of the header image.",
-        type: FieldType.TEXT,
-    },
     {
         name: "title",
         label: "Title",
@@ -58,15 +52,18 @@ const fields = [
     },
 ];
 
-// TODO: add combobox field for the category
+// TODO: Add logic for saving to s3 via presigned url and submitting to backend
 export const Editor = ({ post }: { post: Post }) => {
     const [isSaving, setIsSaving] = useState(false);
     const [lastSaved, setLastSaved] = useState(new Date());
     const navigate = useNavigate();
+    const [filePreview, setFilePreview] = useState<string | null>(
+        post.headerImageURL
+    );
 
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
-            headerImageURL: post.headerImageURL,
+            headerImage: post.headerImageURL,
             title: post.title,
             blurb: post.blurb,
             content: post.content,
@@ -81,14 +78,59 @@ export const Editor = ({ post }: { post: Post }) => {
         });
     }, []);
 
+    const getPresignedUrl = useCallback(async (file: File) => {
+        const query = new URLSearchParams({
+            fileName: file.name,
+            fileType: file.type,
+        }).toString();
+        const presignedUrl = await apiClient.get(
+            `/bucket/presigned-url?${query}`
+        );
+        return presignedUrl;
+    }, []);
+
+    const uploadImage = useCallback(
+        async (file: File, presignedUrl: string) => {
+            const response = await fetch(presignedUrl, {
+                method: "PUT",
+                body: file,
+                headers: {
+                    "Content-Type": file.type,
+                },
+            });
+            if (!response.ok) throw new Error("Failed to upload image");
+        },
+        []
+    );
+
+    const handleImageUpload = useCallback(async (file: File) => {
+        try {
+            const response = await getPresignedUrl(file);
+            const presignedUrl = response.data;
+            if (!presignedUrl) throw new Error("No presigned url returned");
+
+            await uploadImage(file, presignedUrl);
+            return presignedUrl;
+        } catch (error) {
+            console.error("Failed to upload image to s3", error);
+        }
+    }, [getPresignedUrl, uploadImage]);
+
     const savePost = useCallback(
         async (formData: z.infer<typeof formSchema>) => {
             setIsSaving(true);
             try {
-                const { data } = await apiClient.put(
-                    `/posts/${post._id}`,
-                    formData
+                const presignedUrl = await handleImageUpload(
+                    formData.headerImage[0]
                 );
+                const {
+                    headerImage: _headerImage,
+                    ...formDataWithoutHeaderImage
+                } = formData;
+                const { data } = await apiClient.put(`/posts/${post._id}`, {
+                    ...formDataWithoutHeaderImage,
+                    headerImageURL: presignedUrl,
+                });
                 if (!data) throw new Error("No post returned");
                 setLastSaved(new Date());
             } catch (error) {
@@ -99,7 +141,7 @@ export const Editor = ({ post }: { post: Post }) => {
                 queryKey: ["post", post._id],
             });
         },
-        [post, setIsSaving]
+        [post, setIsSaving, handleImageUpload]
     );
 
     const textFields = useMemo(
@@ -112,7 +154,20 @@ export const Editor = ({ post }: { post: Post }) => {
     );
 
     const formValues = form.watch();
-    const { headerImageURL, title, blurb, content, releaseDate } = formValues;
+    const { headerImage, title, blurb, content, releaseDate } = formValues;
+
+    useEffect(() => {
+        const file = headerImage?.[0];
+        if (file && file instanceof Blob) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFilePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setFilePreview(post.headerImageURL ?? null);
+        }
+    }, [headerImage, setFilePreview, post.headerImageURL]);
 
     useEffect(() => {
         if (!post) return;
@@ -146,6 +201,13 @@ export const Editor = ({ post }: { post: Post }) => {
                                 name="category"
                                 prompt="Select the category of the post."
                             />
+                            <EditorFormImageField
+                                key={"headerImage"}
+                                form={form}
+                                label="Header Image"
+                                name="headerImage"
+                                prompt="Please upload the header image of the post."
+                            />
                             {textFields.map((field) => (
                                 <EditorFormTextField
                                     key={field.name}
@@ -176,7 +238,10 @@ export const Editor = ({ post }: { post: Post }) => {
                                 initialValue={releaseDate}
                             />
                             <div className="flex items-center gap-4">
-                                <DeletePostButton postId={post._id!} isDeleted={post.isDeleted} />
+                                <DeletePostButton
+                                    postId={post._id!}
+                                    isDeleted={post.isDeleted}
+                                />
                                 <Button type="submit">Save</Button>
                                 <p className="text-xs text-gray-500">
                                     {isSaving
@@ -188,11 +253,13 @@ export const Editor = ({ post }: { post: Post }) => {
                     </Form>
                 </div>
                 <div className="hidden md:flex flex-col gap-4 rounded-md border p-4 bg-white text-black m-4 min-w-1/2 max-w-[1/2]">
-                    <img
-                        src={headerImageURL}
-                        alt="Header Image"
-                        className="aspect-video object-cover"
-                    />
+                    {filePreview && (
+                        <img
+                            src={filePreview}
+                            alt="Header Image"
+                            className="aspect-video object-cover"
+                        />
+                    )}
                     <h1 className="text-left text-2xl font-bold">{title}</h1>
                     <p className="text-left text-md italic">
                         {releaseDate.toLocaleDateString()}
