@@ -52,11 +52,14 @@ const fields = [
     },
 ];
 
+// TODO: Add logic for saving to s3 via presigned url and submitting to backend
 export const Editor = ({ post }: { post: Post }) => {
     const [isSaving, setIsSaving] = useState(false);
     const [lastSaved, setLastSaved] = useState(new Date());
     const navigate = useNavigate();
-    const [filePreview, setFilePreview] = useState<string | null>(post.headerImageURL);
+    const [filePreview, setFilePreview] = useState<string | null>(
+        post.headerImageURL
+    );
 
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
@@ -75,14 +78,60 @@ export const Editor = ({ post }: { post: Post }) => {
         });
     }, []);
 
+    const getPresignedUrl = useCallback(async (file: File) => {
+        const query = new URLSearchParams({
+            fileName: file.name,
+            fileType: file.type,
+        }).toString();
+        const presignedUrl = await apiClient.get(
+            `/bucket/presigned-url?${query}`
+        );
+        return presignedUrl;
+    }, []);
+
+    const uploadImage = useCallback(
+        async (file: File, presignedUrl: string) => {
+            const response = await fetch(presignedUrl, {
+                method: "PUT",
+                body: file,
+                headers: {
+                    "Content-Type": file.type,
+                },
+            });
+            if (!response.ok) throw new Error("Failed to upload image");
+        },
+        []
+    );
+
+    const handleImageUpload = useCallback(async (file: File) => {
+        try {
+            const response = await getPresignedUrl(file);
+            const presignedUrl = response.data;
+            if (!presignedUrl) throw new Error("No presigned url returned");
+
+            await uploadImage(file, presignedUrl);
+            console.log({ presignedUrl })
+            return presignedUrl;
+        } catch (error) {
+            console.error("Failed to upload image to s3", error);
+        }
+    }, [getPresignedUrl, uploadImage]);
+
     const savePost = useCallback(
         async (formData: z.infer<typeof formSchema>) => {
             setIsSaving(true);
             try {
-                const { data } = await apiClient.put(
-                    `/posts/${post._id}`,
-                    formData
+                const presignedUrl = await handleImageUpload(
+                    formData.headerImage[0]
                 );
+                const {
+                    headerImage: _headerImage,
+                    ...formDataWithoutHeaderImage
+                } = formData;
+                const { data } = await apiClient.put(`/posts/${post._id}`, {
+                    ...formDataWithoutHeaderImage,
+                    headerImageUrl: presignedUrl,
+                });
                 if (!data) throw new Error("No post returned");
                 setLastSaved(new Date());
             } catch (error) {
@@ -93,7 +142,7 @@ export const Editor = ({ post }: { post: Post }) => {
                 queryKey: ["post", post._id],
             });
         },
-        [post, setIsSaving]
+        [post, setIsSaving, handleImageUpload]
     );
 
     const textFields = useMemo(

@@ -13,7 +13,7 @@ const {
     URL_EXPIRY_IN_SECONDS = "120",
 } = process.env;
 
-const bucketEndpoint = NODE_ENV === "DEV" ? BUCKET_ENDPOINT : undefined;
+const bucketEndpoint = NODE_ENV === "DEV" ? `${BUCKET_ENDPOINT}/${BUCKET_NAME}` : undefined;
 
 const s3 = new S3Client({
     region: AWS_REGION,
