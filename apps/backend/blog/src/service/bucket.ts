@@ -36,6 +36,7 @@ export const getPresignedUrl = async (fileName: string, fileType: string) => {
         const presignedUrl = await getSignedUrl(s3, command, {
             expiresIn: Number(URL_EXPIRY_IN_SECONDS),
         });
+        logger.debug("Bucket service::Get presigned url - Success", presignedUrl);
         return presignedUrl;
     } catch (error) {
         logger.error("Failed to get presigned url", error as Error);

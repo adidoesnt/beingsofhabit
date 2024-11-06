@@ -7,7 +7,9 @@ import { bucketService } from "src/service";
 export const bucketPlugin = () => {
     logger.info("Setting up bucket plugin");
 
-    return new Elysia()
+    return new Elysia({
+        prefix: "/bucket",
+    })
         .onBeforeHandle(({ cookie, set }) =>
             authPlugin({ cookie, set: set as AuthPluginProps["set"] })
         )
