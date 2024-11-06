@@ -110,7 +110,6 @@ export const Editor = ({ post }: { post: Post }) => {
             if (!presignedUrl) throw new Error("No presigned url returned");
 
             await uploadImage(file, presignedUrl);
-            console.log({ presignedUrl })
             return presignedUrl;
         } catch (error) {
             console.error("Failed to upload image to s3", error);
@@ -130,7 +129,7 @@ export const Editor = ({ post }: { post: Post }) => {
                 } = formData;
                 const { data } = await apiClient.put(`/posts/${post._id}`, {
                     ...formDataWithoutHeaderImage,
-                    headerImageUrl: presignedUrl,
+                    headerImageURL: presignedUrl,
                 });
                 if (!data) throw new Error("No post returned");
                 setLastSaved(new Date());
