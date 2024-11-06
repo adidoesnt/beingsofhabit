@@ -7,6 +7,7 @@ import {
 import { Status } from "@/packages/types/response";
 import { logger } from "src/utils";
 import { verifyToken } from "src/utils/jwt";
+import { authPlugin, AuthPluginProps } from "./auth";
 
 const { JWT_EXPIRY = "3600", NODE_ENV = "PROD" } = process.env;
 
@@ -16,74 +17,6 @@ export const userPlugin = () => {
     return new Elysia({
         prefix: "/users",
     })
-        .get("/me", async ({ cookie, set }) => {
-            try {
-                const token = cookie.token.value;
-
-                if (!token) {
-                    set.status = Status.UNAUTHORIZED;
-                    return "No token provided";
-                }
-
-                const isValid = await verifyToken(token);
-                if (!isValid) {
-                    set.status = Status.FORBIDDEN;
-                    return "Invalid token";
-                }
-
-                const user = await userService.findByToken(token);
-                if (!user) throw new Error("No user returned");
-
-                set.status = Status.OK;
-
-                return user.toJSON();
-            } catch (error) {
-                set.status = Status.INTERNAL_SERVER_ERROR;
-
-                const errMessage = "💀 Failed to get user:";
-                logger.error(errMessage, error as Error);
-
-                return errMessage;
-            }
-        })
-        .get("/refresh", async ({ cookie, set }) => {
-            try {
-                const token = cookie.token.value;
-
-                if (!token) {
-                    set.status = Status.UNAUTHORIZED;
-                    return "No token provided";
-                }
-
-                const isValid = await verifyToken(token);
-                if (!isValid) {
-                    set.status = Status.FORBIDDEN;
-                    return "Invalid token";
-                }
-
-                const newToken = await userService.refreshToken(token);
-                if (!newToken) throw new Error("No new token returned");
-                await tokenService.markTokenAsUsed(token);
-
-                set.status = Status.OK;
-
-                cookie.token.value = newToken;
-                cookie.token.httpOnly = true;
-                cookie.token.secure = NODE_ENV !== "DEV";
-
-                const maxAge = Number(JWT_EXPIRY);
-                cookie.token.maxAge = maxAge;
-
-                return { maxAge };
-            } catch (error) {
-                set.status = Status.INTERNAL_SERVER_ERROR;
-
-                const errMessage = "💀 Failed to get user:";
-                logger.error(errMessage, error as Error);
-
-                return errMessage;
-            }
-        })
         .post(
             "/login",
             async ({ body, set, cookie }) => {
@@ -96,14 +29,16 @@ export const userPlugin = () => {
 
                     if (!user) {
                         throw new BlogPortalAuthError(
-                            errMessage ?? BlogPortalAuthErrorMessage.USER_NOT_FOUND,
+                            errMessage ??
+                                BlogPortalAuthErrorMessage.USER_NOT_FOUND,
                             Status.NOT_FOUND
                         );
                     }
 
                     if (!token) {
                         throw new BlogPortalAuthError(
-                            errMessage ?? BlogPortalAuthErrorMessage.INCORRECT_PASSWORD,
+                            errMessage ??
+                                BlogPortalAuthErrorMessage.INCORRECT_PASSWORD,
                             Status.FORBIDDEN
                         );
                     }
@@ -118,8 +53,8 @@ export const userPlugin = () => {
                     cookie.token.maxAge = maxAge;
 
                     return {
-                        ...user.toJSON(), 
-                        maxAge
+                        ...user.toJSON(),
+                        maxAge,
                     };
                 } catch (e) {
                     const error = e as BlogPortalAuthError;
@@ -171,5 +106,54 @@ export const userPlugin = () => {
                     })
                 ),
             }
-        );
+        )
+        .onBeforeHandle(({ cookie, set }) =>
+            authPlugin({ cookie, set: set as AuthPluginProps["set"] })
+        )
+        .get("/me", async ({ cookie, set }) => {
+            try {
+                const token = cookie.token.value!;
+
+                const user = await userService.findByToken(token);
+                if (!user) throw new Error("No user returned");
+
+                set.status = Status.OK;
+
+                return user.toJSON();
+            } catch (error) {
+                set.status = Status.INTERNAL_SERVER_ERROR;
+
+                const errMessage = "💀 Failed to get user:";
+                logger.error(errMessage, error as Error);
+
+                return errMessage;
+            }
+        })
+        .get("/refresh", async ({ cookie, set }) => {
+            try {
+                const token = cookie.token.value!;
+
+                const newToken = await userService.refreshToken(token);
+                if (!newToken) throw new Error("No new token returned");
+                await tokenService.markTokenAsUsed(token);
+
+                set.status = Status.OK;
+
+                cookie.token.value = newToken;
+                cookie.token.httpOnly = true;
+                cookie.token.secure = NODE_ENV !== "DEV";
+
+                const maxAge = Number(JWT_EXPIRY);
+                cookie.token.maxAge = maxAge;
+
+                return { maxAge };
+            } catch (error) {
+                set.status = Status.INTERNAL_SERVER_ERROR;
+
+                const errMessage = "💀 Failed to get user:";
+                logger.error(errMessage, error as Error);
+
+                return errMessage;
+            }
+        });
 };
