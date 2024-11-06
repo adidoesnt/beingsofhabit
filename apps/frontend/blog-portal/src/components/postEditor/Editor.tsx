@@ -15,6 +15,7 @@ import { queryClient } from "@/routes/__root";
 import { EditorFormDropdownField } from "./EditorFormDropdownField";
 import { EditorFormCalendarField } from "./EditorFormCalendarField";
 import { DeletePostButton } from "./DeletePostButton";
+import { EditorFormImageField } from "./EditorFormImageField";
 
 const { VITE_AUTOSAVE_INTERVAL = "60000" } = import.meta.env;
 const autosaveInterval = Number(VITE_AUTOSAVE_INTERVAL);
@@ -26,13 +27,6 @@ enum FieldType {
 }
 
 const fields = [
-    {
-        name: "headerImageURL",
-        label: "Header Image URL",
-        placeholder: "https://picsum.photos/300/200",
-        prompt: "Please enter the URL of the header image.",
-        type: FieldType.TEXT,
-    },
     {
         name: "title",
         label: "Title",
@@ -58,15 +52,15 @@ const fields = [
     },
 ];
 
-// TODO: add combobox field for the category
 export const Editor = ({ post }: { post: Post }) => {
     const [isSaving, setIsSaving] = useState(false);
     const [lastSaved, setLastSaved] = useState(new Date());
     const navigate = useNavigate();
+    const [filePreview, setFilePreview] = useState<string | null>(post.headerImageURL);
 
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
-            headerImageURL: post.headerImageURL,
+            headerImage: post.headerImageURL,
             title: post.title,
             blurb: post.blurb,
             content: post.content,
@@ -112,7 +106,20 @@ export const Editor = ({ post }: { post: Post }) => {
     );
 
     const formValues = form.watch();
-    const { headerImageURL, title, blurb, content, releaseDate } = formValues;
+    const { headerImage, title, blurb, content, releaseDate } = formValues;
+
+    useEffect(() => {
+        const file = headerImage?.[0];
+        if (file && file instanceof Blob) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFilePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setFilePreview(post.headerImageURL ?? null);
+        }
+    }, [headerImage, setFilePreview, post.headerImageURL]);
 
     useEffect(() => {
         if (!post) return;
@@ -146,6 +153,13 @@ export const Editor = ({ post }: { post: Post }) => {
                                 name="category"
                                 prompt="Select the category of the post."
                             />
+                            <EditorFormImageField
+                                key={"headerImage"}
+                                form={form}
+                                label="Header Image"
+                                name="headerImage"
+                                prompt="Please upload the header image of the post."
+                            />
                             {textFields.map((field) => (
                                 <EditorFormTextField
                                     key={field.name}
@@ -176,7 +190,10 @@ export const Editor = ({ post }: { post: Post }) => {
                                 initialValue={releaseDate}
                             />
                             <div className="flex items-center gap-4">
-                                <DeletePostButton postId={post._id!} isDeleted={post.isDeleted} />
+                                <DeletePostButton
+                                    postId={post._id!}
+                                    isDeleted={post.isDeleted}
+                                />
                                 <Button type="submit">Save</Button>
                                 <p className="text-xs text-gray-500">
                                     {isSaving
@@ -188,11 +205,13 @@ export const Editor = ({ post }: { post: Post }) => {
                     </Form>
                 </div>
                 <div className="hidden md:flex flex-col gap-4 rounded-md border p-4 bg-white text-black m-4 min-w-1/2 max-w-[1/2]">
-                    <img
-                        src={headerImageURL}
-                        alt="Header Image"
-                        className="aspect-video object-cover"
-                    />
+                    {filePreview && (
+                        <img
+                            src={filePreview}
+                            alt="Header Image"
+                            className="aspect-video object-cover"
+                        />
+                    )}
                     <h1 className="text-left text-2xl font-bold">{title}</h1>
                     <p className="text-left text-md italic">
                         {releaseDate.toLocaleDateString()}
