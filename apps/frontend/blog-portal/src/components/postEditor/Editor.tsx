@@ -52,7 +52,6 @@ const fields = [
     },
 ];
 
-// TODO: Add logic for saving to s3 via presigned url and submitting to backend
 export const Editor = ({ post }: { post: Post }) => {
     const [isSaving, setIsSaving] = useState(false);
     const [lastSaved, setLastSaved] = useState(new Date());
