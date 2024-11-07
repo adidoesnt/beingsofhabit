@@ -1,4 +1,5 @@
 import express from "express";
+import { connectToDatabase } from "@/packages/common/shop/database";
 
 const { PORT = 3003 } = process.env;
 
@@ -11,7 +12,8 @@ app.get("/", (_request, response) => {
   });
 });
 
-(() => {
+(async () => {
+  await connectToDatabase();
   app.listen(PORT, () => {
     console.log(`🚀 Purchase service running on port ${PORT}`);
   });
