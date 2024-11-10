@@ -21,8 +21,8 @@ resource "aws_iam_policy" "s3_user_policy" {
         ],
         Effect = "Allow",
         Resource = [
-          "arn:aws:s3:::BUCKET_NAME",
-          "arn:aws:s3:::BUCKET_NAME/*"
+          aws_s3_bucket.blog_header_image_bucket.arn,
+          "${aws_s3_bucket.blog_header_image_bucket.arn}/*"
         ]
       }
     ]
@@ -31,6 +31,8 @@ resource "aws_iam_policy" "s3_user_policy" {
   tags = {
     Name = "Beings of Habit S3 User Policy"
   }
+
+  depends_on = [aws_s3_bucket.blog_header_image_bucket]
 }
 
 resource "aws_iam_user_policy_attachment" "s3_user_attachment" {
