@@ -44,7 +44,11 @@ resource "aws_ecs_service" "blog_service" {
     assign_public_ip = true
   }
 
-  # TODO: add load balancer
+  load_balancer {
+    target_group_arn = aws_lb_target_group.blog_target_group.arn
+    container_name   = "blog"
+    container_port   = 3004
+  }
 
   tags = {
     Name = "blog"
@@ -55,6 +59,7 @@ resource "aws_ecs_service" "blog_service" {
     aws_ecs_task_definition.blog_task_definition,
     aws_security_group.blog_service_sg,
     aws_subnet.public_subnet_a,
-    aws_subnet.public_subnet_b
+    aws_subnet.public_subnet_b,
+    aws_lb_target_group.blog_target_group
   ]
 }
