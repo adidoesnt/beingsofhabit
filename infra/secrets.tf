@@ -45,3 +45,24 @@ resource "aws_secretsmanager_secret_version" "docdb_uri_version" {
     random_password.blog_docdb_password
   ]
 }
+
+resource "aws_secretsmanager_secret" "blog_header_image_bucket_credentials" {
+  name = "blog/header_image_bucket_credentials"
+
+  tags = {
+    Name = "blog-header-image-bucket-credentials"
+  }
+}
+
+resource "aws_secretsmanager_secret_version" "header_image_bucket_credentials_version" {
+  secret_id = aws_secretsmanager_secret.blog_header_image_bucket_credentials.id
+  secret_string = jsonencode({
+    access_key = aws_iam_access_key.s3_user_access_key.id
+    secret_key = aws_iam_access_key.s3_user_access_key.secret
+  })
+
+  depends_on = [
+    aws_secretsmanager_secret.blog_header_image_bucket_credentials,
+    aws_iam_access_key.s3_user_access_key
+  ]
+}
