@@ -12,6 +12,49 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
       "containerPort" : 3004,
       "hostPort" : 3004
     }],
+    "environment" : [{
+      "name" : "PORT",
+      "value" : "3004"
+      }, {
+      "name" : "NODE_ENV",
+      "value" : "PROD"
+      }, {
+      "name" : "JWT_SECRET",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_jwt_secret.arn}"
+      }, {
+      "name" : "MONGODB_URI",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_docdb_uri.arn}"
+      }, {
+      "name" : "MONGODB_DB_NAME",
+      "value" : "blog"
+      }, {
+      "name" : "AWS_ACCESS_KEY_ID",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_docdb_credentials.arn}:access_key"
+      }, {
+      "name" : "AWS_SECRET_ACCESS_KEY",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_docdb_credentials.arn}:secret_key"
+      }, {
+      "name" : "AWS_REGION",
+      "value" : "ap-southeast-1"
+      }, {
+      "name" : "BUCKET_ENDPOINT",
+      "value" : "${aws_s3_bucket.blog_header_image_bucket.bucket_domain_name}"
+      }, {
+      "name" : "BUCKET_NAME",
+      "value" : "${aws_s3_bucket.blog_header_image_bucket.bucket}"
+      }, {
+      "name" : "URL_EXPIRY_IN_SECONDS",
+      "value" : "120"
+      }, {
+      "name" : "WEBSITE_URL",
+      "value" : "TODO"
+      }, {
+      "name" : "BLOG_PORTAL_URL",
+      "value" : "TODO"
+      }, {
+      "name" : "BLOG_URL",
+      "value" : "TODO"
+    }]
   }])
   memory                   = "512"
   cpu                      = "256"
@@ -26,7 +69,11 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
 
   depends_on = [
     aws_ecr_repository.blog_ecr,
-    aws_iam_role.ecs_task_execution_role
+    aws_iam_role.ecs_task_execution_role,
+    aws_secretsmanager_secret.blog_docdb_uri,
+    aws_secretsmanager_secret.blog_jwt_secret,
+    aws_secretsmanager_secret.blog_docdb_credentials,
+    aws_s3_bucket.blog_header_image_bucket
   ]
 }
 

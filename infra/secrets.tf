@@ -66,3 +66,23 @@ resource "aws_secretsmanager_secret_version" "header_image_bucket_credentials_ve
     aws_iam_access_key.s3_user_access_key
   ]
 }
+
+resource "random_password" "blog_jwt_secret" {
+  length  = 16
+  special = true
+}
+
+resource "aws_secretsmanager_secret" "blog_jwt_secret" {
+  name = "blog/jwt_secret"
+
+  tags = {
+    Name = "blog-jwt-secret"
+  }
+}
+
+resource "aws_secretsmanager_secret_version" "blog_jwt_secret_version" {
+  secret_id     = aws_secretsmanager_secret.blog_jwt_secret.id
+  secret_string = random_password.blog_jwt_secret.result
+
+  depends_on = [aws_secretsmanager_secret.blog_jwt_secret, random_password.blog_jwt_secret]
+}
