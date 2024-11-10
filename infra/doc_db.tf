@@ -1,7 +1,13 @@
 resource "aws_docdb_subnet_group" "blog_docdb_subnet_group" {
-  name        = var.blog_docdb_subnet_group_config.name
-  description = var.blog_docdb_subnet_group_config.description
-  subnet_ids  = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+  name        = "blog-docdb-subnet-group"
+  description = "Subnet group for the Beings of Habit Blog Document DB"
+  subnet_ids  = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
+
+  tags = {
+    Name = "Beings of Habit Blog Document DB Subnet Group"
+  }
+
+  depends_on = [aws_subnet.public_subnet_a, aws_subnet.public_subnet_b]
 }
 
 resource "aws_docdb_cluster" "blog_docdb_cluster" {
