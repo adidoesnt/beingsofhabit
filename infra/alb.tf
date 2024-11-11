@@ -22,6 +22,7 @@ resource "aws_lb_target_group" "blog_target_group" {
   port     = 3004
   protocol = "HTTP"
   vpc_id   = aws_vpc.main_vpc.id
+  target_type = "ip"
 
   health_check {
     interval = 300

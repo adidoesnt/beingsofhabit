@@ -19,20 +19,8 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
       "name" : "NODE_ENV",
       "value" : "PROD"
       }, {
-      "name" : "JWT_SECRET",
-      "valueFrom" : "${aws_secretsmanager_secret.blog_jwt_secret.arn}"
-      }, {
-      "name" : "MONGODB_URI",
-      "valueFrom" : "${aws_secretsmanager_secret.blog_docdb_uri.arn}"
-      }, {
       "name" : "MONGODB_DB_NAME",
       "value" : "blog"
-      }, {
-      "name" : "AWS_ACCESS_KEY_ID",
-      "valueFrom" : "${aws_secretsmanager_secret.blog_docdb_credentials.arn}:access_key"
-      }, {
-      "name" : "AWS_SECRET_ACCESS_KEY",
-      "valueFrom" : "${aws_secretsmanager_secret.blog_docdb_credentials.arn}:secret_key"
       }, {
       "name" : "AWS_REGION",
       "value" : "ap-southeast-1"
@@ -54,6 +42,19 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
       }, {
       "name" : "BLOG_URL",
       "value" : "TODO"
+    }],
+    "secrets" : [{
+      "name" : "JWT_SECRET",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_jwt_secret.arn}"
+      }, {
+      "name" : "MONGODB_URI",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_docdb_uri.arn}"
+      }, {
+      "name" : "AWS_ACCESS_KEY_ID",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_header_image_bucket_credentials.arn}:access_key::"
+      }, {
+      "name" : "AWS_SECRET_ACCESS_KEY",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_header_image_bucket_credentials.arn}:secret_key::"
     }]
   }])
   memory                   = "512"
@@ -73,6 +74,7 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
     aws_secretsmanager_secret.blog_docdb_uri,
     aws_secretsmanager_secret.blog_jwt_secret,
     aws_secretsmanager_secret.blog_docdb_credentials,
+    aws_secretsmanager_secret.blog_header_image_bucket_credentials,
     aws_s3_bucket.blog_header_image_bucket
   ]
 }
@@ -84,6 +86,7 @@ resource "aws_ecs_service" "blog_service" {
   desired_count    = 1
   launch_type      = "FARGATE"
   platform_version = "LATEST"
+  force_new_deployment = true
 
   network_configuration {
     subnets          = [aws_subnet.public_subnet_a.id, aws_subnet.public_subnet_b.id]
@@ -104,6 +107,10 @@ resource "aws_ecs_service" "blog_service" {
   depends_on = [
     aws_ecs_cluster.blog_ecs_cluster,
     aws_ecs_task_definition.blog_task_definition,
+    aws_secretsmanager_secret.blog_jwt_secret,
+    aws_secretsmanager_secret.blog_docdb_uri,
+    aws_secretsmanager_secret.blog_docdb_credentials,
+    aws_secretsmanager_secret.blog_header_image_bucket_credentials,
     aws_security_group.blog_service_sg,
     aws_subnet.public_subnet_a,
     aws_subnet.public_subnet_b,

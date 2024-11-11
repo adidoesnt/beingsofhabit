@@ -1,10 +1,14 @@
+locals {
+  formatted_timestamp = replace(timestamp(), ":", "-")
+}
+
 resource "random_password" "blog_docdb_password" {
   length  = 16
-  special = true
+  special = false
 }
 
 resource "aws_secretsmanager_secret" "blog_docdb_credentials" {
-  name        = "blog-docdb/credentials"
+  name        = "blog/docdb-credentials-${local.formatted_timestamp}"
   description = "Secret for the Beings of Habit Blog Document DB credentials"
 
   tags = {
@@ -26,7 +30,7 @@ resource "aws_secretsmanager_secret_version" "blog_docdb_credentials_version" {
 }
 
 resource "aws_secretsmanager_secret" "blog_docdb_uri" {
-  name = "blog/docdb_uri"
+  name = "blog/docdb-uri-${local.formatted_timestamp}"
 
   tags = {
     Name = "blog-docdb-uri"
@@ -47,7 +51,7 @@ resource "aws_secretsmanager_secret_version" "docdb_uri_version" {
 }
 
 resource "aws_secretsmanager_secret" "blog_header_image_bucket_credentials" {
-  name = "blog/header_image_bucket_credentials"
+  name = "blog/header-image-bucket-credential-${local.formatted_timestamp}"
 
   tags = {
     Name = "blog-header-image-bucket-credentials"
@@ -73,7 +77,7 @@ resource "random_password" "blog_jwt_secret" {
 }
 
 resource "aws_secretsmanager_secret" "blog_jwt_secret" {
-  name = "blog/jwt_secret"
+  name = "blog/jwt-secret-${local.formatted_timestamp}"
 
   tags = {
     Name = "blog-jwt-secret"
