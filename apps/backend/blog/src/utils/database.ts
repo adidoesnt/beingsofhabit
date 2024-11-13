@@ -1,4 +1,4 @@
-import { connect, ConnectOptions, mongo } from "mongoose";
+import { connect, ConnectOptions } from "mongoose";
 import { logger } from "./logger";
 import path from "path";
 import fs from "fs";
