@@ -1,16 +1,16 @@
 variable "blog_portal_url" {
   type = string
-  default = "https://admin.boh-services.com/"
+  default = "https://admin.boh-services.com"
 }
 
 variable "blog_service_url" {
   type = string
-  default = "https://blog.boh-services.com/"
+  default = "https://blog.boh-services.com"
 }
 
 variable "main_website_url" {
   type = string
-  default = "https://beingsofhabit.com/"
+  default = "https://beingsofhabit.com"
 }
 
 resource "aws_ecs_cluster" "blog_ecs_cluster" {
