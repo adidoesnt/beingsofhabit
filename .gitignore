@@ -9,3 +9,6 @@ out
 .nx
 
 .localScripts.txt
+
+# MacOS
+.DS_Store
