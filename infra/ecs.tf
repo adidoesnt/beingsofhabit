@@ -1,3 +1,18 @@
+variable "blog_portal_url" {
+  type = string
+  default = "https://admin.boh-services.com/"
+}
+
+variable "blog_service_url" {
+  type = string
+  default = "https://blog.boh-services.com/"
+}
+
+variable "main_website_url" {
+  type = string
+  default = "https://beingsofhabit.com/"
+}
+
 resource "aws_ecs_cluster" "blog_ecs_cluster" {
   name = "blog-ecs-cluster"
 }
@@ -35,13 +50,13 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
       "value" : "120"
       }, {
       "name" : "WEBSITE_URL",
-      "value" : "TODO"
+      "value" : var.main_website_url
       }, {
       "name" : "BLOG_PORTAL_URL",
-      "value" : "TODO"
+      "value" : var.blog_portal_url
       }, {
       "name" : "BLOG_URL",
-      "value" : "TODO"
+      "value" : var.blog_service_url
     }],
     "secrets" : [{
       "name" : "JWT_SECRET",
