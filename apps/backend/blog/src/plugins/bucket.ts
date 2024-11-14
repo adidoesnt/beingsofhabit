@@ -18,15 +18,24 @@ export const bucketPlugin = () => {
             async ({ query, set }) => {
                 const { fileName, fileType } = query;
                 try {
-                    const presignedUrl = await bucketService.getPresignedUrl(fileName, fileType);
-                    if (!presignedUrl) throw new Error("No presigned url returned");
+                    const { presignedUrl, fetchUrl } =
+                        (await bucketService.getPresignedUrl(
+                            fileName,
+                            fileType
+                        )) ?? {};
+                    if (!presignedUrl)
+                        throw new Error("No presigned url returned");
+                    if (!fetchUrl) throw new Error("No fetch url returned");
 
                     set.status = 200;
 
-                    return presignedUrl;
+                    return {
+                        presignedUrl,
+                        fetchUrl,
+                    };
                 } catch (error) {
                     set.status = 500;
-                    
+
                     const errMessage = "💀 Failed to get presigned url:";
                     logger.error(errMessage, error as Error);
 

@@ -59,6 +59,7 @@ export const Editor = ({ post }: { post: Post }) => {
     const [filePreview, setFilePreview] = useState<string | null>(
         post.headerImageURL
     );
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     const form = useForm<z.infer<typeof formSchema>>({
         defaultValues: {
@@ -82,11 +83,15 @@ export const Editor = ({ post }: { post: Post }) => {
             fileName: file.name,
             fileType: file.type,
         }).toString();
-        const presignedUrl = await apiClient.get(
+        const response = await apiClient.get(
             `/bucket/presigned-url?${query}`
         );
-        return presignedUrl;
-    }, []);
+        const { presignedUrl, fetchUrl } = response.data ?? {};
+        if (!presignedUrl) throw new Error("No presigned url returned");
+        if (!fetchUrl) throw new Error("No fetch url returned");
+        setImageUrl(fetchUrl);
+        return presignedUrl ?? null;
+    }, [setImageUrl]);
 
     const uploadImage = useCallback(
         async (file: File, presignedUrl: string) => {
@@ -104,12 +109,10 @@ export const Editor = ({ post }: { post: Post }) => {
 
     const handleImageUpload = useCallback(async (file: File) => {
         try {
-            const response = await getPresignedUrl(file);
-            const presignedUrl = response.data;
+            const presignedUrl = await getPresignedUrl(file);
             if (!presignedUrl) throw new Error("No presigned url returned");
 
             await uploadImage(file, presignedUrl);
-            return presignedUrl;
         } catch (error) {
             console.error("Failed to upload image to s3", error);
         }
@@ -119,7 +122,7 @@ export const Editor = ({ post }: { post: Post }) => {
         async (formData: z.infer<typeof formSchema>) => {
             setIsSaving(true);
             try {
-                const presignedUrl = await handleImageUpload(
+                await handleImageUpload(
                     formData.headerImage[0]
                 );
                 const {
@@ -128,7 +131,7 @@ export const Editor = ({ post }: { post: Post }) => {
                 } = formData;
                 const { data } = await apiClient.put(`/posts/${post._id}`, {
                     ...formDataWithoutHeaderImage,
-                    headerImageURL: presignedUrl,
+                    headerImageURL: imageUrl,
                 });
                 if (!data) throw new Error("No post returned");
                 setLastSaved(new Date());
@@ -140,7 +143,7 @@ export const Editor = ({ post }: { post: Post }) => {
                 queryKey: ["post", post._id],
             });
         },
-        [post, setIsSaving, handleImageUpload]
+        [post, setIsSaving, handleImageUpload, imageUrl]
     );
 
     const textFields = useMemo(

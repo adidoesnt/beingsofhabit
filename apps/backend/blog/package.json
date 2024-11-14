@@ -21,7 +21,8 @@
     "migrate-mongo": "^11.0.0",
     "mongoose": "^8.7.2",
     "types": "workspace:types",
-    "utils": "workspace:utils"
+    "utils": "workspace:utils",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.7",

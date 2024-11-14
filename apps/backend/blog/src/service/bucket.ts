@@ -2,6 +2,7 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { logger } from "src/utils";
+import { v4 as uidv4 } from "uuid";
 
 const {
     NODE_ENV = "PROD",
@@ -25,9 +26,10 @@ const s3 = new S3Client({
 });
 
 export const getPresignedUrl = async (fileName: string, fileType: string) => {
+    const stampedFileName = `${fileName}-${uidv4}-${Date.now()}`;
     const command = new PutObjectCommand({
         Bucket: BUCKET_NAME,
-        Key: fileName,
+        Key: stampedFileName,
         ContentType: fileType,
     });
 
@@ -36,8 +38,12 @@ export const getPresignedUrl = async (fileName: string, fileType: string) => {
         const presignedUrl = await getSignedUrl(s3, command, {
             expiresIn: Number(URL_EXPIRY_IN_SECONDS),
         });
+        const fetchUrl = `https:${BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/${stampedFileName}`;
         logger.debug("Bucket service::Get presigned url - Success", presignedUrl);
-        return presignedUrl;
+        return {
+            presignedUrl,
+            fetchUrl,
+        };
     } catch (error) {
         logger.error("Failed to get presigned url", error as Error);
         return null;
