@@ -1,20 +1,14 @@
 resource "aws_s3_bucket" "blog_header_image_bucket" {
   bucket = "blog-header-image-bucket"
 
-
   tags = {
     Name = "Beings of Habit Blog Header Image Bucket"
   }
 }
 
 ### Static frontend hosting ###
-variable "domain" {
-  type    = string
-  default = "admin.boh-services.com"
-}
-
 resource "aws_s3_bucket" "blog_portal_bucket" {
-  bucket = "www.${var.domain}"
+  bucket = "blog-portal-deployment-bucket"
 
   tags = {
     Name = "Beings of Habit Blog Portal Deployment Bucket"

@@ -1,3 +1,8 @@
+variable "blog_service_certificate_arn" {
+  type = string
+  default = "arn:aws:acm:ap-southeast-1:839459181456:certificate/3bfb7ce0-2b0f-4193-9820-d5886f763754"
+}
+
 resource "aws_lb" "blog_alb" {
   name                       = "blog-alb"
   internal                   = false
@@ -56,7 +61,7 @@ resource "aws_alb_listener" "blog_https_listener" {
   load_balancer_arn = aws_lb.blog_alb.arn
   port              = "443"
   protocol          = "HTTPS"
-  certificate_arn   = "arn:aws:acm:ap-southeast-1:839459181456:certificate/3bfb7ce0-2b0f-4193-9820-d5886f763754"
+  certificate_arn   = var.blog_service_certificate_arn
 
   default_action {
     type             = "forward"
