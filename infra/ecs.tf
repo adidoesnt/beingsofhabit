@@ -152,6 +152,8 @@ resource "aws_ecs_service" "blog_service" {
     aws_security_group.blog_service_sg,
     aws_subnet.public_subnet_a,
     aws_subnet.public_subnet_b,
-    aws_lb_target_group.blog_target_group
+    aws_lb_target_group.blog_target_group,
+    aws_docdb_cluster.blog_docdb_cluster,
+    aws_docdb_cluster_instance.blog_docdb_instance
   ]
 }
