@@ -10,7 +10,13 @@ variable "blog_portal_alias" {
 
 resource "aws_cloudfront_distribution" "blog_portal_distribution" {
     origin {
-        domain_name = aws_s3_bucket.blog_portal_bucket.bucket_regional_domain_name
+        custom_origin_config {
+            origin_protocol_policy = "http-only"
+            http_port = 80
+            https_port = 443
+            origin_ssl_protocols = ["TLSv1.2", "TLSv1.1", "TLSv1"]
+        }
+        domain_name = "${aws_s3_bucket.blog_portal_bucket.bucket}.s3-website-ap-southeast-1.amazonaws.com"
         origin_id   = "S3-${aws_s3_bucket.blog_portal_bucket.bucket}"
     }
 
@@ -26,7 +32,7 @@ resource "aws_cloudfront_distribution" "blog_portal_distribution" {
 
     default_cache_behavior {
         allowed_methods  = ["GET", "HEAD", "OPTIONS"]
-        cached_methods   = []
+        cached_methods   = ["GET", "HEAD"]
         target_origin_id = "S3-${aws_s3_bucket.blog_portal_bucket.bucket}"
         viewer_protocol_policy = "redirect-to-https"
         compress = true

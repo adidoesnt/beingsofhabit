@@ -112,7 +112,8 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
     aws_secretsmanager_secret.blog_header_image_bucket_credentials,
     aws_secretsmanager_secret.blog_user1_credentials,
     aws_secretsmanager_secret.blog_user2_credentials,
-    aws_s3_bucket.blog_header_image_bucket
+    aws_s3_bucket.blog_header_image_bucket,
+    aws_cloudwatch_log_group.blog_service_log_group
   ]
 }
 

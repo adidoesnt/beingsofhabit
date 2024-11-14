@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "blog_header_image_bucket" {
   bucket = "blog-header-image-bucket"
+  force_destroy = true
 
   tags = {
     Name = "Beings of Habit Blog Header Image Bucket"
@@ -9,6 +10,7 @@ resource "aws_s3_bucket" "blog_header_image_bucket" {
 ### Static frontend hosting ###
 resource "aws_s3_bucket" "blog_portal_bucket" {
   bucket = "blog-portal-deployment-bucket"
+  force_destroy = true
 
   tags = {
     Name = "Beings of Habit Blog Portal Deployment Bucket"
@@ -70,6 +72,7 @@ resource "aws_s3_bucket_policy" "blog-portal-bucket-policy" {
         Principal = "*",
         Action    = "s3:GetObject",
         Resource = [
+          "arn:aws:s3:::${aws_s3_bucket.blog_portal_bucket.bucket}",
           "arn:aws:s3:::${aws_s3_bucket.blog_portal_bucket.bucket}/*",
         ]
       }
