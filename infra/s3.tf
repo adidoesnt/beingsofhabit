@@ -7,6 +7,17 @@ resource "aws_s3_bucket" "blog_header_image_bucket" {
   }
 }
 
+resource "aws_s3_bucket_cors_configuration" "blog_header_image_bucket_cors_configuration" {
+  bucket = aws_s3_bucket.blog_header_image_bucket.id
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "PUT"]
+    allowed_origins = [var.blog_portal_url]
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
+}
+
 ### Static frontend hosting ###
 resource "aws_s3_bucket" "blog_portal_bucket" {
   bucket = "blog-portal-deployment-bucket"

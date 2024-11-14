@@ -14,3 +14,19 @@ terraform {
     encrypt        = true
   }
 }
+
+### Global variables ###
+variable "main_website_url" {
+  type = string
+  default = "https://beingsofhabit.com"
+}
+
+variable "blog_portal_url" {
+  type = string
+  default = "https://admin.boh-services.com"
+}
+
+variable "blog_service_url" {
+  type = string
+  default = "https://blog.boh-services.com"
+}
