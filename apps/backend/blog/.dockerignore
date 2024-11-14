@@ -1,0 +1,15 @@
+# Environment variables
+.env
+.env.template
+
+# Global Bundle
+global-bundle.pem
+
+# README
+README.md
+
+# Dependency directories
+node_modules/
+
+# Docker
+Dockerfile
