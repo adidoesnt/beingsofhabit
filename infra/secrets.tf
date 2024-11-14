@@ -90,3 +90,63 @@ resource "aws_secretsmanager_secret_version" "blog_jwt_secret_version" {
 
   depends_on = [aws_secretsmanager_secret.blog_jwt_secret, random_password.blog_jwt_secret]
 }
+
+variable "blog_user1_username" {
+  type    = string
+}
+
+variable "blog_user1_password" {
+  type    = string
+}
+
+resource "aws_secretsmanager_secret" "blog_user1_credentials" {
+  name = "blog/user1-credentials-${local.formatted_timestamp}"
+
+  tags = {
+    Name = "blog-user1-credentials"
+  }
+}
+
+resource "aws_secretsmanager_secret_version" "user1_credentials_version" {
+  secret_id     = aws_secretsmanager_secret.blog_user1_credentials.id
+  secret_string = jsonencode({
+    username = var.blog_user1_username
+    password = var.blog_user1_password
+  })
+
+  depends_on = [
+    aws_secretsmanager_secret.blog_user1_credentials,
+    var.blog_user1_username,
+    var.blog_user1_password
+  ]
+}
+
+variable "blog_user2_username" {
+  type    = string
+}
+
+variable "blog_user2_password" {
+  type    = string
+}
+
+resource "aws_secretsmanager_secret" "blog_user2_credentials" {
+  name = "blog/user2-credentials-${local.formatted_timestamp}"
+
+  tags = {
+    Name = "blog-user2-credentials"
+  }
+}
+
+resource "aws_secretsmanager_secret_version" "user2_credentials_version" {
+  secret_id     = aws_secretsmanager_secret.blog_user2_credentials.id
+  secret_string = jsonencode({
+    username = var.blog_user2_username
+    password = var.blog_user2_password
+  })
+
+  depends_on = [
+    aws_secretsmanager_secret.blog_user2_credentials,
+    var.blog_user2_username,
+    var.blog_user2_password
+  ]
+}

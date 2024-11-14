@@ -25,7 +25,10 @@ resource "aws_s3_bucket_acl" "blog_portal_bucket_acl" {
   bucket = aws_s3_bucket.blog_portal_bucket.id
   acl    = "public-read"
 
-  depends_on = [aws_s3_bucket.blog_portal_bucket]
+  depends_on = [
+    aws_s3_bucket.blog_portal_bucket,  
+    aws_s3_bucket_public_access_block.blog_portal_bucket_public_access_block
+  ]
 }
 
 resource "aws_s3_bucket_versioning" "blog_portal_bucket_versioning" {

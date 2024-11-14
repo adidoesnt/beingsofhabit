@@ -70,6 +70,18 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
       }, {
       "name" : "AWS_SECRET_ACCESS_KEY",
       "valueFrom" : "${aws_secretsmanager_secret.blog_header_image_bucket_credentials.arn}:secret_key::"
+    }, {
+      "name" : "USERNAME_1",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_user1_credentials.arn}:username::"
+      }, {
+      "name" : "PASSWORD_1",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_user1_credentials.arn}:password::"
+      }, {
+      "name" : "USERNAME_2",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_user2_credentials.arn}:username::"
+      }, {
+      "name" : "PASSWORD_2",
+      "valueFrom" : "${aws_secretsmanager_secret.blog_user2_credentials.arn}:password::"
     }]
   }])
   memory                   = "512"
@@ -90,6 +102,8 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
     aws_secretsmanager_secret.blog_jwt_secret,
     aws_secretsmanager_secret.blog_docdb_credentials,
     aws_secretsmanager_secret.blog_header_image_bucket_credentials,
+    aws_secretsmanager_secret.blog_user1_credentials,
+    aws_secretsmanager_secret.blog_user2_credentials,
     aws_s3_bucket.blog_header_image_bucket
   ]
 }
