@@ -27,6 +27,14 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
       "containerPort" : 3004,
       "hostPort" : 3004
     }],
+    "logConfiguration" : {
+      "logDriver" : "awslogs",
+      "options" : {
+        "awslogs-group" : "/ecs/blog-service",
+        "awslogs-region" : "ap-southeast-1",
+        "awslogs-stream-prefix" : "ecs"
+      }
+    },
     "environment" : [{
       "name" : "PORT",
       "value" : "3004"
