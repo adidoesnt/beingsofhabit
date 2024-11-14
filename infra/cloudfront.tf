@@ -26,7 +26,7 @@ resource "aws_cloudfront_distribution" "blog_portal_distribution" {
 
     default_cache_behavior {
         allowed_methods  = ["GET", "HEAD", "OPTIONS"]
-        cached_methods   = ["GET", "HEAD"]
+        cached_methods   = []
         target_origin_id = "S3-${aws_s3_bucket.blog_portal_bucket.bucket}"
         viewer_protocol_policy = "redirect-to-https"
         compress = true
