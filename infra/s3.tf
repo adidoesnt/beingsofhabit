@@ -16,6 +16,8 @@ resource "aws_s3_bucket_cors_configuration" "blog_header_image_bucket_cors_confi
     expose_headers  = ["ETag"]
     max_age_seconds = 3000
   }
+
+  depends_on = [ aws_s3_bucket.blog_header_image_bucket ]
 }
 
 ### Static frontend hosting ###
