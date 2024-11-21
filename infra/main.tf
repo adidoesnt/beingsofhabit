@@ -1,5 +1,5 @@
 provider "aws" {
-  profile = "boh"
+  profile = "default"
   region  = "ap-southeast-1"
 }
 
@@ -8,7 +8,7 @@ terraform {
     bucket = "boh-tf-state-bucket"
     key    = "infra/terraform.tfstate"
     region = "ap-southeast-1"
-    profile = "boh"
+    profile = "default"
 
     dynamodb_table = "boh-tf-state-lock"
     encrypt        = true
