@@ -1,11 +1,6 @@
 name: Setup additional infrastructure
 
 on:
-    push:
-        branches:
-            - feature/github-actions
-        paths:
-            - "infra/additional/**"
     workflow_run:
         workflows: ["Build and push backend", "Build and push frontend"]
         types:

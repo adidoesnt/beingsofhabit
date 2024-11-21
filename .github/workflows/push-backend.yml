@@ -1,11 +1,6 @@
 name: Push backend
 
 on:
-    push:
-        branches:
-            - feature/github-actions
-        paths:
-            - "apps/backend/blog/**"
     workflow_run:
         workflows: ["Setup core infrastructure"]
         types:
