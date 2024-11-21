@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "blog_header_image_bucket" {
-  bucket = "blog-header-image-bucket"
+  bucket        = "blog-header-image-bucket"
   force_destroy = true
 
   tags = {
@@ -17,12 +17,12 @@ resource "aws_s3_bucket_cors_configuration" "blog_header_image_bucket_cors_confi
     max_age_seconds = 3000
   }
 
-  depends_on = [ aws_s3_bucket.blog_header_image_bucket ]
+  depends_on = [aws_s3_bucket.blog_header_image_bucket]
 }
 
 ### Static frontend hosting ###
 resource "aws_s3_bucket" "blog_portal_bucket" {
-  bucket = "blog-portal-deployment-bucket"
+  bucket        = "blog-portal-deployment-bucket"
   force_destroy = true
 
   tags = {
@@ -30,13 +30,27 @@ resource "aws_s3_bucket" "blog_portal_bucket" {
   }
 }
 
+resource "aws_s3_bucket_ownership_controls" "blog_portal_bucket_ownership_controls" {
+  bucket = aws_s3_bucket.blog_portal_bucket.id
+
+  rule {
+    object_ownership = "ObjectWriter"
+  }
+
+  depends_on = [
+    aws_s3_bucket.blog_portal_bucket,
+    aws_s3_bucket_public_access_block.blog_portal_bucket_public_access_block
+  ]
+}
+
 resource "aws_s3_bucket_acl" "blog_portal_bucket_acl" {
   bucket = aws_s3_bucket.blog_portal_bucket.id
   acl    = "public-read"
 
   depends_on = [
-    aws_s3_bucket.blog_portal_bucket,  
-    aws_s3_bucket_public_access_block.blog_portal_bucket_public_access_block
+    aws_s3_bucket.blog_portal_bucket,
+    aws_s3_bucket_public_access_block.blog_portal_bucket_public_access_block,
+    aws_s3_bucket_ownership_controls.blog_portal_bucket_ownership_controls
   ]
 }
 
@@ -58,19 +72,9 @@ resource "aws_s3_bucket_public_access_block" "blog_portal_bucket_public_access_b
   ignore_public_acls      = false
   restrict_public_buckets = false
 
-  depends_on = [aws_s3_bucket.blog_portal_bucket]
-}
-
-resource "aws_s3_bucket_ownership_controls" "blog_portal_bucket_ownership_controls" {
-  bucket = aws_s3_bucket.blog_portal_bucket.id
-
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-
   depends_on = [
     aws_s3_bucket.blog_portal_bucket,
-    aws_s3_bucket_public_access_block.blog_portal_bucket_public_access_block
+    aws_s3_bucket_ownership_controls.blog_portal_bucket_ownership_controls
   ]
 }
 
@@ -94,7 +98,8 @@ resource "aws_s3_bucket_policy" "blog-portal-bucket-policy" {
 
   depends_on = [
     aws_s3_bucket.blog_portal_bucket,
-    aws_s3_bucket_public_access_block.blog_portal_bucket_public_access_block
+    aws_s3_bucket_public_access_block.blog_portal_bucket_public_access_block,
+    aws_s3_bucket_ownership_controls.blog_portal_bucket_ownership_controls
   ]
 }
 
@@ -104,4 +109,9 @@ resource "aws_s3_bucket_website_configuration" "blog_portal_bucket_website_confi
   index_document {
     suffix = "index.html"
   }
+
+  depends_on = [
+    aws_s3_bucket.blog_portal_bucket,
+    aws_s3_bucket_ownership_controls.blog_portal_bucket_ownership_controls
+  ]
 }

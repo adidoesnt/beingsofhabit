@@ -1,0 +1,8 @@
+{
+  "name": "infra",
+  "version": "1.0.0",
+  "scripts": {
+    "partial-apply": "chmod +x ./partial-apply.sh && ./partial-apply.sh",
+    "apply": "chmod +x ./apply.sh && ./apply.sh"
+  }
+}
