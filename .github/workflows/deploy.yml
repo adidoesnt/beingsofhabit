@@ -1,0 +1,127 @@
+name: Deploy
+
+on:
+    push:
+        branches:
+            - feature/github-actions
+
+env:
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    AWS_REGION: ap-southeast-1
+    TF_VAR_blog_user1_username: ${{ secrets.TF_VAR_blog_user1_username }}
+    TF_VAR_blog_user1_password: ${{ secrets.TF_VAR_blog_user1_password }}
+    TF_VAR_blog_user2_username: ${{ secrets.TF_VAR_blog_user2_username }}
+    TF_VAR_blog_user2_password: ${{ secrets.TF_VAR_blog_user2_password }}
+
+jobs:
+    setup-core-infra:
+        name: Run Terraform for targeted infrastructure
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            - name: Configure AWS credentials
+              run: |
+                  aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws configure set default.region ap-southeast-1
+
+            - name: Terraform Init
+              run: terraform init
+              working-directory: infra
+
+            - name: Terraform Apply
+              run: |
+                  terraform apply --target aws_ecr_repository.blog_ecr \
+                      --target aws_s3_bucket.blog_portal_bucket \
+                      --auto-approve
+              working-directory: infra
+
+    build-and-push-backend:
+        needs: setup-core-infra
+        name: Build and push backend
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Configure AWS credentials
+              run: |
+                  aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws configure set default.region ap-southeast-1
+
+            - name: Log in to ECR
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@v2
+
+            - name: Build docker image
+              run: |
+                  docker build -t blog-repo -f apps/backend/blog/Dockerfile .
+                  docker tag blog-repo:latest ${{ steps.login-ecr.outputs.registry }}/blog-repo:latest
+
+            - name: Push docker image
+              run: |
+                  docker push ${{ steps.login-ecr.outputs.registry }}/blog-repo:latest
+
+    build-and-push-frontend:
+        needs: setup-core-infra
+        name: Build and push frontend
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Configure AWS credentials
+              run: |
+                  aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws configure set default.region ap-southeast-1
+
+            - name: Install bun
+              uses: oven-sh/setup-bun@v2
+
+            - name: Build static bundle
+              run: |
+                  bun install
+                  bun run build
+              working-directory: apps/frontend/blog-portal
+
+            - name: Push to S3
+              run: |
+                  aws s3 sync ./dist/ s3://blog-portal-deployment-bucket/
+              working-directory: apps/frontend/blog-portal
+
+    setup-additional-infra:
+        needs: [build-and-push-backend, build-and-push-frontend]
+        name: Run Terraform for additional infrastructure
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+
+            - name: Configure AWS credentials
+              run: |
+                  aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws configure set default.region ap-southeast-1
+
+            - name: Terraform Init
+              run: terraform init --reconfigure
+              working-directory: infra
+
+            - name: Terraform Apply
+              run: terraform apply --auto-approve
+              working-directory: infra
