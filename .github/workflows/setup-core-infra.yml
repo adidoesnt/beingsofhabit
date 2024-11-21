@@ -5,6 +5,15 @@ on:
         branches:
             - feature/github-actions
 
+env:
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    AWS_REGION: ap-southeast-1
+    TF_VAR_blog_user1_username: ${{ secrets.TF_VAR_blog_user1_username }}
+    TF_VAR_blog_user1_password: ${{ secrets.TF_VAR_blog_user1_password }}
+    TF_VAR_blog_user2_username: ${{ secrets.TF_VAR_blog_user2_username }}
+    TF_VAR_blog_user2_password: ${{ secrets.TF_VAR_blog_user2_password }}
+
 jobs:
     terraform-targeted:
         name: Run Terraform for targeted infrastructure
