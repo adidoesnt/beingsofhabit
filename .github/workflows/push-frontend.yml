@@ -6,6 +6,8 @@ on:
             - "Setup core infrastructure"
         types:
             - completed
+        branches: 
+            - feature/github-actions
 
 jobs:
     build-and-push:
