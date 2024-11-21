@@ -2,16 +2,13 @@ name: Setup additional infrastructure
 
 on:
     workflow_run:
-        workflows:
-            - "Build and push backend"
-            - "Build and push frontend"
-        types:
-            - completed
-        branches: 
-            - feature/github-actions
+        workflows: [Build and push backend, Build and push frontend]
+        types: [completed]
+        branches: [feature/github-actions]
 
 jobs:
     terraform:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         name: Run Terraform for additional infrastructure
         runs-on: ubuntu-latest
 
