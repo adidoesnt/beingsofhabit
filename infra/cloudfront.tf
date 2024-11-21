@@ -52,5 +52,10 @@ resource "aws_cloudfront_distribution" "blog_portal_distribution" {
         }
     }
 
+    logging_config {
+        bucket = aws_s3_bucket.blog_portal_bucket.bucket
+        prefix = "cloudfront-logs"
+    }
+
     depends_on = [ aws_s3_bucket.blog_portal_bucket ]
 }
