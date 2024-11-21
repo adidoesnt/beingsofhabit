@@ -9,7 +9,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "start": "vite",
-    "add-component": "bunx shadcn@latest add"
+    "add-component": "bunx shadcn@latest add",
+    "build-and-push": "chmod +x ./build-and-push.sh && ./build-and-push.sh"
   },
   "devDependencies": {
     "@tanstack/router-plugin": "^1.74.2",

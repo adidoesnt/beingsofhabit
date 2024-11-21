@@ -39,7 +39,6 @@ resource "aws_s3_bucket_ownership_controls" "blog_portal_bucket_ownership_contro
 
   depends_on = [
     aws_s3_bucket.blog_portal_bucket,
-    aws_s3_bucket_public_access_block.blog_portal_bucket_public_access_block
   ]
 }
 
