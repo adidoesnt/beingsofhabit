@@ -2,7 +2,8 @@ name: Push backend
 
 on:
     workflow_run:
-        workflows: ["Setup core infrastructure"]
+        workflows:
+            - "Setup core infrastructure"
         types:
             - completed
 

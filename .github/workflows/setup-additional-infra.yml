@@ -2,7 +2,9 @@ name: Setup additional infrastructure
 
 on:
     workflow_run:
-        workflows: ["Build and push backend", "Build and push frontend"]
+        workflows:
+            - "Build and push backend"
+            - "Build and push frontend"
         types:
             - completed
 
