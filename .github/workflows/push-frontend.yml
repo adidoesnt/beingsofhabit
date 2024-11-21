@@ -6,7 +6,6 @@ on:
             - feature/github-actions
         paths:
             - "apps/frontend/blog-portal/**"
-            - "apps/frontend/website/**"
     workflow_run: 
         workflows: ["Setup core infrastructure"]
         types:
