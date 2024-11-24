@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy Blog
 
 on:
     workflow_dispatch: {}
