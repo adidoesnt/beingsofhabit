@@ -18,36 +18,36 @@ export class BeingsOfHabitError extends Error {
 }
 
 /**
- * Base error class for Beings of Habit Blog Portal.
+ * Base error class for Beings of Habit Admin Portal.
  */
-export class BlogPortalError extends BeingsOfHabitError {
+export class AdminPortalError extends BeingsOfHabitError {
     constructor(
-        message: BlogPortalAuthErrorMessage | BlogPortalPostErrorMessage,
+        message: AdminPortalAuthErrorMessage | AdminPortalPostErrorMessage,
         status?: Status
     ) {
         super(message, status);
-        this.name = "BlogPortalError";
+        this.name = "AdminPortalError";
     }
 }
 
-// Blog Portal Auth Errors
-export enum BlogPortalAuthErrorMessage {
+// Admin Portal Auth Errors
+export enum AdminPortalAuthErrorMessage {
     USER_NOT_FOUND = "User not found",
     INCORRECT_PASSWORD = "Incorrect password",
 }
 
 /**
- * Auth error class for Beings of Habit Blog Portal.
+ * Auth error class for Beings of Habit Admin Portal.
  */
-export class BlogPortalAuthError extends BlogPortalError {
-    constructor(message: BlogPortalAuthErrorMessage, status?: number) {
+export class AdminPortalAuthError extends AdminPortalError {
+    constructor(message: AdminPortalAuthErrorMessage, status?: number) {
         super(message, status);
         this.name = "AuthError";
     }
 }
 
-// Blog Portal Post Errors
-export enum BlogPortalPostErrorMessage {
+// Admin Portal Post Errors
+export enum AdminPortalPostErrorMessage {
     POST_NOT_FOUND = "Post not found",
     INCORRECT_PASSWORD = "Incorrect password",
     UPDATE_FAILED = "Failed to update post",
@@ -55,10 +55,10 @@ export enum BlogPortalPostErrorMessage {
 }
 
 /**
- * Post error class for Beings of Habit Blog Portal.
+ * Post error class for Beings of Habit Admin Portal.
  */
-export class BlogPortalPostError extends BlogPortalError {
-    constructor(message: BlogPortalPostErrorMessage, status?: number) {
+export class AdminPortalPostError extends AdminPortalError {
+    constructor(message: AdminPortalPostErrorMessage, status?: number) {
         super(message, status);
         this.name = "PostError";
     }

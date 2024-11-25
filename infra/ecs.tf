@@ -45,8 +45,8 @@ resource "aws_ecs_task_definition" "blog_task_definition" {
       "name" : "WEBSITE_URL",
       "value" : var.main_website_url
       }, {
-      "name" : "BLOG_PORTAL_URL",
-      "value" : var.blog_portal_url
+      "name" : "ADMIN_PORTAL_URL",
+      "value" : var.admin_portal_url
       }, {
       "name" : "BLOG_URL",
       "value" : var.blog_service_url

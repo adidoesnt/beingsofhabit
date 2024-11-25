@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { userRepository } from "../repository";
 import { generateToken, getUserFromToken } from "../utils/jwt";
 import { logger } from "src/utils";
-import { BlogPortalAuthError, BlogPortalAuthErrorMessage } from "@/packages/types/error";
+import { AdminPortalAuthError, AdminPortalAuthErrorMessage } from "@/packages/types/error";
 import { Status } from "@/packages/types/response";
 
 export const findByUsername = async (username: string) => {
@@ -36,7 +36,7 @@ export const login = async (username: string, password: string) => {
     return {
       user: null,
       token: null,
-      errMessage: BlogPortalAuthErrorMessage.USER_NOT_FOUND,
+      errMessage: AdminPortalAuthErrorMessage.USER_NOT_FOUND,
     };
   }
 
@@ -47,7 +47,7 @@ export const login = async (username: string, password: string) => {
     return {
       user,
       token: null,
-      errMessage: BlogPortalAuthErrorMessage.INCORRECT_PASSWORD,
+      errMessage: AdminPortalAuthErrorMessage.INCORRECT_PASSWORD,
     };
   }
 
@@ -70,8 +70,8 @@ export const refreshToken = async (token: string) => {
   const userFromDb = await findByUsername(username);
 
   if (!userFromDb) {
-    throw new BlogPortalAuthError(
-      BlogPortalAuthErrorMessage.USER_NOT_FOUND,
+    throw new AdminPortalAuthError(
+      AdminPortalAuthErrorMessage.USER_NOT_FOUND,
       Status.NOT_FOUND
     );
   }

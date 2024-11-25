@@ -1,15 +1,10 @@
-name: Deploy Blog
+name: Deploy All Services
 
 on:
     workflow_dispatch: {}
     push:
         branches:
             - main
-        paths: 
-            - 'apps/backend/blog/**'
-            - 'apps/frontend/blog-portal/**'
-            - 'infra/**'
-            - 'packages/**'
 
 env:
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -49,9 +44,9 @@ jobs:
                       --auto-approve
               working-directory: infra
 
-    build-and-push-backend:
+    build-and-push-blog-service:
         needs: setup-core-infra
-        name: Build and push backend
+        name: Build and push backend blog service
         runs-on: ubuntu-latest
 
         steps:
@@ -77,9 +72,9 @@ jobs:
               run: |
                   docker push ${{ steps.login-ecr.outputs.registry }}/blog-repo:latest
 
-    build-and-push-frontend:
+    build-and-push-admin-portal:
         needs: setup-core-infra
-        name: Build and push frontend
+        name: Build and push frontend admin portal
         runs-on: ubuntu-latest
 
         steps:
@@ -99,15 +94,15 @@ jobs:
               run: |
                   bun install
                   bun run build
-              working-directory: apps/frontend/blog-portal
+              working-directory: apps/frontend/admin-portal
 
             - name: Push to S3
               run: |
-                  aws s3 sync ./dist/ s3://blog-portal-deployment-bucket/
-              working-directory: apps/frontend/blog-portal
+                  aws s3 sync ./dist/ s3://admin-portal-deployment-bucket/
+              working-directory: apps/frontend/admin-portal
 
     setup-additional-infra:
-        needs: [build-and-push-backend, build-and-push-frontend]
+        needs: [build-and-push-blog-service, build-and-push-admin-portal]
         name: Run Terraform for additional infrastructure
         runs-on: ubuntu-latest
 

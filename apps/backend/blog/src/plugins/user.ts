@@ -1,8 +1,8 @@
 import { Elysia, t } from "elysia";
 import { tokenService, userService } from "../service";
 import {
-    BlogPortalAuthError,
-    BlogPortalAuthErrorMessage,
+    AdminPortalAuthError,
+    AdminPortalAuthErrorMessage,
 } from "@/packages/types/error";
 import { Status } from "@/packages/types/response";
 import { logger } from "src/utils";
@@ -28,17 +28,17 @@ export const userPlugin = () => {
                     );
 
                     if (!user) {
-                        throw new BlogPortalAuthError(
+                        throw new AdminPortalAuthError(
                             errMessage ??
-                                BlogPortalAuthErrorMessage.USER_NOT_FOUND,
+                                AdminPortalAuthErrorMessage.USER_NOT_FOUND,
                             Status.NOT_FOUND
                         );
                     }
 
                     if (!token) {
-                        throw new BlogPortalAuthError(
+                        throw new AdminPortalAuthError(
                             errMessage ??
-                                BlogPortalAuthErrorMessage.INCORRECT_PASSWORD,
+                                AdminPortalAuthErrorMessage.INCORRECT_PASSWORD,
                             Status.FORBIDDEN
                         );
                     }
@@ -57,7 +57,7 @@ export const userPlugin = () => {
                         maxAge,
                     };
                 } catch (e) {
-                    const error = e as BlogPortalAuthError;
+                    const error = e as AdminPortalAuthError;
                     set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
                     return error.message;
                 }

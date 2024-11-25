@@ -2,7 +2,7 @@ import { Elysia } from "elysia";
 import { CreatePostBodyType, GetPostQueryType, UpdatePostBodyType } from "../model";
 import { postService } from "../service";
 import { authPlugin, AuthPluginProps } from "./auth";
-import { BlogPortalPostError, BlogPortalPostErrorMessage } from "@/packages/types/error";
+import { AdminPortalPostError, AdminPortalPostErrorMessage } from "@/packages/types/error";
 import { Status } from "@/packages/types/response";
 import { logger } from "src/utils";
 
@@ -44,13 +44,13 @@ export const postPlugin = () => {
     .get("/:postId", async ({ params, set }) => {
       try {
         const post = await postService.findById(params.postId);
-        if (!post) throw new BlogPortalPostError(BlogPortalPostErrorMessage.POST_NOT_FOUND, Status.NOT_FOUND);
+        if (!post) throw new AdminPortalPostError(AdminPortalPostErrorMessage.POST_NOT_FOUND, Status.NOT_FOUND);
 
         set.status = Status.OK;
 
         return post.toJSON();
       } catch (e) {
-        const error = e as BlogPortalPostError;
+        const error = e as AdminPortalPostError;
         set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
 
         const errMessage = "💀 Failed to get post:";
@@ -62,7 +62,7 @@ export const postPlugin = () => {
     .put("/:postId", async ({ params, body, set }) => {
       try {
         const post = await postService.updatePost(params.postId, body);
-        if (!post) throw new BlogPortalPostError(BlogPortalPostErrorMessage.UPDATE_FAILED, Status.INTERNAL_SERVER_ERROR);
+        if (!post) throw new AdminPortalPostError(AdminPortalPostErrorMessage.UPDATE_FAILED, Status.INTERNAL_SERVER_ERROR);
 
         set.status = Status.OK;
 
@@ -81,7 +81,7 @@ export const postPlugin = () => {
     .delete("/:postId", async ({ params, set }) => {
       try {
         const post = await postService.findById(params.postId);
-        if (!post) throw new BlogPortalPostError(BlogPortalPostErrorMessage.POST_NOT_FOUND, Status.NOT_FOUND);
+        if (!post) throw new AdminPortalPostError(AdminPortalPostErrorMessage.POST_NOT_FOUND, Status.NOT_FOUND);
 
         await postService.deletePost(post._id);
 
@@ -89,7 +89,7 @@ export const postPlugin = () => {
 
         return "Post deleted";
       } catch (e) {
-        const error = e as BlogPortalPostError;
+        const error = e as AdminPortalPostError;
         set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
 
         const errMessage = "💀 Failed to delete post:";
@@ -103,13 +103,13 @@ export const postPlugin = () => {
       async ({ body, set }) => {
         try {
           const post = await postService.createPost(body);
-          if (!post) throw new BlogPortalPostError(BlogPortalPostErrorMessage.CREATE_FAILED, Status.INTERNAL_SERVER_ERROR);
+          if (!post) throw new AdminPortalPostError(AdminPortalPostErrorMessage.CREATE_FAILED, Status.INTERNAL_SERVER_ERROR);
 
           set.status = Status.CREATED;
 
           return post.toJSON();
         } catch (e) {
-          const error = e as BlogPortalPostError;
+          const error = e as AdminPortalPostError;
           set.status = error.status ?? Status.INTERNAL_SERVER_ERROR;
 
           const errMessage = "💀 Failed to create post:";

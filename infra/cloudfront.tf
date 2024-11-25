@@ -1,14 +1,14 @@
-variable "blog_portal_certificate_arn" {
+variable "admin_portal_certificate_arn" {
   type = string
   default = "arn:aws:acm:us-east-1:839459181456:certificate/2aced4de-0e15-4781-8e3f-8dbd111d496b"
 }
 
-variable "blog_portal_alias" {
+variable "admin_portal_alias" {
     type = string
     default = "admin.boh-services.com"
 }
 
-resource "aws_cloudfront_distribution" "blog_portal_distribution" {
+resource "aws_cloudfront_distribution" "admin_portal_distribution" {
     origin {
         custom_origin_config {
             origin_protocol_policy = "http-only"
@@ -16,14 +16,14 @@ resource "aws_cloudfront_distribution" "blog_portal_distribution" {
             https_port = 443
             origin_ssl_protocols = ["TLSv1.2", "TLSv1.1", "TLSv1"]
         }
-        domain_name = "${aws_s3_bucket.blog_portal_bucket.bucket}.s3-website-ap-southeast-1.amazonaws.com"
-        origin_id   = "S3-${aws_s3_bucket.blog_portal_bucket.bucket}"
+        domain_name = "${aws_s3_bucket.admin_portal_bucket.bucket}.s3-website-ap-southeast-1.amazonaws.com"
+        origin_id   = "S3-${aws_s3_bucket.admin_portal_bucket.bucket}"
     }
 
-    aliases = [ var.blog_portal_alias ]
+    aliases = [ var.admin_portal_alias ]
 
     viewer_certificate {
-        acm_certificate_arn = var.blog_portal_certificate_arn
+        acm_certificate_arn = var.admin_portal_certificate_arn
         ssl_support_method = "sni-only"
     }
 
@@ -33,7 +33,7 @@ resource "aws_cloudfront_distribution" "blog_portal_distribution" {
     default_cache_behavior {
         allowed_methods  = ["GET", "HEAD", "OPTIONS"]
         cached_methods   = ["GET", "HEAD"]
-        target_origin_id = "S3-${aws_s3_bucket.blog_portal_bucket.bucket}"
+        target_origin_id = "S3-${aws_s3_bucket.admin_portal_bucket.bucket}"
         viewer_protocol_policy = "redirect-to-https"
         compress = true
 
@@ -52,5 +52,5 @@ resource "aws_cloudfront_distribution" "blog_portal_distribution" {
         }
     }
 
-    depends_on = [ aws_s3_bucket.blog_portal_bucket ]
+    depends_on = [ aws_s3_bucket.admin_portal_bucket ]
 }

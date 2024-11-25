@@ -1,4 +1,4 @@
-import type { BlogPortalAuthError } from "./error";
+import type { AdminPortalAuthError } from "./error";
 
 export enum Status {
     OK = 200,
@@ -10,8 +10,8 @@ export enum Status {
     INTERNAL_SERVER_ERROR = 500,
 }
 
-export type BlogPortalAuthErrorResponse = {
+export type AdminPortalAuthErrorResponse = {
     response: {
-        data: BlogPortalAuthError["message"];
+        data: AdminPortalAuthError["message"];
     }
 }

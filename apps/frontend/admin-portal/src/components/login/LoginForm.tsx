@@ -10,10 +10,9 @@ import { apiClient } from "@/utils";
 import { useAuth } from "@/context/auth";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
-    BlogPortalAuthError,
-    BlogPortalAuthErrorMessage,
+    AdminPortalAuthErrorMessage,
 } from "@/packages/types/error";
-import { BlogPortalAuthErrorResponse } from "@/packages/types/response";
+import { AdminPortalAuthErrorResponse } from "@/packages/types/response";
 
 const { VITE_FRONTEND_URL = "DUMMY-URL" } = import.meta.env;
 
@@ -57,17 +56,17 @@ export const LoginForm = () => {
     }, [search, navigate]);
 
     const handleError = useCallback(
-        ({ response }: BlogPortalAuthErrorResponse) => {
+        ({ response }: AdminPortalAuthErrorResponse) => {
             switch (response.data) {
-                case BlogPortalAuthErrorMessage.USER_NOT_FOUND:
+                case AdminPortalAuthErrorMessage.USER_NOT_FOUND:
                     form.setError("username", {
-                        message: BlogPortalAuthErrorMessage.USER_NOT_FOUND,
+                        message: AdminPortalAuthErrorMessage.USER_NOT_FOUND,
                         type: "value",
                     });
                     break;
-                case BlogPortalAuthErrorMessage.INCORRECT_PASSWORD:
+                case AdminPortalAuthErrorMessage.INCORRECT_PASSWORD:
                     form.setError("password", {
-                        message: BlogPortalAuthErrorMessage.INCORRECT_PASSWORD,
+                        message: AdminPortalAuthErrorMessage.INCORRECT_PASSWORD,
                         type: "value",
                     });
                     break;
@@ -92,7 +91,7 @@ export const LoginForm = () => {
                 setSessionExpiryWithMaxAge(user.maxAge);
                 setUser(user);
             } catch (e) {
-                const error = e as BlogPortalAuthErrorResponse;
+                const error = e as AdminPortalAuthErrorResponse;
                 handleError(error);
             }
         },

@@ -6,6 +6,8 @@ import { useAuth } from "@/context/auth";
 import { useNavigate } from "@tanstack/react-router";
 import { queryClient } from "@/routes/__root";
 
+const DEFAULT_HEADER_IMAGE_URL = "https://picsum.photos/300/200";
+
 const getDefaultReleaseDate = () => {
   const now = new Date();
   now.setDate(now.getDate() + 1);
@@ -19,7 +21,7 @@ const defaultPost: Omit<Post, "_id" | "author"> = {
   blurb: "This is my new post.",
   content: "This is my new post.",
   category: Category.MISC,
-  headerImageURL: "https://picsum.photos/300/200",
+  headerImageURL: DEFAULT_HEADER_IMAGE_URL,
   releaseDate: getDefaultReleaseDate(),
 };
 

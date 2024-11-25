@@ -21,7 +21,7 @@ variable "main_website_url" {
   default = "https://beingsofhabit.com"
 }
 
-variable "blog_portal_url" {
+variable "admin_portal_url" {
   type = string
   default = "https://admin.boh-services.com"
 }
