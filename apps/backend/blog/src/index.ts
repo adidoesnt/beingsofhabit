@@ -1,5 +1,6 @@
 import { Elysia } from "elysia";
-import { healthPlugin, corsPlugin, postPlugin, userPlugin, loggerPlugin, bucketPlugin } from "./plugins";
+import { corsPlugin, postPlugin, userPlugin, bucketPlugin } from "./plugins";
+import { loggerPlugin, healthPlugin } from "@/packages/plugins";
 import { database, logger } from "./utils";
 
 try {
@@ -8,8 +9,8 @@ try {
   await database.connect();
 
   const app = new Elysia()
-    .onBeforeHandle(loggerPlugin())
-    .use(healthPlugin())
+    .onBeforeHandle(loggerPlugin({ logger }))
+    .use(healthPlugin({ logger }))
     .use(corsPlugin())
     .use(postPlugin())
     .use(userPlugin())
@@ -23,6 +24,6 @@ try {
 
   logger.info(`🦊 Blog service is running at ${hostname}:${port}`);
 } catch (error) {
-  logger.error('Error starting blog service', error as Error);
+  logger.error("Error starting blog service", error as Error);
   process.exit(1);
 }
