@@ -28,7 +28,7 @@ export class Logger {
     return this;
   }
 
-  private getTimestamp() {
+   getTimestamp() {
     const date = new Date();
     const dateString =
       NODE_ENV === "DEV" ? date.toLocaleString() : date.toISOString();

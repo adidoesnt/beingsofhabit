@@ -1,11 +1,11 @@
 import { Elysia } from "elysia";
 import { loggerPlugin, healthPlugin } from "@/packages/plugins";
-import { logger } from "./utils";
+import { logger, database } from "./utils";
 
 try {
   const { PORT = 3002 } = process.env;
 
-  // connect to database here
+  await database.authenticate();
 
   const app = new Elysia()
     .onBeforeHandle(loggerPlugin({ logger }))
