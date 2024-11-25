@@ -5,7 +5,7 @@ import { logger, database } from "./utils";
 try {
   const { PORT = 3002 } = process.env;
 
-  await database.authenticate();
+  await database.init();
 
   const app = new Elysia()
     .onBeforeHandle(loggerPlugin({ logger }))
@@ -20,5 +20,6 @@ try {
   logger.info(`🦊 Blog service is running at ${hostname}:${port}`);
 } catch (error) {
   logger.error("Error starting blog service", error as Error);
+  await database.close();
   process.exit(1);
 }
