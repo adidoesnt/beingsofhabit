@@ -40,7 +40,7 @@ jobs:
             - name: Terraform Apply
               run: |
                   terraform apply --target aws_ecr_repository.blog_ecr \
-                      --target aws_s3_bucket.blog_portal_bucket \
+                      --target aws_s3_bucket.admin_portal_bucket \
                       --auto-approve
               working-directory: infra
 
