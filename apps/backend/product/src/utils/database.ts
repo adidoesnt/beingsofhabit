@@ -1,13 +1,16 @@
-import { Sequelize, Options } from "sequelize";
+import { Sequelize } from "sequelize-typescript";
+import { Options } from "sequelize";
 import { logger } from "./logger";
+import * as models from "../model";
 
 const {
   NODE_ENV = "PROD",
   DB_HOST = "localhost",
   DB_PORT = 5432,
   DB_NAME = "boh",
-  DB_USER = "postgres",
-  DB_PASSWORD = "postgres",
+  DB_USER = "boh",
+  DB_PASSWORD = "boh",
+  DB_SCHEMA = "boh",
 } = process.env;
 
 const isDevEnv = NODE_ENV === "DEV";
@@ -19,6 +22,7 @@ const devConfig: Options = {
   database: DB_NAME,
   username: DB_USER,
   password: DB_PASSWORD,
+  schema: DB_SCHEMA,
   logging: console.log,
 };
 
@@ -42,8 +46,8 @@ export const database = {
   init: async () => {
     try {
       logger.debug("Connecting to database...");
+      sequelize.addModels(Object.values(models));
       await sequelize.authenticate();
-      await sequelize.sync();
       logger.info("🐘 Connected to database");
     } catch (error) {
       logger.error("💀 Failed to connect to database:", error as Error);
