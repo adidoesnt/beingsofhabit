@@ -1,18 +1,23 @@
-import express from "express";
+import { Elysia } from "elysia";
+// import logger and health plugins
+// import logger util
 
-const { PORT = 3002 } = process.env;
+try {
+  const { PORT = 3002 } = process.env;
 
-const app = express();
+  // connect to database here
 
-app.get("/", (_request, response) => {
-  response.json({
-    status: 200,
-    message: "OK",
-  });
-});
+  const app = new Elysia()
+    // add plugins here
+    .listen(PORT);
+  const { hostname, port } = app.server ?? {};
 
-(() => {
-  app.listen(PORT, () => {
-    console.log(`🚀 Product service running on port ${PORT}`);
-  });
-})();
+  if (!hostname || !port) {
+    throw new Error("💀 Failed to start Elysia server");
+  }
+
+  // logger.info(`🦊 Blog service is running at ${hostname}:${port}`);
+} catch (error) {
+  // logger.error('Error starting blog service', error as Error);
+  process.exit(1);
+}
