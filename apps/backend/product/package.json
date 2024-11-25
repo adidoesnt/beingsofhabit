@@ -3,10 +3,16 @@
   "version": "1.0.50",
   "scripts": {
     "start": "bun run src/index.ts",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "create-migration": "sequelize-cli migration:generate --name",
+    "migrate": "sequelize-cli db:migrate",
+    "rollback": "sequelize-cli db:migrate:undo",
+    "rollback-all": "sequelize-cli db:migrate:undo:all"
   },
   "dependencies": {
-    "elysia": "latest"
+    "dotenv": "^16.4.5",
+    "elysia": "latest",
+    "sequelize-cli": "^6.6.2"
   },
   "devDependencies": {
     "bun-types": "latest",

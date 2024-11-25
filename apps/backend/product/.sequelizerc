@@ -1,0 +1,14 @@
+const dotenv = require("dotenv");
+const path = require("path");
+
+dotenv.config();
+
+const { NODE_ENV = "PROD" } = process.env;
+
+module.exports = {
+  config: path.resolve(__dirname, "sequelize/config/config.js"),
+  "migrations-path":
+    NODE_ENV === "DEV"
+      ? path.resolve(__dirname, "sequelize/migrations/dev")
+      : path.resolve(__dirname, "sequelize/migrations/prod"),
+};
