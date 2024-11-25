@@ -81,7 +81,7 @@ export class Logger {
 
   info(message: string) {
     const prefix = colourMap.get(LogLevel.INFO)!(
-      `${this.getTimestamp()} ${this.name}`
+      `${this.getTimestamp()} ${this.name}`,
     );
     const formattedMessage = `${prefix} ${message}`;
     console.log(formattedMessage);
@@ -92,7 +92,7 @@ export class Logger {
 
   debug(message: string, ...params: any[]) {
     const prefix = colourMap.get(LogLevel.DEBUG)!(
-      `${this.getTimestamp()} ${this.name}`
+      `${this.getTimestamp()} ${this.name}`,
     );
     const formattedMessage = `${prefix} ${message}`;
     console.log(formattedMessage, ...params);
@@ -104,7 +104,7 @@ export class Logger {
 
   warn(message: string) {
     const prefix = colourMap.get(LogLevel.WARN)!(
-      `${this.getTimestamp()} ${this.name}`
+      `${this.getTimestamp()} ${this.name}`,
     );
     const formattedMessage = `${prefix} ${message}`;
     console.warn(formattedMessage);
@@ -115,7 +115,7 @@ export class Logger {
 
   error(message: string, error: Error) {
     const prefix = colourMap.get(LogLevel.ERROR)!(
-      `${this.getTimestamp()} ${this.name}`
+      `${this.getTimestamp()} ${this.name}`,
     );
     const formattedMessage = `${prefix} ${message}`;
     console.error(formattedMessage, error);

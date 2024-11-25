@@ -1,10 +1,15 @@
-import { JournalsAndBooksContent, ShopNowButton as JournalsAndBooksShopNowButton } from "../journalsAndBooks";
+import {
+  JournalsAndBooksContent,
+  ShopNowButton as JournalsAndBooksShopNowButton,
+} from "../journalsAndBooks";
 
 export type MobileJournalsAndBooksProps = {
   backgroundImageSrc: string;
 };
 
-export const JournalsAndBooks = ({ backgroundImageSrc }: Readonly<MobileJournalsAndBooksProps>) => {
+export const JournalsAndBooks = ({
+  backgroundImageSrc,
+}: Readonly<MobileJournalsAndBooksProps>) => {
   return (
     <div
       className="flex w-[100dvw] h-[100dvh] bg-cover bg-center"

@@ -2,7 +2,10 @@ import bcrypt from "bcryptjs";
 import { userRepository } from "../repository";
 import { generateToken, getUserFromToken } from "../utils/jwt";
 import { logger } from "src/utils";
-import { AdminPortalAuthError, AdminPortalAuthErrorMessage } from "@/packages/types/error";
+import {
+  AdminPortalAuthError,
+  AdminPortalAuthErrorMessage,
+} from "@/packages/types/error";
 import { Status } from "@/packages/types/response";
 
 export const findByUsername = async (username: string) => {
@@ -72,7 +75,7 @@ export const refreshToken = async (token: string) => {
   if (!userFromDb) {
     throw new AdminPortalAuthError(
       AdminPortalAuthErrorMessage.USER_NOT_FOUND,
-      Status.NOT_FOUND
+      Status.NOT_FOUND,
     );
   }
 

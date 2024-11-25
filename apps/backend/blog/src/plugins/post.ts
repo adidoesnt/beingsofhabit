@@ -1,8 +1,15 @@
 import { Elysia } from "elysia";
-import { CreatePostBodyType, GetPostQueryType, UpdatePostBodyType } from "../model";
+import {
+  CreatePostBodyType,
+  GetPostQueryType,
+  UpdatePostBodyType,
+} from "../model";
 import { postService } from "../service";
 import { authPlugin, AuthPluginProps } from "./auth";
-import { AdminPortalPostError, AdminPortalPostErrorMessage } from "@/packages/types/error";
+import {
+  AdminPortalPostError,
+  AdminPortalPostErrorMessage,
+} from "@/packages/types/error";
 import { Status } from "@/packages/types/response";
 import { logger } from "src/utils";
 
@@ -19,7 +26,7 @@ export const postPlugin = () => {
           const posts = await postService.getPosts(
             query.releaseDate,
             query.category,
-            query.includeDeleted
+            query.includeDeleted,
           );
 
           set.status = Status.OK;
@@ -36,7 +43,7 @@ export const postPlugin = () => {
       },
       {
         query: GetPostQueryType,
-      }
+      },
     )
     .onBeforeHandle(({ cookie, set }) =>
       authPlugin({ cookie, set: set as AuthPluginProps["set"] }),
@@ -44,7 +51,11 @@ export const postPlugin = () => {
     .get("/:postId", async ({ params, set }) => {
       try {
         const post = await postService.findById(params.postId);
-        if (!post) throw new AdminPortalPostError(AdminPortalPostErrorMessage.POST_NOT_FOUND, Status.NOT_FOUND);
+        if (!post)
+          throw new AdminPortalPostError(
+            AdminPortalPostErrorMessage.POST_NOT_FOUND,
+            Status.NOT_FOUND,
+          );
 
         set.status = Status.OK;
 
@@ -59,29 +70,41 @@ export const postPlugin = () => {
         return error.message;
       }
     })
-    .put("/:postId", async ({ params, body, set }) => {
-      try {
-        const post = await postService.updatePost(params.postId, body);
-        if (!post) throw new AdminPortalPostError(AdminPortalPostErrorMessage.UPDATE_FAILED, Status.INTERNAL_SERVER_ERROR);
+    .put(
+      "/:postId",
+      async ({ params, body, set }) => {
+        try {
+          const post = await postService.updatePost(params.postId, body);
+          if (!post)
+            throw new AdminPortalPostError(
+              AdminPortalPostErrorMessage.UPDATE_FAILED,
+              Status.INTERNAL_SERVER_ERROR,
+            );
 
-        set.status = Status.OK;
+          set.status = Status.OK;
 
-        return post.toJSON();
-      } catch (error) {
-        set.status = Status.INTERNAL_SERVER_ERROR;
+          return post.toJSON();
+        } catch (error) {
+          set.status = Status.INTERNAL_SERVER_ERROR;
 
-        const errMessage = "💀 Failed to update post:";
-        logger.error(errMessage, error as Error);
+          const errMessage = "💀 Failed to update post:";
+          logger.error(errMessage, error as Error);
 
-        return errMessage;
-      }
-    }, {
-      body: UpdatePostBodyType,
-    })
+          return errMessage;
+        }
+      },
+      {
+        body: UpdatePostBodyType,
+      },
+    )
     .delete("/:postId", async ({ params, set }) => {
       try {
         const post = await postService.findById(params.postId);
-        if (!post) throw new AdminPortalPostError(AdminPortalPostErrorMessage.POST_NOT_FOUND, Status.NOT_FOUND);
+        if (!post)
+          throw new AdminPortalPostError(
+            AdminPortalPostErrorMessage.POST_NOT_FOUND,
+            Status.NOT_FOUND,
+          );
 
         await postService.deletePost(post._id);
 
@@ -103,7 +126,11 @@ export const postPlugin = () => {
       async ({ body, set }) => {
         try {
           const post = await postService.createPost(body);
-          if (!post) throw new AdminPortalPostError(AdminPortalPostErrorMessage.CREATE_FAILED, Status.INTERNAL_SERVER_ERROR);
+          if (!post)
+            throw new AdminPortalPostError(
+              AdminPortalPostErrorMessage.CREATE_FAILED,
+              Status.INTERNAL_SERVER_ERROR,
+            );
 
           set.status = Status.CREATED;
 
@@ -120,6 +147,6 @@ export const postPlugin = () => {
       },
       {
         body: CreatePostBodyType,
-      }
+      },
     );
 };

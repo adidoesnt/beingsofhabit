@@ -15,7 +15,7 @@ export const getUserFromToken = (token: string | null) => {
 export const verifyToken = async (token: string | null) => {
   try {
     if (!token) throw new Error("No token provided");
-   
+
     const { username } = getUserFromToken(token);
     const user = await userService.findByUsername(username);
     if (!user) throw new Error("User not found");

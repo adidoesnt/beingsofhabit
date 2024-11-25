@@ -31,10 +31,13 @@ const App = () => {
   const { setUser } = auth;
 
   useEffect(() => {
-      apiClient.get("/users/me").then(({ data }) => {
+    apiClient
+      .get("/users/me")
+      .then(({ data }) => {
         if (!data) throw new Error("No user returned");
         setUser(data);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.warn("Failed to set user on initial load", error);
       });
   }, [setUser]);
@@ -47,13 +50,13 @@ const rootElement = document.getElementById("app")!;
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <ErrorHandler fallback={
-      <ErrorBoundary errorMessage="An error occurred." />
-    }>
+    <ErrorHandler
+      fallback={<ErrorBoundary errorMessage="An error occurred." />}
+    >
       <AuthProvider>
         <SessionExpiryAlert />
         <App />
       </AuthProvider>
-    </ErrorHandler>
+    </ErrorHandler>,
   );
 }

@@ -22,8 +22,8 @@ export const LoginCard = ({ children, imgSrc }: Readonly<LoginCardProps>) => {
         <div className="flex flex-col gap-2">
           <CardTitle className="text-xl font-bold">Log In</CardTitle>
           <CardDescription>
-            Please enter you credentials below to enter the Beings of Habit admin
-            portal.
+            Please enter you credentials below to enter the Beings of Habit
+            admin portal.
           </CardDescription>
         </div>
       </CardHeader>

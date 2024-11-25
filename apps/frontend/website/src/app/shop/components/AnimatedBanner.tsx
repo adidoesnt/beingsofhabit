@@ -5,7 +5,7 @@ const { banner } = config.pages.shop.components;
 const BannerText = () => {
   return (
     <>
-      <span style={{ whiteSpace: 'nowrap' }}>{banner.text}</span>
+      <span style={{ whiteSpace: "nowrap" }}>{banner.text}</span>
       <span>{banner.delimiter}</span>
     </>
   );

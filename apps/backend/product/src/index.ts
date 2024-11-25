@@ -19,6 +19,6 @@ try {
 
   logger.info(`🦊 Blog service is running at ${hostname}:${port}`);
 } catch (error) {
-  logger.error('Error starting blog service', error as Error);
+  logger.error("Error starting blog service", error as Error);
   process.exit(1);
 }

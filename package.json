@@ -11,7 +11,8 @@
     "dev:admin-portal": "nx run-many -t dev -p apps/backend/blog apps/backend/product apps/frontend/admin-portal --parallel=3",
     "dev:backend": "nx run-many --target=dev --projects=apps/backend/* --parallel=10",
     "dev:frontend": "nx run-many --target=dev --projects=apps/frontend/* --parallel=10",
-    "dev": "nx run-many --target=dev --all --parallel=10"
+    "dev": "nx run-many --target=dev --all --parallel=10",
+    "format": "prettier --write **/*.{ts,tsx,css,html}"
   },
   "devDependencies": {
     "@nx/eslint": "20.0.3",

@@ -91,7 +91,7 @@ export function AppSidebar() {
         type: SidebarItemType.FUNC,
       },
     ],
-    []
+    [],
   );
 
   useEffect(() => {

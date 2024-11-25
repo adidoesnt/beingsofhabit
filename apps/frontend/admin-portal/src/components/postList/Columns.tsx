@@ -74,7 +74,7 @@ export const columns: ColumnDef<Post>[] = [
             {toFirstLetterUppercase(ReleaseStatus.DRAFT)}
           </Badge>
         );
-        
+
       return (
         <Badge className="bg-green-800">
           {toFirstLetterUppercase(ReleaseStatus.RELEASED)}

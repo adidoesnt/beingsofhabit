@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { User } from "@/packages/types/user";
 
 const { VITE_GRACE_PERIOD_IN_SECONDS = "600" } = import.meta.env;
@@ -26,20 +32,36 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({
   children,
 }: Readonly<{ children: React.ReactNode }>) => {
-  const gracePeriod = useMemo(() => Number(VITE_GRACE_PERIOD_IN_SECONDS) * 1000, []);
+  const gracePeriod = useMemo(
+    () => Number(VITE_GRACE_PERIOD_IN_SECONDS) * 1000,
+    [],
+  );
   const [user, setUser] = useState<User | null>(null);
   const isAuthenticated = useMemo(() => !!user, [user]);
-  const [showSessionExpiryPopup, setShowSessionExpiryPopup] = useState<boolean>(false);
+  const [showSessionExpiryPopup, setShowSessionExpiryPopup] =
+    useState<boolean>(false);
 
-  const setSessionExpiryWithMaxAge = useCallback((maxAge: number) => {
-    const maxAgeInMs = maxAge * 1000;
-    const expiry =  maxAgeInMs - gracePeriod;
-    setShowSessionExpiryPopup(false);
-    setTimeout(() => setShowSessionExpiryPopup(true), expiry);
-  }, [setShowSessionExpiryPopup, gracePeriod]);
+  const setSessionExpiryWithMaxAge = useCallback(
+    (maxAge: number) => {
+      const maxAgeInMs = maxAge * 1000;
+      const expiry = maxAgeInMs - gracePeriod;
+      setShowSessionExpiryPopup(false);
+      setTimeout(() => setShowSessionExpiryPopup(true), expiry);
+    },
+    [setShowSessionExpiryPopup, gracePeriod],
+  );
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, setUser, showSessionExpiryPopup, setSessionExpiryWithMaxAge, setShowSessionExpiryPopup }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        setUser,
+        showSessionExpiryPopup,
+        setSessionExpiryWithMaxAge,
+        setShowSessionExpiryPopup,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

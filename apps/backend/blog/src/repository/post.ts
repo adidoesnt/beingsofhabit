@@ -48,7 +48,10 @@ export const updateOneById = async (id: string, post: Partial<Post>) => {
 export const deleteOneById = async (id: string) => {
   logger.debug("Post repository::Delete post", id);
   try {
-    const deleteResult = await PostModel.updateOne({ _id: id }, { isDeleted: true });
+    const deleteResult = await PostModel.updateOne(
+      { _id: id },
+      { isDeleted: true },
+    );
     if (deleteResult.modifiedCount < 1) throw new Error("No post deleted");
     const deletedPost = await findOne({ _id: id });
     if (!deletedPost?.isDeleted) throw new Error("Post not deleted");

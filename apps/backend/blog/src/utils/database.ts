@@ -3,14 +3,20 @@ import { logger } from "./logger";
 import path from "path";
 import fs from "fs";
 
-const { MONGODB_URI = "DUMMY-URL", MONGODB_DB_NAME = "DUMMY-DB-NAME", NODE_ENV = "PROD" } =
-    process.env;
+const {
+  MONGODB_URI = "DUMMY-URL",
+  MONGODB_DB_NAME = "DUMMY-DB-NAME",
+  NODE_ENV = "PROD",
+} = process.env;
 const isDevEnv = NODE_ENV === "DEV";
 
 const getGlobalBundleFilePath = () => {
-  if(isDevEnv) return;
+  if (isDevEnv) return;
 
-  const globalBundleFilePath = path.resolve(__dirname, "../../global-bundle.pem");
+  const globalBundleFilePath = path.resolve(
+    __dirname,
+    "../../global-bundle.pem",
+  );
 
   logger.debug("🔑 Loading global bundle file...", {
     globalBundleFilePath,
@@ -23,20 +29,20 @@ const getGlobalBundleFilePath = () => {
   logger.debug("🔑 Global bundle file loaded", { globalBundleFilePath });
 
   return globalBundleFilePath;
-}
+};
 
 const connectToDatabase = async () => {
   const globalBundleFilePath = getGlobalBundleFilePath();
 
   const options: ConnectOptions = {
-    dbName: MONGODB_DB_NAME
+    dbName: MONGODB_DB_NAME,
   };
 
-  const optionsWithTls = { 
-    ...options, 
+  const optionsWithTls = {
+    ...options,
     tls: true,
-    tlsCAFile: globalBundleFilePath
-  }
+    tlsCAFile: globalBundleFilePath,
+  };
 
   try {
     if (isDevEnv) {
